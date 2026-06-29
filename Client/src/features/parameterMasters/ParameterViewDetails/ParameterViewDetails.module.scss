@@ -1,0 +1,414 @@
+$brand-50: #5189F3;
+$brand-40: #70A0FB;
+$brand-10: #E4EEFF;
+$neutral-10: #EBF0F4;
+$neutral-20: #DFE2E6;
+$neutral-50: #A7AAAD;
+$neutral-80: #5E5E60;
+$neutral-100: #111111;
+$surface: #F9F9FA;
+$error-50: #E82727;
+
+.container {
+  padding: 8px 12px 28px;
+  background: $surface;
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif;
+}
+
+// ── Breadcrumb ────────────────────────────────────────
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: $neutral-50;
+  margin-bottom: 8px;
+}
+
+.breadcrumbLink {
+  color: $neutral-80;
+  cursor: pointer;
+  &:hover { color: $brand-50; }
+}
+
+.breadcrumbSep { color: $neutral-50; font-size: 11px; }
+
+// ── Page header ───────────────────────────────────────
+.pageHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid $neutral-20;
+  border-radius: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $neutral-80;
+  padding: 0;
+  transition: border-color 0.2s, color 0.2s;
+  &:hover { border-color: $brand-50; color: $brand-50; }
+}
+
+.pageTitle {
+  font-size: 20px;
+  font-weight: 600;
+  color: $neutral-100;
+  margin: 0;
+  letter-spacing: -0.25px;
+}
+
+// ── Table card ────────────────────────────────────────
+.tableCard {
+  background: #fff;
+  border: 1px solid $neutral-10;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.tableScroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+// ── Toolbar ───────────────────────────────────────────
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.searchInput {
+  width: 220px;
+  border-radius: 0 !important;
+  border-color: $neutral-20 !important;
+  font-size: 14px;
+
+  :global(.ant-input) { font-size: 14px; }
+
+  &:hover { border-color: $brand-50 !important; }
+  &:focus-within { border-color: $brand-50 !important; box-shadow: none !important; }
+}
+
+.searchIcon { color: $neutral-50; font-size: 14px; }
+
+.addBtn {
+  height: 36px;
+  padding: 0 20px;
+  border-radius: 0 !important;
+  background: $brand-50 !important;
+  border-color: $brand-50 !important;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.25px;
+
+  &:hover {
+    background: $brand-40 !important;
+    border-color: $brand-40 !important;
+  }
+}
+
+// ── Table ─────────────────────────────────────────────
+.table {
+  :global(.ant-table-thead > tr > th) {
+    background: #F8FAFF !important;
+    font-size: 13px;
+    font-weight: 600;
+    color: $neutral-100;
+    border-bottom: 1px solid $neutral-20;
+    padding: 12px 14px;
+    white-space: nowrap;
+  }
+
+  :global(.ant-table-thead > tr > th::before) {
+    display: none;
+  }
+
+  :global(.ant-table-tbody > tr > td) {
+    font-size: 13px;
+    color: $neutral-100;
+    border-bottom: 1px solid $neutral-10;
+    padding: 12px 14px;
+  }
+
+  :global(.ant-table-tbody > tr:hover > td) {
+    background: #F8FAFF !important;
+  }
+
+  :global(.ant-table-column-sorter) {
+    color: $neutral-50;
+  }
+
+  :global(.ant-table-column-sort) {
+    background: transparent !important;
+  }
+}
+
+// ── Section chips ─────────────────────────────────────
+.chipGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border: 1px solid;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  letter-spacing: -0.1px;
+}
+
+// ── Action buttons ────────────────────────────────────
+.actionGroup {
+  display: flex;
+  gap: 8px;
+}
+
+.viewBtn,
+.editBtn {
+  height: 30px;
+  padding: 0 16px;
+  border-radius: 0 !important;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid $neutral-20 !important;
+  color: $neutral-100 !important;
+  background: #fff !important;
+
+  &:hover {
+    border-color: $brand-50 !important;
+    color: $brand-50 !important;
+  }
+}
+
+// ── Pagination ────────────────────────────────────────
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 14px 20px;
+  border-top: 1px solid $neutral-10;
+}
+
+.rowsControl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowsLabel {
+  font-size: 13px;
+  color: $neutral-80;
+  font-weight: 500;
+}
+
+.rowsSelect {
+  width: 68px;
+
+  :global(.ant-select-selector) {
+    border-radius: 0 !important;
+    border-color: $neutral-20 !important;
+    font-size: 13px !important;
+  }
+}
+
+.pageInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pageText {
+  font-size: 13px;
+  color: $neutral-80;
+  font-weight: 500;
+  min-width: 80px;
+  text-align: right;
+}
+
+.pageBtn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid $neutral-20;
+  border-radius: 0;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $neutral-80;
+  font-size: 11px;
+  transition: all 0.15s;
+
+  &:hover:not(:disabled) {
+    border-color: $brand-50;
+    color: $brand-50;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+}
+
+// ── View Modal ────────────────────────────────────────
+.viewModal {
+  :global(.ant-modal-content) {
+    border-radius: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  :global(.ant-modal-body) {
+    padding: 0 !important;
+  }
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid $neutral-20;
+  min-height: 48px;
+  padding: 0 12px;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modalHeaderLeft {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 0;
+}
+
+.modalBackBtn,
+.modalCloseBtn {
+  width: 24px;
+  height: 24px;
+  min-width: 24px;
+  border: 1px solid $brand-50;
+  border-radius: 0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $neutral-100;
+  font-size: 12px;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $brand-10;
+    color: $brand-50;
+  }
+}
+
+.modalTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: $neutral-100;
+  letter-spacing: -0.25px;
+  padding-left: 16px;
+}
+
+.modalBody {
+  background: $surface;
+  padding: 16px;
+}
+
+.modalSection {
+  background: $surface;
+  border-radius: 0;
+  padding: 0;
+}
+
+.modalSectionLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: $neutral-100;
+  margin: 0 0 12px;
+  padding: 0 4px;
+}
+
+.modalOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalOptionRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.modalCheckbox {
+  :global(.ant-checkbox-checked .ant-checkbox-inner) {
+    background-color: $brand-50 !important;
+    border-color: $brand-50 !important;
+  }
+}
+
+.modalOptionInput {
+  flex: 1;
+  padding: 8px 12px;
+  background: #fff;
+  border: 1px solid $neutral-20;
+  font-size: 14px;
+  color: $neutral-100;
+  font-family: 'Nunito', sans-serif;
+}
+
+.modalRangeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.modalRangeField {}
+
+.modalRangeLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: $neutral-80;
+  margin: 0 0 6px;
+}
+
+.modalNote {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: $neutral-80;
+  padding: 0 4px;
+
+  strong { color: $neutral-100; font-weight: 600; }
+}

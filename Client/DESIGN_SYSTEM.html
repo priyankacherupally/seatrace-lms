@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Sea Project — Design System</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', system-ui, sans-serif;
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: #1A2340;
+  background: #fff;
+  padding: 52px 64px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* ── Headings ── */
+h1 {
+  font-size: 30px; font-weight: 800; color: #1A2340;
+  border-bottom: 3px solid #5B8AF0;
+  padding-bottom: 14px; margin-bottom: 6px;
+  line-height: 1.2;
+}
+h2 {
+  font-size: 20px; font-weight: 700; color: #1A2340;
+  border-bottom: 1.5px solid #DCE9FB;
+  padding-bottom: 6px; margin: 40px 0 14px;
+}
+h3 {
+  font-size: 12px; font-weight: 700; color: #5B8AF0;
+  text-transform: uppercase; letter-spacing: 0.8px;
+  margin: 28px 0 8px;
+}
+h4 {
+  font-size: 13.5px; font-weight: 700; color: #1A2340;
+  margin: 20px 0 6px;
+}
+h5, h6 { font-size: 13px; font-weight: 600; margin: 14px 0 4px; }
+
+/* ── Body ── */
+p { margin: 8px 0; color: #1A2340; }
+
+blockquote {
+  border-left: 4px solid #5B8AF0;
+  background: #EEF3FD;
+  padding: 12px 16px; margin: 14px 0;
+  border-radius: 0 6px 6px 0;
+  color: #5E6E8C; font-style: italic; font-size: 13px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #EEF3FD;
+  margin: 28px 0;
+}
+
+ul { margin: 8px 0 14px 20px; }
+li { margin: 3px 0; }
+
+strong { font-weight: 700; }
+em     { color: #5E6E8C; font-style: italic; }
+
+/* ── Code ── */
+code {
+  font-family: 'Fira Code', 'Cascadia Code', Consolas, monospace;
+  font-size: 11.5px;
+  background: #EEF3FD;
+  color: #3A69CE;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+pre {
+  background: #111827;
+  padding: 18px 22px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 12px 0 20px;
+  border-left: 4px solid #5B8AF0;
+}
+pre code {
+  background: transparent;
+  color: #E2E8F8;
+  font-size: 11.5px;
+  line-height: 1.7;
+  padding: 0;
+}
+
+/* ── Tables ── */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 22px;
+  font-size: 12.5px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(26,35,64,0.08);
+  page-break-inside: avoid;
+}
+thead { background: #5B8AF0; }
+thead th {
+  padding: 9px 14px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 11.5px;
+  color: #fff;
+  letter-spacing: 0.2px;
+}
+tbody tr:nth-child(odd)  { background: #FFFFFF; }
+tbody tr:nth-child(even) { background: #F3F7FB; }
+tbody td {
+  padding: 8px 14px;
+  border-bottom: 1px solid #EEF3FD;
+  color: #1A2340;
+  vertical-align: top;
+}
+
+/* ── Print ── */
+@media print {
+  body { padding: 36px 48px; }
+  h2   { page-break-before: auto; }
+  pre, table, blockquote { page-break-inside: avoid; }
+  h2, h3 { page-break-after: avoid; }
+}
+</style>
+</head>
+<body>
+<h1>Sea Project — Design System</h1>
+<blockquote>Single source of truth for the Sea Project's visual language. All values are derived directly from Figma reference screens and the existing project token structure.</blockquote>
+<hr>
+<h2>Table of Contents</h2>
+<p>1. [Typography](#1-typography)<br>2. [Color System](#2-color-system)<br>3. [Spacing](#3-spacing)<br>4. [Border Radius](#4-border-radius)<br>5. [Shadows & Elevation](#5-shadows--elevation)<br>6. [Button System](#6-button-system)<br>7. [Layout & Breakpoints](#7-layout--breakpoints)<br>8. [SCSS Tokens](#8-scss-tokens)<br>9. [Layout Patterns](#9-layout-patterns)<br>10. [Error & Edge Case Patterns](#10-error--edge-case-patterns)</p>
+<hr>
+<h2>1. Typography</h2>
+<p><strong>Font family:</strong> Nunito  <br><strong>Default letter spacing:</strong> <code>-0.25px</code> across all text styles  <br><strong>Word spacing:</strong> <code>0</code> (normal)</p>
+<pre><code class="lang-scss">$font-family-primary: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+</code></pre>
+<hr>
+<h3>1.1 Headline</h3>
+<table><thead><tr><th>Style</th><th>Size</th><th>Line Height</th><th>Weight</th><th>Letter Spacing</th></tr></thead><tbody><tr><td>Headline / Large</td><td><code>32px</code></td><td><code>44px</code></td><td><code>600</code> — Semibold</td><td><code>-0.25px</code></td></tr><tr><td>Headline / Medium</td><td><code>28px</code></td><td><code>38px</code></td><td><code>600</code> — Semibold</td><td><code>-0.25px</code></td></tr><tr><td>Headline / Small</td><td><code>24px</code></td><td><code>33px</code></td><td><code>600</code> — Semibold</td><td><code>-0.25px</code></td></tr></tbody></table>
+<p><strong>Usage:</strong> Page titles, major section headers, modal titles.</p>
+<hr>
+<h3>1.2 Title</h3>
+<table><thead><tr><th>Style</th><th>Size</th><th>Line Height</th><th>Weight</th><th>Letter Spacing</th></tr></thead><tbody><tr><td>Title / Large</td><td><code>24px</code></td><td><code>33px</code></td><td><code>400</code> — Regular</td><td><code>-0.25px</code></td></tr><tr><td>Title / Medium</td><td><code>20px</code></td><td><code>27px</code></td><td><code>500</code> — Medium</td><td><code>-0.25px</code></td></tr><tr><td>Title / Small</td><td><code>18px</code></td><td><code>25px</code></td><td><code>600</code> — Semibold</td><td><code>-0.25px</code></td></tr></tbody></table>
+<p><strong>Usage:</strong> Card titles, section headings, panel headers, navigation labels.</p>
+<hr>
+<h3>1.3 Label</h3>
+<table><thead><tr><th>Style</th><th>Size</th><th>Line Height</th><th>Weight</th><th>Letter Spacing</th></tr></thead><tbody><tr><td>Label / Large</td><td><code>14px</code></td><td><code>19px</code></td><td><code>500</code> — Medium</td><td><code>-0.25px</code></td></tr><tr><td>Label / Medium</td><td><code>12px</code></td><td><code>16px</code></td><td><code>500</code> — Medium</td><td><code>-0.25px</code></td></tr><tr><td>Label / Small</td><td><code>11px</code></td><td><code>15px</code></td><td><code>500</code> — Medium</td><td><code>-0.25px</code></td></tr></tbody></table>
+<p><strong>Usage:</strong> Input labels, metadata, tags, badges, tight UI labels, button text (small sizes).</p>
+<hr>
+<h3>1.4 Body</h3>
+<table><thead><tr><th>Style</th><th>Size</th><th>Line Height</th><th>Weight</th><th>Letter Spacing</th></tr></thead><tbody><tr><td>Body / Large</td><td><code>16px</code></td><td><code>22px</code></td><td><code>400</code> — Regular</td><td><code>-0.25px</code></td></tr><tr><td>Body / Medium</td><td><code>14px</code></td><td><code>19px</code></td><td><code>400</code> — Regular</td><td><code>-0.25px</code></td></tr><tr><td>Body / Small</td><td><code>12px</code></td><td><code>16px</code></td><td><code>400</code> — Regular</td><td><code>-0.25px</code></td></tr><tr><td>Body / Small Semibold</td><td><code>12px</code></td><td><code>16px</code></td><td><code>600</code> — Semibold</td><td><code>-0.25px</code></td></tr></tbody></table>
+<p><strong>Usage:</strong> Paragraphs, descriptions, form field values, table content, activity feeds.</p>
+<hr>
+<h3>1.5 Display / KPI</h3>
+<table><thead><tr><th>Style</th><th>Size</th><th>Weight</th><th>Usage</th></tr></thead><tbody><tr><td>Display / Welcome</td><td><code>48px</code></td><td><code>700</code> — Bold</td><td>Hero greeting, welcome screen headline</td></tr><tr><td>Display / KPI 1</td><td><code>64px</code></td><td><code>700</code> — Bold</td><td>Primary metric values on KPI cards</td></tr><tr><td>Display / KPI 2</td><td><code>56px</code></td><td><code>700</code> — Bold</td><td>Secondary metric values on KPI cards</td></tr></tbody></table>
+<hr>
+<h2>2. Color System</h2>
+<h3>2.1 Primary — Blue</h3>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--color-primary</code></td><td><code>#5B8AF0</code></td><td>Default state: buttons, links, active indicators</td></tr><tr><td><code>--color-primary-hover</code></td><td><code>#4A79DF</code></td><td>Hover state on primary interactive elements</td></tr><tr><td><code>--color-primary-pressed</code></td><td><code>#3A69CE</code></td><td>Active / while-pressing state</td></tr><tr><td><code>--color-primary-disabled</code></td><td><code>#AABFF5</code></td><td>Disabled fill (primary buttons)</td></tr><tr><td><code>--color-primary-subtle</code></td><td><code>#EEF3FD</code></td><td>Light tint background, hover on secondary/tertiary</td></tr><tr><td><code>--color-primary-deep</code></td><td><code>#4F46E5</code></td><td>Strong emphasis, deep accent</td></tr></tbody></table>
+<h3>2.2 Semantic</h3>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--color-success</code></td><td><code>#10B981</code></td><td>Positive status, success banners, green indicators</td></tr><tr><td><code>--color-warning</code></td><td><code>#F59E0B</code></td><td>Caution alerts, warning badges</td></tr><tr><td><code>--color-danger</code></td><td><code>#EF4444</code></td><td>Errors, destructive action confirmations</td></tr><tr><td><code>--color-info</code></td><td><code>#0EA5E9</code></td><td>Informational tooltips, info badges</td></tr></tbody></table>
+<h3>2.3 Text</h3>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--color-text-primary</code></td><td><code>#1A2340</code></td><td>Main body text, headings</td></tr><tr><td><code>--color-text-secondary</code></td><td><code>#5E6E8C</code></td><td>Placeholder, helper text, supporting labels</td></tr><tr><td><code>--color-text-disabled</code></td><td><code>#A8B8CC</code></td><td>Disabled text on any surface</td></tr><tr><td><code>--color-text-on-primary</code></td><td><code>#FFFFFF</code></td><td>Text/icons on filled primary backgrounds</td></tr></tbody></table>
+<h3>2.4 Surface & Background</h3>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--bg-page</code></td><td><code>#F3F7FB</code></td><td>Page/shell background</td></tr><tr><td><code>--bg-surface</code></td><td><code>#FFFFFF</code></td><td>Cards, panels, modals, inputs</td></tr><tr><td><code>--bg-subtle</code></td><td><code>#EEF3FD</code></td><td>Hover tint on secondary/tertiary elements</td></tr><tr><td><code>--bg-base</code></td><td><code>#0F172A</code></td><td>Dark shell (if dark mode / dark sidebar used)</td></tr></tbody></table>
+<h3>2.5 Border</h3>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--color-border</code></td><td><code>#C8D5E8</code></td><td>Default borders, dividers, input outlines</td></tr><tr><td><code>--color-border-focus</code></td><td><code>#5B8AF0</code></td><td>Focus ring on inputs and interactive elements</td></tr></tbody></table>
+<hr>
+<h2>3. Spacing</h2>
+<p>Base unit: <code>4px</code>. All spacing values are multiples of <code>4</code>.</p>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--space-1</code></td><td><code>4px</code></td><td>Tight gaps, icon padding</td></tr><tr><td><code>--space-2</code></td><td><code>8px</code></td><td>Inner component padding, icon-to-label gap</td></tr><tr><td><code>--space-3</code></td><td><code>12px</code></td><td>Small component padding</td></tr><tr><td><code>--space-4</code></td><td><code>16px</code></td><td>Standard padding, grid gaps</td></tr><tr><td><code>--space-5</code></td><td><code>20px</code></td><td>—</td></tr><tr><td><code>--space-6</code></td><td><code>24px</code></td><td>Section padding, card padding</td></tr><tr><td><code>--space-8</code></td><td><code>32px</code></td><td>Large section spacing</td></tr><tr><td><code>--space-10</code></td><td><code>40px</code></td><td>—</td></tr><tr><td><code>--space-12</code></td><td><code>48px</code></td><td>Page-level vertical rhythm</td></tr><tr><td><code>--space-16</code></td><td><code>64px</code></td><td>Hero spacing, display sections</td></tr></tbody></table>
+<hr>
+<h2>4. Border Radius</h2>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--radius-xs</code></td><td><code>4px</code></td><td>Chips, small tags</td></tr><tr><td><code>--radius-sm</code></td><td><code>6px</code></td><td>Input fields, small badges</td></tr><tr><td><code>--radius-md</code></td><td><code>8px</code></td><td>Buttons, dropdowns</td></tr><tr><td><code>--radius-lg</code></td><td><code>12px</code></td><td>Cards, panels</td></tr><tr><td><code>--radius-xl</code></td><td><code>16px</code></td><td>Modals, large containers</td></tr><tr><td><code>--radius-2xl</code></td><td><code>24px</code></td><td>Feature cards</td></tr><tr><td><code>--radius-full</code></td><td><code>9999px</code></td><td>Pills, avatar rings, toggles</td></tr></tbody></table>
+<hr>
+<h2>5. Shadows & Elevation</h2>
+<table><thead><tr><th>Token</th><th>Value</th><th>Usage</th></tr></thead><tbody><tr><td><code>--shadow-sm</code></td><td><code>0 1px 2px rgba(26, 35, 64, 0.06)</code></td><td>Subtle lift, table rows</td></tr><tr><td><code>--shadow-md</code></td><td><code>0 4px 12px rgba(26, 35, 64, 0.08)</code></td><td>Cards, dropdowns, popovers</td></tr><tr><td><code>--shadow-lg</code></td><td><code>0 8px 24px rgba(26, 35, 64, 0.12)</code></td><td>Modals, drawers, floating panels</td></tr><tr><td><code>--shadow-xl</code></td><td><code>0 16px 40px rgba(26, 35, 64, 0.16)</code></td><td>Full-page overlays</td></tr></tbody></table>
+<hr>
+<h2>6. Button System</h2>
+<p>All buttons support three optional slots: <strong>left icon</strong>, <strong>label text</strong>, and <strong>right icon</strong>.  <br>Border radius on all sizes: <code>--radius-md</code> (<code>8px</code>).</p>
+<hr>
+<h3>6.1 Sizes</h3>
+<table><thead><tr><th>Size</th><th>Height</th><th>Horizontal Padding</th><th>Gap (icon ↔ label)</th><th>Label Token</th><th>Icon Size</th></tr></thead><tbody><tr><td>XS</td><td><code>28px</code></td><td><code>10px</code></td><td><code>4px</code></td><td>Label / Small</td><td><code>14px</code></td></tr><tr><td>S</td><td><code>32px</code></td><td><code>12px</code></td><td><code>6px</code></td><td>Label / Medium</td><td><code>14px</code></td></tr><tr><td>M</td><td><code>36px</code></td><td><code>14px</code></td><td><code>6px</code></td><td>Label / Large</td><td><code>16px</code></td></tr><tr><td>L</td><td><code>44px</code></td><td><code>18px</code></td><td><code>8px</code></td><td>Title / Small</td><td><code>18px</code></td></tr></tbody></table>
+<hr>
+<h3>6.2 Primary</h3>
+<p>Solid filled button. Use for the <strong>single most important action</strong> per view.</p>
+<table><thead><tr><th>State</th><th>Background</th><th>Text / Icon</th><th>Border</th></tr></thead><tbody><tr><td>Default</td><td><code>#5B8AF0</code></td><td><code>#FFFFFF</code></td><td>—</td></tr><tr><td>Hover</td><td><code>#4A79DF</code></td><td><code>#FFFFFF</code></td><td>—</td></tr><tr><td>While Pressing</td><td><code>#3A69CE</code></td><td><code>#FFFFFF</code></td><td>—</td></tr><tr><td>Disabled</td><td><code>#AABFF5</code></td><td><code>#FFFFFF</code></td><td>—</td></tr></tbody></table>
+<hr>
+<h3>6.3 Secondary</h3>
+<p>Outlined button. Use for <strong>supporting actions</strong> alongside a Primary (e.g. Cancel, Back).</p>
+<table><thead><tr><th>State</th><th>Background</th><th>Text / Icon</th><th>Border</th></tr></thead><tbody><tr><td>Default</td><td><code>transparent</code></td><td><code>#5B8AF0</code></td><td><code>1.5px solid #5B8AF0</code></td></tr><tr><td>Hover</td><td><code>#EEF3FD</code></td><td><code>#5B8AF0</code></td><td><code>1.5px solid #5B8AF0</code></td></tr><tr><td>While Pressing</td><td><code>#DCE9FB</code></td><td><code>#4A79DF</code></td><td><code>1.5px solid #4A79DF</code></td></tr><tr><td>Disabled</td><td><code>transparent</code></td><td><code>#AABFF5</code></td><td><code>1.5px solid #C8D5E8</code></td></tr></tbody></table>
+<hr>
+<h3>6.4 Tertiary</h3>
+<p>Text-only button. Use for <strong>low-emphasis inline actions</strong> (e.g. "View details", "Learn more").</p>
+<table><thead><tr><th>State</th><th>Background</th><th>Text / Icon</th><th>Border</th></tr></thead><tbody><tr><td>Default</td><td><code>transparent</code></td><td><code>#5B8AF0</code></td><td>—</td></tr><tr><td>Hover</td><td><code>#EEF3FD</code></td><td><code>#5B8AF0</code></td><td>—</td></tr><tr><td>While Pressing</td><td><code>#DCE9FB</code></td><td><code>#4A79DF</code></td><td>—</td></tr><tr><td>Disabled</td><td><code>transparent</code></td><td><code>#AABFF5</code></td><td>—</td></tr></tbody></table>
+<hr>
+<h3>6.5 Button Rules</h3>
+<ul><li>Never place two Primary buttons side by side.</li>
+<li>Disabled buttons must not receive hover or focus styles.</li>
+<li>Icon-only buttons must include an <code>aria-label</code>.</li>
+<li>Maintain consistent padding — do not change horizontal padding per content width.</li></ul>
+<hr>
+<h2>7. Layout & Breakpoints</h2>
+<table><thead><tr><th>Name</th><th>Range</th><th>Horizontal Padding</th></tr></thead><tbody><tr><td>Mobile</td><td><code>≤ 768px</code></td><td><code>16px</code></td></tr><tr><td>Tablet</td><td><code>769px – 1024px</code></td><td><code>24px</code></td></tr><tr><td>Desktop</td><td><code>≥ 1025px</code></td><td><code>32px</code></td></tr></tbody></table>
+<h3>Grid</h3>
+<ul><li><strong>Mobile:</strong> 4-column grid, <code>16px</code> gutters</li>
+<li><strong>Tablet:</strong> 8-column grid, <code>20px</code> gutters</li>
+<li><strong>Desktop:</strong> 12-column grid, <code>24px</code> gutters</li></ul>
+<hr>
+<h2>8. SCSS Tokens</h2>
+<p>Paste into <code>src/styles/variables.scss</code>:</p>
+<pre><code class="lang-scss">// Typography
+$font-family-primary: 'Nunito', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+$letter-spacing-default: -0.25px;
+<p>// Primary<br>$color-primary:          #5B8AF0;<br>$color-primary-hover:    #4A79DF;<br>$color-primary-pressed:  #3A69CE;<br>$color-primary-disabled: #AABFF5;<br>$color-primary-subtle:   #EEF3FD;<br>$color-primary-deep:     #4F46E5;</p>
+<p>// Semantic<br>$color-success: #10B981;<br>$color-warning: #F59E0B;<br>$color-danger:  #EF4444;<br>$color-info:    #0EA5E9;</p>
+<p>// Text<br>$color-text-primary:    #1A2340;<br>$color-text-secondary:  #5E6E8C;<br>$color-text-disabled:   #A8B8CC;<br>$color-text-on-primary: #FFFFFF;</p>
+<p>// Surface<br>$bg-page:    #F3F7FB;<br>$bg-surface: #FFFFFF;<br>$bg-subtle:  #EEF3FD;<br>$bg-base:    #0F172A;</p>
+<p>// Border<br>$color-border:       #C8D5E8;<br>$color-border-focus: #5B8AF0;</p>
+<p>// Radius<br>$radius-xs:   4px;<br>$radius-sm:   6px;<br>$radius-md:   8px;<br>$radius-lg:   12px;<br>$radius-xl:   16px;<br>$radius-2xl:  24px;<br>$radius-full: 9999px;</p>
+<p>// Shadow<br>$shadow-sm: 0 1px 2px rgba(26, 35, 64, 0.06);<br>$shadow-md: 0 4px 12px rgba(26, 35, 64, 0.08);<br>$shadow-lg: 0 8px 24px rgba(26, 35, 64, 0.12);<br>$shadow-xl: 0 16px 40px rgba(26, 35, 64, 0.16);</p>
+<p>// Spacing<br>$space-1:  4px;<br>$space-2:  8px;<br>$space-3:  12px;<br>$space-4:  16px;<br>$space-5:  20px;<br>$space-6:  24px;<br>$space-8:  32px;<br>$space-10: 40px;<br>$space-12: 48px;<br>$space-16: 64px;<br></code></pre></p>
+<hr>
+<h2>9. Layout Patterns</h2>
+<p>These are the structural building blocks used to compose every page in the Sea Project. Each pattern answers three questions: <strong>what it is</strong>, <strong>when to use it</strong>, and <strong>how it looks in code</strong>.</p>
+<hr>
+<h3>9.1 App Shell</h3>
+<p><strong>What:</strong> The fixed frame that wraps every authenticated page — topbar, sidebar, and scrollable content area.</p>
+<p><strong>When to use:</strong> Always. Every page inside the app sits inside the App Shell.</p>
+<pre><code class="lang-">Topbar      ████████████████████████████████  56px tall, fixed
+            ─────────────────────────────────
+Sidebar │   Content area
+ 240px  │   padding: 24px, background: #F3F7FB
+        │   max-width: 1280px
+</code></pre>
+<table><thead><tr><th>Region</th><th>Value</th></tr></thead><tbody><tr><td>Topbar height</td><td><code>56px</code>, white bg, <code>1px</code> bottom border</td></tr><tr><td>Sidebar width</td><td><code>240px</code> desktop · <code>64px</code> collapsed · hidden on mobile</td></tr><tr><td>Content padding</td><td><code>24px</code> (desktop), <code>16px</code> (mobile)</td></tr><tr><td>Page background</td><td><code>#F3F7FB</code></td></tr><tr><td>Card surface</td><td><code>#FFFFFF</code></td></tr></tbody></table>
+<pre><code class="lang-scss">// Quick example — copy this as your base layout
+.layout { display: flex; flex-direction: column; height: 100vh; }
+.layout__topbar  { height: 56px; background: #fff; border-bottom: 1px solid #C8D5E8; }
+.layout__body    { display: flex; flex: 1; overflow: hidden; }
+.layout__sidebar { width: 240px; background: #fff; border-right: 1px solid #C8D5E8; }
+.layout__content { flex: 1; overflow-y: auto; padding: 24px; background: #F3F7FB; }
+</code></pre>
+<hr>
+<h3>9.2 Dashboard / KPI Grid</h3>
+<p><strong>What:</strong> A responsive grid for metric cards at the top of the dashboard, followed by a two-column area for charts and tables.</p>
+<p><strong>When to use:</strong> Main dashboard, analytics pages, any page that leads with numbers.</p>
+<pre><code class="lang-">Desktop (≥1025px)   [ KPI 1 ] [ KPI 2 ] [ KPI 3 ] [ KPI 4 ]   ← 4 columns
+                    [ Chart — wide          ] [ Feed / Table ]  ← 2 columns
+<p>Tablet (769–1024px) [ KPI 1 ] [ KPI 2 ]  /  [ KPI 3 ] [ KPI 4 ]   ← 2 columns<br>                    [ Chart ]  /  [ Feed ]                          ← 1 column</p>
+<p>Mobile (≤768px)     [ KPI 1 ]  ← 1 column (all stacked)<br></code></pre></p>
+<pre><code class="lang-scss">// KPI row
+.kpi-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, 1fr);        // desktop
+  @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 768px)  { grid-template-columns: 1fr; }
+}
+<p>// Chart + table row below the KPIs<br>.content-grid {<br>  display: grid;<br>  gap: 16px;<br>  margin-top: 16px;<br>  grid-template-columns: 1fr 1fr;               // desktop<br>  @media (max-width: 1024px) { grid-template-columns: 1fr; }<br>}<br></code></pre></p>
+<hr>
+<h3>9.3 Card</h3>
+<p><strong>What:</strong> The standard white surface that groups related content. Used for KPI metrics, charts, tables, and activity feeds.</p>
+<p><strong>When to use:</strong> Any time you need to visually separate a block of content from the page background.</p>
+<pre><code class="lang-">┌─ Card ──────────────────────────────────────────┐
+│  Card Title                      [Action button] │  ← header, separated by a divider
+│ ─────────────────────────────────────────────── │
+│  Content goes here                               │  ← body, padding 24px all sides
+└─────────────────────────────────────────────────┘
+</code></pre>
+<table><thead><tr><th>Property</th><th>Value</th></tr></thead><tbody><tr><td>Background</td><td><code>#FFFFFF</code></td></tr><tr><td>Border</td><td><code>1px solid #C8D5E8</code></td></tr><tr><td>Border radius</td><td><code>12px</code></td></tr><tr><td>Shadow</td><td><code>0 4px 12px rgba(26,35,64,0.08)</code></td></tr><tr><td>Padding</td><td><code>24px</code></td></tr></tbody></table>
+<pre><code class="lang-scss">.card { background: #fff; border: 1px solid #C8D5E8; border-radius: 12px; box-shadow: 0 4px 12px rgba(26,35,64,0.08); padding: 24px; }
+.card__header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; margin-bottom: 16px; border-bottom: 1px solid #C8D5E8; }
+</code></pre>
+<hr>
+<h3>9.4 Two-Column Form Layout</h3>
+<p><strong>What:</strong> A settings-style layout where labels sit in a left column and inputs sit in the right.</p>
+<p><strong>When to use:</strong> Settings pages, profile pages, multi-field data entry forms.</p>
+<pre><code class="lang-">Section Title
+Short description of this group of fields
+─────────────────────────────────────────────────
+Full name          [ John Smith              ]
+Email address      [ john@example.com        ]
+Role               [ Plant Manager    ▾      ]
+─────────────────────────────────────────────────
+                               [Cancel] [Save]
+</code></pre>
+<ul><li><strong>Left column:</strong> <code>280px</code> fixed label + helper text</li>
+<li><strong>Right column:</strong> <code>flex: 1</code> input controls</li>
+<li><strong>Row gap:</strong> <code>24px</code> between each field row</li>
+<li><strong>On mobile:</strong> stacks to single column, label above input</li></ul>
+<hr>
+<h3>9.5 Page Header</h3>
+<p><strong>What:</strong> The consistent title block at the top of every content page.</p>
+<p><strong>When to use:</strong> Every page. Always the first element inside <code>.layout__content</code>.</p>
+<pre><code class="lang-">← Back to list                         (optional, tertiary link)
+<p>Plant Overview                         (Headline / Large — 32px bold)<br>Live data for all monitored units      (Body / Medium — 14px, grey)<br>                                                    [ + Add Unit ]  (Primary button)<br></code></pre></p>
+<table><thead><tr><th>Element</th><th>Style</th></tr></thead><tbody><tr><td>Back link</td><td>Tertiary button, size S</td></tr><tr><td>Page title</td><td><code>Headline / Large</code> · <code>32px / 600</code></td></tr><tr><td>Subtitle</td><td><code>Body / Medium</code> · <code>14px / 400</code> · <code>#5E6E8C</code></td></tr><tr><td>Action button</td><td>Primary, size M, <code>flex-end</code> aligned</td></tr><tr><td>Bottom margin</td><td><code>24px</code> before page content</td></tr></tbody></table>
+<hr>
+<h3>9.6 Stack & Cluster</h3>
+<p><strong>What:</strong> Two micro-layout utilities for arranging items inside a component.</p>
+<p><strong>Stack</strong> = vertical, evenly spaced items.  <br><strong>Cluster</strong> = horizontal, wrapping items (tags, chips, button rows).</p>
+<pre><code class="lang-">Stack (vertical)        Cluster (horizontal, wraps)
+  [Item A]              [Tag 1] [Tag 2] [Tag 3]
+  [Item B]              [Tag 4] [Tag 5]
+  [Item C]
+</code></pre>
+<table><thead><tr><th>Variant</th><th>Gap</th><th>Example use</th></tr></thead><tbody><tr><td><code>.stack--tight</code></td><td><code>8px</code></td><td>Icon + label, stacked form fields</td></tr><tr><td><code>.stack</code> (default)</td><td><code>16px</code></td><td>Card sections, list items</td></tr><tr><td><code>.stack--loose</code></td><td><code>24px</code></td><td>Page sections</td></tr><tr><td><code>.cluster</code></td><td><code>8px</code></td><td>Filter chips, tag groups, button rows</td></tr></tbody></table>
+<pre><code class="lang-scss">.stack         { display: flex; flex-direction: column; gap: 16px; }
+.stack--tight  { gap: 8px; }
+.stack--loose  { gap: 24px; }
+.cluster       { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+</code></pre>
+<hr>
+<h2>10. Error & Edge Case Patterns</h2>
+<p>Every screen has states beyond the happy path. These patterns define what the UI shows when something goes wrong, is empty, or is loading. Each one follows the same rule: <strong>be clear, be specific, give the user a next step</strong>.</p>
+<hr>
+<h3>10.1 Inline Form Validation</h3>
+<p><strong>What:</strong> An error message that appears directly below an invalid field.</p>
+<p><strong>When:</strong> Triggered on field blur or when the user hits Submit.</p>
+<p><strong>Example — invalid email field:</strong><br><pre><code class="lang-">Email address *<br>┌────────────────────────────────┐<br>│ hello@                         │  ← red border: 1.5px solid #EF4444<br>└────────────────────────────────┘  ← background tint: #FFF5F5<br>⚠  Please enter a valid email address.   ← 11px, #EF4444, margin-top 4px<br></code></pre></p>
+<p><strong>3 rules:</strong><br>1. One message per field — never stack multiple errors.<br>2. Clear the error the moment the value becomes valid (don't wait for re-submit).<br>3. Never rely on color alone — always include the ⚠ icon for accessibility.</p>
+<hr>
+<h3>10.2 Toast Notifications</h3>
+<p><strong>What:</strong> A small pop-up in the bottom-right corner confirming an action just completed.</p>
+<p><strong>When:</strong> After save, delete, copy, or any background operation finishing.</p>
+<p><strong>4 variants — one per outcome:</strong></p>
+<table><thead><tr><th>Variant</th><th>Left border</th><th>When to use</th></tr></thead><tbody><tr><td>✓ Success</td><td><code>#10B981</code> green</td><td>Record saved, file uploaded, action completed</td></tr><tr><td>✗ Error</td><td><code>#EF4444</code> red</td><td>Action failed, server error</td></tr><tr><td>⚠ Warning</td><td><code>#F59E0B</code> amber</td><td>Saved with caveats, approaching a limit</td></tr><tr><td>ℹ Info</td><td><code>#0EA5E9</code> blue</td><td>Background task started, non-critical update</td></tr></tbody></table>
+<p><strong>Anatomy:</strong><br><pre><code class="lang-">┌──────────────────────────────────┐<br>│ ✓  Changes saved                 │  ← title: 14px / 600<br>│    Your profile has been updated │  ← body: 12px / 400, grey<br>└──────────────────────────────────┘<br>  width: 320px · shadow-lg · radius-md<br>  position: bottom-right, 24px from edge<br></code></pre></p>
+<p><strong>Dismiss timing:</strong> Success and Info auto-dismiss after <code>4 seconds</code>. Error and Warning stay until manually closed.</p>
+<hr>
+<h3>10.3 Page Banner Alert</h3>
+<p><strong>What:</strong> A full-width bar pinned below the topbar for important conditions the user must see before working.</p>
+<p><strong>When:</strong> Session expiry warning, maintenance notice, missing required setup, permission issue.</p>
+<p><strong>Example:</strong><br><pre><code class="lang-"> ⚠  Your session expires in 5 minutes. Save your work.  [Renew session]  ✕<br></code></pre></p>
+<table><thead><tr><th>Variant</th><th>Background</th><th>Text</th><th>Border</th></tr></thead><tbody><tr><td>Error</td><td><code>#FEF2F2</code></td><td><code>#B91C1C</code></td><td><code>1px solid #FECACA</code></td></tr><tr><td>Warning</td><td><code>#FFFBEB</code></td><td><code>#92400E</code></td><td><code>1px solid #FDE68A</code></td></tr><tr><td>Success</td><td><code>#F0FDF4</code></td><td><code>#065F46</code></td><td><code>1px solid #A7F3D0</code></td></tr><tr><td>Info</td><td><code>#EFF6FF</code></td><td><code>#1E40AF</code></td><td><code>1px solid #BFDBFE</code></td></tr></tbody></table>
+<p>Height: <code>48px</code> single-line · auto for multi-line · <code>border-radius: 6px</code> · placed directly below the topbar.</p>
+<hr>
+<h3>10.4 Empty State</h3>
+<p><strong>What:</strong> A centered message shown when a list, table, or feed has no data.</p>
+<p><strong>When:</strong> First-time use (no data created yet), search with no results, or a filter returning nothing.</p>
+<p><strong>Template:</strong><br><pre><code class="lang-">         [  Icon — 64px  ]</p>
+<p>No results found           ← Title/Small · 18px · 600<br>  Try a different search term    ← Body/Medium · 14px · grey<br>  or clear your filters.</p>
+<p>[Clear filters]         ← Secondary button, size M<br></code></pre></p>
+<p><strong>Pick the right copy for each scenario:</strong></p>
+<table><thead><tr><th>Scenario</th><th>Icon</th><th>Title</th><th>Button</th></tr></thead><tbody><tr><td>Search returned nothing</td><td>🔍</td><td>"No results found"</td><td>"Clear search" (Secondary)</td></tr><tr><td>No records exist yet</td><td>📋</td><td>"Nothing here yet"</td><td>"Create your first record" (Primary)</td></tr><tr><td>Filtered to zero</td><td>🎚</td><td>"No matching records"</td><td>"Reset filters" (Secondary)</td></tr><tr><td>No access</td><td>🔒</td><td>"Access restricted"</td><td>"Request access" (Secondary)</td></tr></tbody></table>
+<hr>
+<h3>10.5 Loading States</h3>
+<p><strong>What:</strong> Visual placeholders while data is being fetched.</p>
+<p><strong>Two tools — choose based on what you know:</strong></p>
+<table><thead><tr><th>Tool</th><th>Use when</th><th>Example</th></tr></thead><tbody><tr><td><strong>Skeleton</strong></td><td>You know the shape of the content (cards, lists, tables)</td><td>A grey shimmer rectangle the same size as the card that will load</td></tr><tr><td><strong>Spinner</strong></td><td>Shape is unknown, or it's a short in-progress action</td><td>Button spinner while a form is submitting</td></tr></tbody></table>
+<p><strong>Skeleton — how it works:</strong><br><pre><code class="lang-scss">// A shimmering grey placeholder<br>.skeleton {<br>  background: linear-gradient(90deg, #E8EDF5 25%, #F3F7FB 50%, #E8EDF5 75%);<br>  background-size: 800px 100%;<br>  animation: shimmer 1.5s infinite linear;<br>  border-radius: 6px;<br>}<br>@keyframes shimmer {<br>  from { background-position: -400px 0; }<br>  to   { background-position:  400px 0; }<br>}<br></code></pre></p>
+<p><strong>Spinner sizes:</strong> <code>16px</code> inside a button · <code>32px</code> for a section · <code>48px</code> for a full page.</p>
+<p><strong>Never</strong> show a skeleton and a spinner for the same content area at the same time.</p>
+<hr>
+<h3>10.6 Network / Server Error</h3>
+<p><strong>What:</strong> A full-page message when a critical API call fails and the page cannot be rendered.</p>
+<p><strong>When:</strong> 500 errors, network timeouts, failed initial data fetch.</p>
+<pre><code class="lang-">            [  Error icon — 80px  ]
+<p>Something went wrong          ← Headline/Small · 24px · 600<br>   We couldn't load this page.        ← Body/Large · 16px · grey<br>   Check your connection and try again.</p>
+<p>[  Try again  ]            ← Primary button<br>         [Go to Dashboard]            ← Tertiary button<br></code></pre></p>
+<p>Always give two options: <strong>retry</strong> the failed action, and a <strong>safe exit</strong> back to a working page.</p>
+<hr>
+<h3>10.7 Destructive Action Confirmation</h3>
+<p><strong>What:</strong> A modal that appears before any irreversible action to make sure the user meant to do it.</p>
+<p><strong>When:</strong> Deleting a record, archiving data, revoking access, clearing all items.</p>
+<pre><code class="lang-">┌────────────────────────────────────┐
+│  Delete this plant record?         │  ← Title/Small · 18px
+│                                    │
+│  This will permanently remove      │  ← Body/Medium · 14px · grey
+│  all data and cannot be undone.    │
+│                                    │
+│           [Cancel]  [Delete]       │  ← Secondary · Danger (red)
+└────────────────────────────────────┘
+  width: 400px · radius: 16px · overlay: rgba(26,35,64,0.48)
+</code></pre>
+<p><strong>3 rules:</strong><br>1. <strong>Cancel is always on the left.</strong> The safe option comes first.<br>2. <strong>The confirm button is red</strong> (<code>#EF4444</code>), never the primary blue.<br>3. <strong>Escape key = Cancel.</strong> Clicking outside the modal also cancels.</p>
+<hr>
+<h3>10.8 Disabled vs Read-Only</h3>
+<p><strong>What:</strong> Two distinct states for controls that cannot be edited — they mean different things and look slightly different.</p>
+<table><thead><tr><th></th><th>Disabled</th><th>Read-only</th></tr></thead><tbody><tr><td><strong>Meaning</strong></td><td>Cannot interact with this right now</td><td>Data is shown for reference only</td></tr><tr><td><strong>Background</strong></td><td><code>#F3F7FB</code></td><td><code>#F3F7FB</code></td></tr><tr><td><strong>Text color</strong></td><td><code>#A8B8CC</code> (faded)</td><td><code>#1A2340</code> (full strength)</td></tr><tr><td><strong>Border</strong></td><td><code>#C8D5E8</code> (default)</td><td><code>#C8D5E8</code> (default)</td></tr><tr><td><strong>Cursor</strong></td><td><code>not-allowed</code></td><td><code>default</code></td></tr><tr><td><strong>Example</strong></td><td>A "Save" button before the form is valid</td><td>A field showing a system-generated ID</td></tr></tbody></table>
+<p><strong>Rule:</strong> If a control is disabled for a non-obvious reason, always show a tooltip explaining why.</p>
+</body>
+</html>

@@ -1,0 +1,2177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seatrace Design System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand-5:  #F8FAFF;
+      --brand-10: #E4EEFF;
+      --brand-20: #B8D0FD;
+      --brand-30: #A3C1FB;
+      --brand-40: #70A0FB;
+      --brand-50: #5189F3;
+      --brand-60: #3F78E2;
+      --brand-70: #326DDD;
+      --brand-80: #155BE1;
+      --brand-90: #074ED4;
+
+      --neutral-1:   #FFFFFF;
+      --neutral-5:   #F8FAFC;
+      --neutral-10:  #EBF0F4;
+      --neutral-20:  #DFE2E6;
+      --neutral-30:  #DADCDF;
+      --neutral-40:  #BFC1C4;
+      --neutral-50:  #A7AAAD;
+      --neutral-60:  #969799;
+      --neutral-70:  #828385;
+      --neutral-80:  #5E5E60;
+      --neutral-90:  #3B3B3C;
+      --neutral-100: #111111;
+
+      --surface: #F9F9FA;
+      --text-primary: #111111;
+      --radius-0:  0px;
+      --radius-4:  4px;
+      --radius-8:  8px;
+      --radius-16: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--surface);
+      color: var(--text-primary);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid var(--neutral-20);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 40px;
+      height: 56px;
+    }
+    nav .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brand-50);
+      margin-right: auto;
+      letter-spacing: -0.25px;
+    }
+    nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--neutral-70);
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: var(--radius-4);
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: var(--brand-10); color: var(--brand-50); }
+
+    /* ── LAYOUT ── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 48px 40px 96px; }
+
+    section { margin-bottom: 80px; }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--neutral-20);
+    }
+    .section-header h2 {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.25px;
+      color: var(--neutral-100);
+    }
+    .section-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--brand-10);
+      color: var(--brand-70);
+      padding: 2px 8px;
+      border-radius: 99px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--neutral-60);
+      margin-bottom: 16px;
+    }
+
+    .subsection { margin-bottom: 40px; }
+
+    /* ── TYPOGRAPHY ── */
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--neutral-10);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-preview { flex: 1; color: var(--neutral-100); }
+    .type-meta {
+      flex-shrink: 0;
+      width: 340px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .type-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--neutral-60);
+      background: var(--neutral-10);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    /* ── COLORS ── */
+    .color-group { margin-bottom: 36px; }
+    .swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .swatch-box {
+      width: 64px;
+      height: 64px;
+      border-radius: var(--radius-8);
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .swatch-step {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--neutral-60);
+      letter-spacing: 0.3px;
+    }
+    .swatch-hex {
+      font-size: 10px;
+      color: var(--neutral-50);
+      font-family: monospace;
+    }
+    .swatch.primary .swatch-box {
+      width: 80px;
+      height: 80px;
+      box-shadow: 0 4px 16px rgba(81,137,243,0.35);
+    }
+
+    /* ── BORDER RADIUS ── */
+    .radius-grid {
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+    .radius-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .radius-box {
+      background: #fff;
+      border: 1.5px solid var(--neutral-30);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .radius-info { text-align: center; }
+    .radius-label { font-size: 13px; font-weight: 600; color: var(--neutral-80); }
+    .radius-value { font-size: 11px; font-family: monospace; color: var(--neutral-50); margin-top: 2px; }
+    .radius-usage { font-size: 11px; color: var(--neutral-50); margin-top: 4px; }
+
+    /* ── BUTTONS ── */
+    .btn-section { margin-bottom: 40px; }
+    .btn-variant-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--neutral-80);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-variant-label span {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--neutral-50);
+      font-style: italic;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(4, 1fr);
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .btn-grid-header {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--neutral-50);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+    .btn-size-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--neutral-60);
+    }
+    .btn-cell { display: flex; justify-content: center; }
+
+    /* Base button */
+    .btn {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      letter-spacing: -0.1px;
+      border: none;
+      cursor: pointer;
+      border-radius: var(--radius-4);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .btn-xs { height: 24px; padding: 0 8px;  font-size: 11px; }
+    .btn-s  { height: 28px; padding: 0 10px; font-size: 12px; }
+    .btn-m  { height: 32px; padding: 0 12px; font-size: 14px; }
+    .btn-l  { height: 40px; padding: 0 16px; font-size: 16px; }
+
+    /* Primary */
+    .btn-primary          { background: #5189F3; color: #fff; border: 1.5px solid transparent; }
+    .btn-primary:hover    { background: #70A0FB; }
+    .btn-primary:active   { background: #326DDD; }
+    .btn-primary.disabled { background: #B8D0FD; color: rgba(255,255,255,0.6); pointer-events: none; }
+
+    /* Simulated states for showcase */
+    .state-hover.btn-primary    { background: #70A0FB; }
+    .state-pressing.btn-primary { background: #326DDD; }
+    .state-disabled.btn-primary { background: #B8D0FD; color: rgba(255,255,255,0.6); pointer-events: none; }
+
+    /* Secondary */
+    .btn-secondary          { background: transparent; color: #5189F3; border: 1.5px solid #5189F3; }
+    .btn-secondary:hover    { background: #E4EEFF; }
+    .btn-secondary:active   { background: #B8D0FD; color: #326DDD; border-color: #326DDD; }
+    .btn-secondary.disabled { color: #B8D0FD; border-color: #B8D0FD; pointer-events: none; }
+
+    .state-hover.btn-secondary    { background: #E4EEFF; }
+    .state-pressing.btn-secondary { background: #B8D0FD; color: #326DDD; border-color: #326DDD; }
+    .state-disabled.btn-secondary { color: #B8D0FD; border-color: #B8D0FD; pointer-events: none; }
+
+    /* Tertiary */
+    .btn-tertiary          { background: transparent; color: #5189F3; border: 1.5px solid transparent; }
+    .btn-tertiary:hover    { background: #E4EEFF; }
+    .btn-tertiary:active   { background: #B8D0FD; color: #326DDD; }
+    .btn-tertiary.disabled { color: #B8D0FD; pointer-events: none; }
+
+    .state-hover.btn-tertiary    { background: #E4EEFF; }
+    .state-pressing.btn-tertiary { background: #B8D0FD; color: #326DDD; }
+    .state-disabled.btn-tertiary { color: #B8D0FD; pointer-events: none; }
+
+    .btn-divider {
+      border: none;
+      border-top: 1px solid var(--neutral-10);
+      margin: 24px 0;
+    }
+
+    /* ── TOKEN TABLE ── */
+    .token-table { width: 100%; border-collapse: collapse; }
+    .token-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--neutral-50);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--neutral-20);
+    }
+    .token-table td {
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--neutral-80);
+      border-bottom: 1px solid var(--neutral-10);
+    }
+    .token-table tr:last-child td { border-bottom: none; }
+    .token-table td code {
+      font-family: monospace;
+      font-size: 12px;
+      background: var(--neutral-10);
+      padding: 2px 6px;
+      border-radius: 3px;
+      color: var(--brand-70);
+    }
+    .token-table tr:hover td { background: var(--brand-5); }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--brand-50) 0%, var(--brand-80) 100%);
+      border-radius: var(--radius-16);
+      padding: 48px 56px;
+      color: #fff;
+      margin-bottom: 64px;
+    }
+    .hero h1 { font-size: 40px; font-weight: 700; letter-spacing: -0.5px; }
+    .hero p  { font-size: 16px; opacity: 0.85; margin-top: 10px; max-width: 520px; line-height: 1.7; }
+    .hero-pills { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+    .hero-pill {
+      background: rgba(255,255,255,0.18);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 99px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ── STATES LEGEND ── */
+    .states-legend {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .state-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--neutral-60);
+    }
+    .state-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+    }
+
+    /* ── MUI ── */
+    .mui-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0;
+      border-bottom: 2px solid var(--neutral-20);
+    }
+    .mui-tab {
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--neutral-60);
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      border: none;
+      background: none;
+      font-family: 'Nunito', sans-serif;
+      transition: color 0.15s, background 0.15s;
+      position: relative;
+      bottom: -2px;
+    }
+    .mui-tab:hover { color: var(--brand-50); background: var(--brand-10); }
+    .mui-tab.active {
+      color: var(--brand-50);
+      background: #fff;
+      border: 2px solid var(--neutral-20);
+      border-bottom-color: #fff;
+    }
+    .mui-panel { display: none; padding-top: 28px; }
+    .mui-panel.active { display: block; }
+
+    .code-block {
+      background: #1a1d23;
+      border-radius: var(--radius-8);
+      padding: 24px 28px;
+      overflow-x: auto;
+      margin: 16px 0;
+      position: relative;
+    }
+    .code-block pre {
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 12.5px;
+      line-height: 1.75;
+      color: #e2e8f0;
+      white-space: pre;
+      tab-size: 2;
+    }
+    .code-block .kw  { color: #c792ea; }
+    .code-block .fn  { color: #82aaff; }
+    .code-block .str { color: #c3e88d; }
+    .code-block .cm  { color: #546e7a; font-style: italic; }
+    .code-block .key { color: #f07178; }
+    .code-block .num { color: #f78c6c; }
+    .copy-btn {
+      position: absolute;
+      top: 12px; right: 12px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #a0aec0;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-family: 'Nunito', sans-serif;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.2); color: #fff; }
+
+    .install-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .install-card {
+      background: #fff;
+      border: 1.5px solid var(--neutral-20);
+      border-radius: var(--radius-8);
+      padding: 20px 22px;
+    }
+    .install-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--neutral-60);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+    .install-card code {
+      display: block;
+      font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+      font-size: 12px;
+      background: var(--neutral-10);
+      padding: 8px 12px;
+      border-radius: var(--radius-4);
+      color: var(--brand-70);
+      margin-bottom: 6px;
+    }
+    .install-card code:last-child { margin-bottom: 0; }
+
+    .note-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #FFF8E6;
+      border: 1.5px solid #FFD97D;
+      border-radius: var(--radius-8);
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #7A5C00;
+      line-height: 1.6;
+    }
+    .note-box .note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    .mapping-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .mapping-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid var(--neutral-20);
+      border-radius: var(--radius-8);
+      padding: 10px 14px;
+    }
+    .mapping-swatch {
+      width: 22px; height: 22px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+    .mapping-token { font-size: 12px; font-weight: 600; color: var(--neutral-80); flex: 1; }
+    .mapping-path  { font-size: 11px; font-family: monospace; color: var(--brand-60); background: var(--brand-5); padding: 2px 6px; border-radius: 3px; }
+
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .component-card {
+      background: #fff;
+      border: 1.5px solid var(--neutral-20);
+      border-radius: var(--radius-8);
+      padding: 18px 20px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .component-card:hover { border-color: var(--brand-40); box-shadow: 0 2px 12px rgba(81,137,243,0.1); }
+    .component-card-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand-50);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .component-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .component-tag {
+      font-size: 11px;
+      color: var(--neutral-70);
+      background: var(--neutral-10);
+      padding: 3px 8px;
+      border-radius: var(--radius-4);
+      font-weight: 500;
+    }
+
+    /* ── COMPONENT BROWSER ── */
+    .comp-search-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .comp-search-wrap {
+      flex: 1;
+      position: relative;
+    }
+    .comp-search-wrap svg {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--neutral-50);
+      pointer-events: none;
+    }
+    .comp-search {
+      width: 100%;
+      height: 38px;
+      padding: 0 12px 0 38px;
+      border: 1.5px solid var(--neutral-20);
+      border-radius: var(--radius-8);
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      color: var(--neutral-90);
+      background: #fff;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .comp-search:focus { border-color: var(--brand-50); }
+    .comp-count-badge {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--brand-70);
+      background: var(--brand-10);
+      padding: 4px 12px;
+      border-radius: 99px;
+      white-space: nowrap;
+    }
+
+    .comp-category { margin-bottom: 32px; }
+    .comp-category-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .comp-category-icon {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .comp-category-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--neutral-90);
+    }
+    .comp-category-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--neutral-50);
+      background: var(--neutral-10);
+      padding: 2px 8px;
+      border-radius: 99px;
+    }
+
+    .comp-table { width: 100%; border-collapse: collapse; }
+    .comp-table thead tr {
+      background: var(--neutral-5);
+    }
+    .comp-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--neutral-50);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 14px;
+      border-bottom: 1.5px solid var(--neutral-20);
+    }
+    .comp-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--neutral-10);
+      vertical-align: top;
+    }
+    .comp-table tr:last-child td { border-bottom: none; }
+    .comp-table tr { transition: background 0.1s; }
+    .comp-table tr:hover td { background: var(--brand-5); }
+    .comp-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--neutral-90);
+      white-space: nowrap;
+    }
+    .comp-desc {
+      font-size: 12px;
+      color: var(--neutral-60);
+      line-height: 1.5;
+    }
+    .comp-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 99px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .badge-lab  { background: #FFF3CD; color: #856404; }
+    .badge-new  { background: #D1FAE5; color: #065F46; }
+
+    .comp-row-hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">Seatrace DS</span>
+  <a href="#typography">Typography</a>
+  <a href="#colors">Colors</a>
+  <a href="#radius">Border Radius</a>
+  <a href="#buttons">Buttons</a>
+  <a href="#mui">MUI</a>
+</nav>
+
+<div class="page">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Seatrace Design System</h1>
+    <p>A single source of truth for typography, color, shape, and interactive components used across the Seatrace platform.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">Font — Nunito</span>
+      <span class="hero-pill">Primary — #5189F3</span>
+      <span class="hero-pill">Radius — 0 / 4 / 8 / 16px</span>
+      <span class="hero-pill">3 Button Variants</span>
+      <span class="hero-pill">4 Button Sizes</span>
+      <span class="hero-pill">MUI v6+ Ready</span>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       TYPOGRAPHY
+  ══════════════════════════════════════ -->
+  <section id="typography">
+    <div class="section-header">
+      <h2>Typography</h2>
+      <span class="section-badge">Nunito</span>
+    </div>
+
+    <!-- HEADLINES -->
+    <div class="subsection">
+      <h3>Headlines</h3>
+
+      <div class="type-row">
+        <div class="type-preview" style="font-size:32px;font-weight:600;line-height:44px;letter-spacing:-0.25px;">Headline Large</div>
+        <div class="type-meta">
+          <span class="type-tag">32px / 44</span>
+          <span class="type-tag">Semibold 600</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:28px;font-weight:600;line-height:38px;letter-spacing:-0.25px;">Headline Medium</div>
+        <div class="type-meta">
+          <span class="type-tag">28px / 38</span>
+          <span class="type-tag">Semibold 600</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:24px;font-weight:600;line-height:33px;letter-spacing:-0.25px;">Headline Small</div>
+        <div class="type-meta">
+          <span class="type-tag">24px / 33</span>
+          <span class="type-tag">Semibold 600</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TITLES -->
+    <div class="subsection">
+      <h3>Titles</h3>
+
+      <div class="type-row">
+        <div class="type-preview" style="font-size:24px;font-weight:400;line-height:33px;letter-spacing:-0.25px;">Title Large</div>
+        <div class="type-meta">
+          <span class="type-tag">24px / 33</span>
+          <span class="type-tag">Regular 400</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:20px;font-weight:500;line-height:27px;letter-spacing:-0.25px;">Title Medium</div>
+        <div class="type-meta">
+          <span class="type-tag">20px / 27</span>
+          <span class="type-tag">Medium 500</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:18px;font-weight:600;line-height:25px;letter-spacing:-0.25px;">Title Small</div>
+        <div class="type-meta">
+          <span class="type-tag">18px / 25</span>
+          <span class="type-tag">Semibold 600</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- LABELS -->
+    <div class="subsection">
+      <h3>Labels</h3>
+
+      <div class="type-row">
+        <div class="type-preview" style="font-size:14px;font-weight:500;line-height:19px;letter-spacing:-0.25px;">Label Large</div>
+        <div class="type-meta">
+          <span class="type-tag">14px / 19</span>
+          <span class="type-tag">Medium 500</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:12px;font-weight:500;line-height:16px;letter-spacing:-0.25px;">Label Medium</div>
+        <div class="type-meta">
+          <span class="type-tag">12px / 16</span>
+          <span class="type-tag">Medium 500</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:11px;font-weight:500;line-height:15px;letter-spacing:-0.25px;">Label Small</div>
+        <div class="type-meta">
+          <span class="type-tag">11px / 15</span>
+          <span class="type-tag">Medium 500</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="subsection">
+      <h3>Body</h3>
+
+      <div class="type-row">
+        <div class="type-preview" style="font-size:16px;font-weight:400;line-height:22px;letter-spacing:-0.25px;">Body Large — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="type-tag">16px / 22</span>
+          <span class="type-tag">Regular 400</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:14px;font-weight:400;line-height:19px;letter-spacing:-0.25px;">Body Medium Regular — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="type-tag">14px / 19</span>
+          <span class="type-tag">Regular 400</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:12px;font-weight:600;line-height:16px;letter-spacing:-0.25px;">Body Medium Semibold — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="type-tag">12px / 16</span>
+          <span class="type-tag">Semibold 600</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:12px;font-weight:400;line-height:16px;letter-spacing:-0.25px;">Body Small — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="type-tag">12px / 16</span>
+          <span class="type-tag">Regular 400</span>
+          <span class="type-tag">-0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIAL SIZES -->
+    <div class="subsection">
+      <h3>Special / Display Sizes</h3>
+
+      <div class="type-row">
+        <div class="type-preview" style="font-size:48px;font-weight:700;line-height:1.1;letter-spacing:-0.5px;">Welcome Plant Manager!</div>
+        <div class="type-meta">
+          <span class="type-tag">48px</span>
+          <span class="type-tag">Bold 700</span>
+          <span class="type-tag">Welcome / Page Title</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:64px;font-weight:700;line-height:1.1;color:#5189F3;">1,284</div>
+        <div class="type-meta">
+          <span class="type-tag">64px</span>
+          <span class="type-tag">Bold 700</span>
+          <span class="type-tag">KPI Value Large</span>
+        </div>
+      </div>
+      <div class="type-row">
+        <div class="type-preview" style="font-size:56px;font-weight:700;line-height:1.1;color:#5189F3;">98.4%</div>
+        <div class="type-meta">
+          <span class="type-tag">56px</span>
+          <span class="type-tag">Bold 700</span>
+          <span class="type-tag">KPI Value Medium</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       COLORS
+  ══════════════════════════════════════ -->
+  <section id="colors">
+    <div class="section-header">
+      <h2>Color Styles</h2>
+      <span class="section-badge">8 palettes</span>
+    </div>
+
+    <!-- Primary -->
+    <div class="color-group">
+      <h3>Primary Color</h3>
+      <div class="swatches">
+        <div class="swatch primary">
+          <div class="swatch-box" style="background:#5189F3;width:80px;height:80px;box-shadow:0 4px 16px rgba(81,137,243,0.4);"></div>
+          <div class="swatch-step">50</div>
+          <div class="swatch-hex">#5189F3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brand -->
+    <div class="color-group">
+      <h3>Brand Colors</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-box" style="background:#F8FAFF;"></div><div class="swatch-step">5</div><div class="swatch-hex">#F8FAFF</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#E4EEFF;"></div><div class="swatch-step">10</div><div class="swatch-hex">#E4EEFF</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#B8D0FD;"></div><div class="swatch-step">20</div><div class="swatch-hex">#B8D0FD</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#A3C1FB;"></div><div class="swatch-step">30</div><div class="swatch-hex">#A3C1FB</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#70A0FB;"></div><div class="swatch-step">40</div><div class="swatch-hex">#70A0FB</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#5189F3;box-shadow:0 0 0 2px #5189F3;outline:2px solid white;outline-offset:-4px;"></div><div class="swatch-step" style="color:#5189F3;">50 ★</div><div class="swatch-hex">#5189F3</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#3F78E2;"></div><div class="swatch-step">60</div><div class="swatch-hex">#3F78E2</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#326DDD;"></div><div class="swatch-step">70</div><div class="swatch-hex">#326DDD</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#155BE1;"></div><div class="swatch-step">80</div><div class="swatch-hex">#155BE1</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#074ED4;"></div><div class="swatch-step">90</div><div class="swatch-hex">#074ED4</div></div>
+      </div>
+    </div>
+
+    <!-- Neutrals -->
+    <div class="color-group">
+      <h3>Neutrals</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-box" style="background:#FFFFFF;"></div><div class="swatch-step">1</div><div class="swatch-hex">#FFFFFF</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#F8FAFC;"></div><div class="swatch-step">5</div><div class="swatch-hex">#F8FAFC</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#EBF0F4;"></div><div class="swatch-step">10</div><div class="swatch-hex">#EBF0F4</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#DFE2E6;"></div><div class="swatch-step">20</div><div class="swatch-hex">#DFE2E6</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#DADCDF;"></div><div class="swatch-step">30</div><div class="swatch-hex">#DADCDF</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#BFC1C4;"></div><div class="swatch-step">40</div><div class="swatch-hex">#BFC1C4</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#A7AAAD;"></div><div class="swatch-step">50</div><div class="swatch-hex">#A7AAAD</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#969799;"></div><div class="swatch-step">60</div><div class="swatch-hex">#969799</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#828385;"></div><div class="swatch-step">70</div><div class="swatch-hex">#828385</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#5E5E60;"></div><div class="swatch-step">80</div><div class="swatch-hex">#5E5E60</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#3B3B3C;"></div><div class="swatch-step">90</div><div class="swatch-hex">#3B3B3C</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#111111;"></div><div class="swatch-step">100</div><div class="swatch-hex">#111111</div></div>
+      </div>
+    </div>
+
+    <!-- Link -->
+    <div class="color-group">
+      <h3>Link Colors</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-box" style="background:#E9EEFF;"></div><div class="swatch-step">10</div><div class="swatch-hex">#E9EEFF</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#C6D3FA;"></div><div class="swatch-step">20</div><div class="swatch-hex">#C6D3FA</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#A2B7F6;"></div><div class="swatch-step">30</div><div class="swatch-hex">#A2B7F6</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#7C9AF4;"></div><div class="swatch-step">40</div><div class="swatch-hex">#7C9AF4</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#6286F1;"></div><div class="swatch-step">50</div><div class="swatch-hex">#6286F1</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#3160ED;"></div><div class="swatch-step">60</div><div class="swatch-hex">#3160ED</div></div>
+      </div>
+    </div>
+
+    <!-- Warning -->
+    <div class="color-group">
+      <h3>Warning Colors</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-box" style="background:#FFE9E9;"></div><div class="swatch-step">10</div><div class="swatch-hex">#FFE9E9</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#F9C8C8;"></div><div class="swatch-step">20</div><div class="swatch-hex">#F9C8C8</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#F5A3A3;"></div><div class="swatch-step">30</div><div class="swatch-hex">#F5A3A3</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#EF6B6B;"></div><div class="swatch-step">40</div><div class="swatch-hex">#EF6B6B</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#E82727;"></div><div class="swatch-step">50</div><div class="swatch-hex">#E82727</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#E60026;"></div><div class="swatch-step">60</div><div class="swatch-hex">#E60026</div></div>
+      </div>
+    </div>
+
+    <!-- Success -->
+    <div class="color-group">
+      <h3>Success Colors</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-box" style="background:#E9FFEC;"></div><div class="swatch-step">10</div><div class="swatch-hex">#E9FFEC</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#ABDAA9;"></div><div class="swatch-step">20</div><div class="swatch-hex">#ABDAA9</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#81C87E;"></div><div class="swatch-step">30</div><div class="swatch-hex">#81C87E</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#65BC62;"></div><div class="swatch-step">40</div><div class="swatch-hex">#65BC62</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#4DAC4A;"></div><div class="swatch-step">50</div><div class="swatch-hex">#4DAC4A</div></div>
+        <div class="swatch"><div class="swatch-box" style="background:#408F3D;"></div><div class="swatch-step">60</div><div class="swatch-hex">#408F3D</div></div>
+      </div>
+    </div>
+
+    <!-- Surface -->
+    <div class="color-group">
+      <h3>Background / Surface</h3>
+      <div class="swatches">
+        <div class="swatch"><div class="swatch-box" style="background:#F9F9FA;"></div><div class="swatch-step">Surface</div><div class="swatch-hex">#F9F9FA</div></div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       BORDER RADIUS
+  ══════════════════════════════════════ -->
+  <section id="radius">
+    <div class="section-header">
+      <h2>Border Radius</h2>
+      <span class="section-badge">Shape</span>
+    </div>
+
+    <div class="radius-grid">
+      <div class="radius-card">
+        <div class="radius-box" style="width:80px;height:80px;border-radius:0px;"></div>
+        <div class="radius-info">
+          <div class="radius-label">0 Radius</div>
+          <div class="radius-value">border-radius: 0px</div>
+          <div class="radius-usage">Sharp / no rounding</div>
+        </div>
+      </div>
+      <div class="radius-card">
+        <div class="radius-box" style="width:100px;height:100px;border-radius:4px;"></div>
+        <div class="radius-info">
+          <div class="radius-label">Small Radius</div>
+          <div class="radius-value">border-radius: 4px</div>
+          <div class="radius-usage">Chips, tags, badges</div>
+        </div>
+      </div>
+      <div class="radius-card">
+        <div class="radius-box" style="width:140px;height:140px;border-radius:8px;"></div>
+        <div class="radius-info">
+          <div class="radius-label">Medium Radius</div>
+          <div class="radius-value">border-radius: 8px</div>
+          <div class="radius-usage">Cards, inputs, dropdowns</div>
+        </div>
+      </div>
+      <div class="radius-card">
+        <div class="radius-box" style="width:180px;height:180px;border-radius:16px;"></div>
+        <div class="radius-info">
+          <div class="radius-label">Large Radius</div>
+          <div class="radius-value">border-radius: 16px</div>
+          <div class="radius-usage">Modals, panels, sheets</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       BUTTONS
+  ══════════════════════════════════════ -->
+  <section id="buttons">
+    <div class="section-header">
+      <h2>Buttons</h2>
+      <span class="section-badge">3 variants · 4 sizes</span>
+    </div>
+
+    <!-- States legend -->
+    <div class="states-legend">
+      <div class="state-item"><div class="state-dot" style="background:#5189F3;"></div> Default</div>
+      <div class="state-item"><div class="state-dot" style="background:#70A0FB;"></div> Hover</div>
+      <div class="state-item"><div class="state-dot" style="background:#326DDD;"></div> Pressing</div>
+      <div class="state-item"><div class="state-dot" style="background:#B8D0FD;"></div> Disabled</div>
+    </div>
+
+    <!-- PRIMARY -->
+    <div class="btn-section">
+      <div class="btn-variant-label">Primary <span>Filled — use for main call-to-action</span></div>
+      <div class="btn-grid">
+        <div></div>
+        <div class="btn-grid-header">Default</div>
+        <div class="btn-grid-header">Hover</div>
+        <div class="btn-grid-header">Pressing</div>
+        <div class="btn-grid-header">Disabled</div>
+
+        <div class="btn-size-label">XS</div>
+        <div class="btn-cell"><button class="btn btn-primary btn-xs">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-xs state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-xs state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-xs state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">S</div>
+        <div class="btn-cell"><button class="btn btn-primary btn-s">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-s state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-s state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-s state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">M</div>
+        <div class="btn-cell"><button class="btn btn-primary btn-m">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-m state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-m state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-m state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">L</div>
+        <div class="btn-cell"><button class="btn btn-primary btn-l">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-l state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-l state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-primary btn-l state-disabled" disabled>Button Label</button></div>
+      </div>
+    </div>
+
+    <hr class="btn-divider" />
+
+    <!-- SECONDARY -->
+    <div class="btn-section">
+      <div class="btn-variant-label">Secondary <span>Outlined — secondary actions alongside Primary</span></div>
+      <div class="btn-grid">
+        <div></div>
+        <div class="btn-grid-header">Default</div>
+        <div class="btn-grid-header">Hover</div>
+        <div class="btn-grid-header">Pressing</div>
+        <div class="btn-grid-header">Disabled</div>
+
+        <div class="btn-size-label">XS</div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-xs">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-xs state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-xs state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-xs state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">S</div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-s">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-s state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-s state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-s state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">M</div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-m">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-m state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-m state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-m state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">L</div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-l">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-l state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-l state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-secondary btn-l state-disabled" disabled>Button Label</button></div>
+      </div>
+    </div>
+
+    <hr class="btn-divider" />
+
+    <!-- TERTIARY -->
+    <div class="btn-section">
+      <div class="btn-variant-label">Tertiary <span>Text only — low-emphasis actions</span></div>
+      <div class="btn-grid">
+        <div></div>
+        <div class="btn-grid-header">Default</div>
+        <div class="btn-grid-header">Hover</div>
+        <div class="btn-grid-header">Pressing</div>
+        <div class="btn-grid-header">Disabled</div>
+
+        <div class="btn-size-label">XS</div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-xs">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-xs state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-xs state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-xs state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">S</div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-s">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-s state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-s state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-s state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">M</div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-m">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-m state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-m state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-m state-disabled" disabled>Button Label</button></div>
+
+        <div class="btn-size-label">L</div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-l">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-l state-hover">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-l state-pressing">Button Label</button></div>
+        <div class="btn-cell"><button class="btn btn-tertiary btn-l state-disabled" disabled>Button Label</button></div>
+      </div>
+    </div>
+
+    <hr class="btn-divider" />
+
+    <!-- SIZE TOKENS TABLE -->
+    <div class="subsection">
+      <h3>Size Tokens</h3>
+      <table class="token-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>Height</th>
+            <th>Padding (H)</th>
+            <th>Font Size</th>
+            <th>Border Radius</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>XS — Extra Small</td><td><code>24px</code></td><td><code>8px</code></td><td><code>11px</code></td><td><code>4px</code></td></tr>
+          <tr><td>S — Small</td><td><code>28px</code></td><td><code>10px</code></td><td><code>12px</code></td><td><code>4px</code></td></tr>
+          <tr><td>M — Medium</td><td><code>32px</code></td><td><code>12px</code></td><td><code>14px</code></td><td><code>4px</code></td></tr>
+          <tr><td>L — Large</td><td><code>40px</code></td><td><code>16px</code></td><td><code>16px</code></td><td><code>4px</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+
+  <!-- ══════════════════════════════════════
+       MUI INTEGRATION
+  ══════════════════════════════════════ -->
+  <section id="mui">
+    <div class="section-header">
+      <h2>MUI Integration</h2>
+      <span class="section-badge">Material UI v6+</span>
+    </div>
+
+    <!-- TABS -->
+    <div class="mui-tabs">
+      <button class="mui-tab active" onclick="switchTab(event,'tab-install')">Installation</button>
+      <button class="mui-tab" onclick="switchTab(event,'tab-theme')">createTheme</button>
+      <button class="mui-tab" onclick="switchTab(event,'tab-apply')">Apply Theme</button>
+      <button class="mui-tab" onclick="switchTab(event,'tab-colors')">Colors</button>
+      <button class="mui-tab" onclick="switchTab(event,'tab-customization')">Customization</button>
+      <button class="mui-tab" onclick="switchTab(event,'tab-mapping')">Token Mapping</button>
+      <button class="mui-tab" onclick="switchTab(event,'tab-components')">Components</button>
+    </div>
+
+    <!-- ── TAB: INSTALL ── -->
+    <div id="tab-install" class="mui-panel active">
+
+      <!-- Quick copy banner -->
+      <div style="background:linear-gradient(135deg,#1a1d23,#2d3148);border-radius:12px;padding:24px 28px;margin-bottom:28px;position:relative;">
+        <div style="font-size:11px;font-weight:700;color:#6286F1;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:10px;">Full install — one command</div>
+        <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:13px;color:#c3e88d;display:block;background:none;padding:0;">npm install @mui/material @emotion/react @emotion/styled @mui/icons-material @fontsource/nunito</code>
+        <button onclick="navigator.clipboard.writeText('npm install @mui/material @emotion/react @emotion/styled @mui/icons-material @fontsource/nunito').then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy all',1800)})" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:#a0aec0;font-size:11px;font-weight:600;padding:4px 10px;border-radius:4px;cursor:pointer;font-family:'Nunito',sans-serif;">Copy all</button>
+      </div>
+
+      <!-- Step-by-step -->
+      <div style="display:flex;flex-direction:column;gap:20px;">
+
+        <!-- Step 1 -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--brand-50);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">1</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--neutral-90);margin-bottom:10px;">Core packages</div>
+            <div style="background:#1a1d23;border-radius:8px;padding:14px 18px;margin-bottom:12px;position:relative;">
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;color:#c3e88d;">npm install @mui/material @emotion/react @emotion/styled</code>
+              <button onclick="navigator.clipboard.writeText('npm install @mui/material @emotion/react @emotion/styled').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#718096;font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:'Nunito',sans-serif;">Copy</button>
+            </div>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+              <thead><tr style="background:var(--neutral-5);">
+                <th style="text-align:left;padding:7px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;">Package</th>
+                <th style="text-align:left;padding:7px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;">Role</th>
+              </tr></thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--neutral-10);">
+                  <td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">@mui/material</code></td>
+                  <td style="padding:9px 12px;color:var(--neutral-60);">All MUI components, hooks, and the theme engine</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--neutral-10);">
+                  <td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">@emotion/react</code></td>
+                  <td style="padding:9px 12px;color:var(--neutral-60);">CSS-in-JS runtime required by MUI</td>
+                </tr>
+                <tr>
+                  <td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">@emotion/styled</code></td>
+                  <td style="padding:9px 12px;color:var(--neutral-60);">Styled-component API used internally by MUI</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="border-left:2px dashed var(--neutral-20);margin-left:13px;height:16px;"></div>
+
+        <!-- Step 2 -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--brand-50);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">2</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--neutral-90);margin-bottom:6px;">Icons <span style="font-size:11px;font-weight:500;color:var(--neutral-50);">optional</span></div>
+            <div style="background:#1a1d23;border-radius:8px;padding:14px 18px;margin-bottom:10px;position:relative;">
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;color:#c3e88d;">npm install @mui/icons-material</code>
+              <button onclick="navigator.clipboard.writeText('npm install @mui/icons-material').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#718096;font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:'Nunito',sans-serif;">Copy</button>
+            </div>
+            <div style="font-size:12px;color:var(--neutral-60);">Provides 2,000+ Material Design SVG icons as React components.</div>
+            <div style="background:var(--neutral-10);border-radius:6px;padding:8px 12px;margin-top:8px;font-family:'Cascadia Code','Fira Code',monospace;font-size:11.5px;color:var(--neutral-70);">import HomeIcon from <span style="color:#4DAC4A;">'@mui/icons-material/Home'</span></div>
+          </div>
+        </div>
+
+        <div style="border-left:2px dashed var(--neutral-20);margin-left:13px;height:16px;"></div>
+
+        <!-- Step 3 -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--brand-50);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">3</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--neutral-90);margin-bottom:6px;">Nunito Font</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Via npm</div>
+                <div style="background:#1a1d23;border-radius:8px;padding:12px 16px;margin-bottom:8px;position:relative;">
+                  <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:11.5px;color:#c3e88d;">npm install @fontsource/nunito</code>
+                  <button onclick="navigator.clipboard.writeText('npm install @fontsource/nunito').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#718096;font-size:10px;font-weight:600;padding:2px 7px;border-radius:3px;cursor:pointer;font-family:'Nunito',sans-serif;">Copy</button>
+                </div>
+                <div style="background:#1a1d23;border-radius:8px;padding:12px 16px;">
+                  <div style="font-size:10px;color:#546e7a;margin-bottom:6px;font-style:italic;"># entry file imports</div>
+                  <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:11px;color:#82aaff;display:block;">import <span style="color:#c3e88d;">'@fontsource/nunito/400.css'</span>;</code>
+                  <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:11px;color:#82aaff;display:block;">import <span style="color:#c3e88d;">'@fontsource/nunito/500.css'</span>;</code>
+                  <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:11px;color:#82aaff;display:block;">import <span style="color:#c3e88d;">'@fontsource/nunito/600.css'</span>;</code>
+                  <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:11px;color:#82aaff;display:block;">import <span style="color:#c3e88d;">'@fontsource/nunito/700.css'</span>;</code>
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Via Google Fonts</div>
+                <div style="background:#1a1d23;border-radius:8px;padding:12px 16px;">
+                  <div style="font-size:10px;color:#546e7a;margin-bottom:6px;font-style:italic;"># in &lt;head&gt;</div>
+                  <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:10.5px;color:#c3e88d;word-break:break-all;">&lt;link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&amp;display=swap" rel="stylesheet" /&gt;</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-left:2px dashed var(--neutral-20);margin-left:13px;height:16px;"></div>
+
+        <!-- Step 4 -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--brand-50);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">4</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--neutral-90);margin-bottom:10px;">Peer Dependencies</div>
+            <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:12px;">
+              <thead><tr style="background:var(--neutral-5);">
+                <th style="text-align:left;padding:7px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;">Package</th>
+                <th style="text-align:left;padding:7px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;">Required Version</th>
+              </tr></thead>
+              <tbody>
+                <tr style="border-bottom:1px solid var(--neutral-10);">
+                  <td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">react</code></td>
+                  <td style="padding:9px 12px;color:var(--neutral-60);">^17.0.0 || ^18.0.0 || ^19.0.0</td>
+                </tr>
+                <tr>
+                  <td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">react-dom</code></td>
+                  <td style="padding:9px 12px;color:var(--neutral-60);">^17.0.0 || ^18.0.0 || ^19.0.0</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style="border-left:2px dashed var(--neutral-20);margin-left:13px;height:16px;"></div>
+
+        <!-- Step 5 -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#FFD97D;color:#856404;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">!</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--neutral-90);margin-bottom:6px;">React 18 &amp; below — version fix</div>
+            <div style="background:#1a1d23;border-radius:8px;padding:14px 18px;margin-bottom:10px;position:relative;">
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;color:#c3e88d;">npm install react-is@18.3.1</code>
+              <button onclick="navigator.clipboard.writeText('npm install react-is@18.3.1').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#718096;font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:'Nunito',sans-serif;">Copy</button>
+            </div>
+            <div style="font-size:11.5px;color:var(--neutral-60);margin-bottom:8px;">Then add to <code style="font-size:11px;background:var(--neutral-10);padding:1px 5px;border-radius:3px;color:var(--brand-70);">package.json</code>:</div>
+            <div style="background:#1a1d23;border-radius:8px;padding:14px 18px;">
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;display:block;">{</code>
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;display:block;">  <span style="color:#f07178;">"overrides"</span>: { <span style="color:#f07178;">"react-is"</span>: <span style="color:#c3e88d;">"^18.3.1"</span> }</code>
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;display:block;">}</code>
+            </div>
+            <div class="note-box" style="margin-top:10px;">
+              <span class="note-icon">⚠</span>
+              <span>MUI v6 uses <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;font-size:11px;">react-is@19</code> internally. A version mismatch causes runtime errors in prop-type checks on React 17/18 projects.</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-left:2px dashed var(--neutral-20);margin-left:13px;height:16px;"></div>
+
+        <!-- Alternative -->
+        <div style="display:flex;gap:16px;align-items:flex-start;">
+          <div style="width:28px;height:28px;border-radius:50%;background:var(--neutral-20);color:var(--neutral-70);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">~</div>
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:700;color:var(--neutral-90);margin-bottom:6px;">Alternative: styled-components engine</div>
+            <div style="background:#1a1d23;border-radius:8px;padding:14px 18px;margin-bottom:10px;position:relative;">
+              <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12.5px;color:#c3e88d;">npm install @mui/material @mui/styled-engine-sc styled-components</code>
+              <button onclick="navigator.clipboard.writeText('npm install @mui/material @mui/styled-engine-sc styled-components').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)})" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#718096;font-size:10px;font-weight:600;padding:3px 8px;border-radius:3px;cursor:pointer;font-family:'Nunito',sans-serif;">Copy</button>
+            </div>
+            <div class="note-box" style="background:#FFF0F0;border-color:#FFB3B3;">
+              <span class="note-icon">🚫</span>
+              <span>styled-components is <strong>not compatible with SSR</strong> (Next.js). Use Emotion for server-rendered projects.</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── TAB: createTheme ── -->
+    <div id="tab-theme" class="mui-panel">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><span class="kw">import</span> { <span class="fn">createTheme</span> } <span class="kw">from</span> <span class="str">'@mui/material/styles'</span>;
+<span class="kw">import</span> <span class="str">'@fontsource/nunito/400.css'</span>;
+<span class="kw">import</span> <span class="str">'@fontsource/nunito/500.css'</span>;
+<span class="kw">import</span> <span class="str">'@fontsource/nunito/600.css'</span>;
+<span class="kw">import</span> <span class="str">'@fontsource/nunito/700.css'</span>;
+
+<span class="kw">const</span> <span class="fn">seatraceTheme</span> = <span class="fn">createTheme</span>({
+
+  <span class="cm">// ── PALETTE ──────────────────────────────────────</span>
+  <span class="key">palette</span>: {
+    <span class="key">primary</span>: {
+      <span class="key">light</span>:        <span class="str">'#70A0FB'</span>,  <span class="cm">// Brand 40</span>
+      <span class="key">main</span>:         <span class="str">'#5189F3'</span>,  <span class="cm">// Brand 50 — primary</span>
+      <span class="key">dark</span>:         <span class="str">'#326DDD'</span>,  <span class="cm">// Brand 70</span>
+      <span class="key">contrastText</span>: <span class="str">'#FFFFFF'</span>,
+    },
+    <span class="key">secondary</span>: {
+      <span class="key">main</span>:         <span class="str">'#6286F1'</span>,  <span class="cm">// Link 50</span>
+      <span class="key">dark</span>:         <span class="str">'#3160ED'</span>,  <span class="cm">// Link 60</span>
+      <span class="key">contrastText</span>: <span class="str">'#FFFFFF'</span>,
+    },
+    <span class="key">error</span>:   { <span class="key">light</span>: <span class="str">'#F5A3A3'</span>, <span class="key">main</span>: <span class="str">'#E82727'</span>, <span class="key">dark</span>: <span class="str">'#E60026'</span> },
+    <span class="key">success</span>: { <span class="key">light</span>: <span class="str">'#81C87E'</span>, <span class="key">main</span>: <span class="str">'#4DAC4A'</span>, <span class="key">dark</span>: <span class="str">'#408F3D'</span> },
+    <span class="key">text</span>: {
+      <span class="key">primary</span>:   <span class="str">'#111111'</span>,  <span class="cm">// Neutral 100</span>
+      <span class="key">secondary</span>: <span class="str">'#5E5E60'</span>,  <span class="cm">// Neutral 80</span>
+      <span class="key">disabled</span>:  <span class="str">'#A7AAAD'</span>,  <span class="cm">// Neutral 50</span>
+    },
+    <span class="key">divider</span>: <span class="str">'#DFE2E6'</span>,        <span class="cm">// Neutral 20</span>
+    <span class="key">background</span>: {
+      <span class="key">default</span>: <span class="str">'#F9F9FA'</span>,    <span class="cm">// Surface</span>
+      <span class="key">paper</span>:   <span class="str">'#FFFFFF'</span>,    <span class="cm">// Neutral 1</span>
+    },
+  },
+
+  <span class="cm">// ── TYPOGRAPHY ────────────────────────────────────</span>
+  <span class="key">typography</span>: {
+    <span class="key">fontFamily</span>: <span class="str">'"Nunito", sans-serif'</span>,
+    <span class="key">h1</span>: { <span class="key">fontSize</span>: <span class="str">'2rem'</span>,      <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">lineHeight</span>: <span class="str">'44px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Headline Large</span>
+    <span class="key">h2</span>: { <span class="key">fontSize</span>: <span class="str">'1.75rem'</span>,   <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">lineHeight</span>: <span class="str">'38px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Headline Medium</span>
+    <span class="key">h3</span>: { <span class="key">fontSize</span>: <span class="str">'1.5rem'</span>,    <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">lineHeight</span>: <span class="str">'33px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Headline Small</span>
+    <span class="key">h4</span>: { <span class="key">fontSize</span>: <span class="str">'1.5rem'</span>,    <span class="key">fontWeight</span>: <span class="num">400</span>, <span class="key">lineHeight</span>: <span class="str">'33px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Title Large</span>
+    <span class="key">h5</span>: { <span class="key">fontSize</span>: <span class="str">'1.25rem'</span>,   <span class="key">fontWeight</span>: <span class="num">500</span>, <span class="key">lineHeight</span>: <span class="str">'27px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Title Medium</span>
+    <span class="key">h6</span>: { <span class="key">fontSize</span>: <span class="str">'1.125rem'</span>,  <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">lineHeight</span>: <span class="str">'25px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Title Small</span>
+    <span class="key">body1</span>:    { <span class="key">fontSize</span>: <span class="str">'1rem'</span>,      <span class="key">fontWeight</span>: <span class="num">400</span>, <span class="key">lineHeight</span>: <span class="str">'22px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Body Large</span>
+    <span class="key">body2</span>:    { <span class="key">fontSize</span>: <span class="str">'0.875rem'</span>, <span class="key">fontWeight</span>: <span class="num">400</span>, <span class="key">lineHeight</span>: <span class="str">'19px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Body Medium</span>
+    <span class="key">subtitle1</span>:{ <span class="key">fontSize</span>: <span class="str">'0.875rem'</span>, <span class="key">fontWeight</span>: <span class="num">500</span>, <span class="key">lineHeight</span>: <span class="str">'19px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Label Large</span>
+    <span class="key">subtitle2</span>:{ <span class="key">fontSize</span>: <span class="str">'0.75rem'</span>,  <span class="key">fontWeight</span>: <span class="num">500</span>, <span class="key">lineHeight</span>: <span class="str">'16px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Label Medium</span>
+    <span class="key">caption</span>:  { <span class="key">fontSize</span>: <span class="str">'0.6875rem'</span>,<span class="key">fontWeight</span>: <span class="num">500</span>, <span class="key">lineHeight</span>: <span class="str">'15px'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> }, <span class="cm">// Label Small</span>
+    <span class="key">button</span>:   { <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">textTransform</span>: <span class="str">'none'</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.1px'</span> },
+  },
+
+  <span class="cm">// ── SHAPE ─────────────────────────────────────────</span>
+  <span class="key">shape</span>: { <span class="key">borderRadius</span>: <span class="num">4</span> },   <span class="cm">// Border Radius-4 as default</span>
+
+  <span class="cm">// ── SPACING ───────────────────────────────────────</span>
+  <span class="key">spacing</span>: <span class="num">4</span>,  <span class="cm">// 1 unit = 4px → spacing(2) = 8px, spacing(4) = 16px</span>
+
+  <span class="cm">// ── COMPONENT OVERRIDES ───────────────────────────</span>
+  <span class="key">components</span>: {
+    <span class="key">MuiButton</span>: {
+      <span class="key">styleOverrides</span>: {
+        <span class="key">root</span>:       { <span class="key">borderRadius</span>: <span class="num">4</span>, <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">textTransform</span>: <span class="str">'none'</span> },
+        <span class="key">sizeSmall</span>:  { <span class="key">height</span>: <span class="num">28</span>, <span class="key">padding</span>: <span class="str">'0 10px'</span>, <span class="key">fontSize</span>: <span class="str">'0.75rem'</span>  },
+        <span class="key">sizeMedium</span>: { <span class="key">height</span>: <span class="num">32</span>, <span class="key">padding</span>: <span class="str">'0 12px'</span>, <span class="key">fontSize</span>: <span class="str">'0.875rem'</span> },
+        <span class="key">sizeLarge</span>:  { <span class="key">height</span>: <span class="num">40</span>, <span class="key">padding</span>: <span class="str">'0 16px'</span>, <span class="key">fontSize</span>: <span class="str">'1rem'</span>     },
+        <span class="key">contained</span>: { <span class="key">boxShadow</span>: <span class="str">'none'</span>, <span class="str">'&amp;:hover'</span>: { <span class="key">backgroundColor</span>: <span class="str">'#70A0FB'</span>, <span class="key">boxShadow</span>: <span class="str">'none'</span> } },
+        <span class="key">outlined</span>:  { <span class="key">borderColor</span>: <span class="str">'#5189F3'</span>, <span class="str">'&amp;:hover'</span>: { <span class="key">background</span>: <span class="str">'#E4EEFF'</span> } },
+        <span class="key">text</span>:       { <span class="str">'&amp;:hover'</span>: { <span class="key">background</span>: <span class="str">'#E4EEFF'</span> } },
+      },
+    },
+    <span class="key">MuiCard</span>:      { <span class="key">styleOverrides</span>: { <span class="key">root</span>: { <span class="key">borderRadius</span>: <span class="num">8</span>  } } },
+    <span class="key">MuiPaper</span>:     { <span class="key">styleOverrides</span>: { <span class="key">root</span>: { <span class="key">borderRadius</span>: <span class="num">8</span>  } } },
+    <span class="key">MuiDialog</span>:    { <span class="key">styleOverrides</span>: { <span class="key">paper</span>:{ <span class="key">borderRadius</span>: <span class="num">16</span> } } },
+    <span class="key">MuiChip</span>:      { <span class="key">styleOverrides</span>: { <span class="key">root</span>: { <span class="key">borderRadius</span>: <span class="num">4</span>  } } },
+    <span class="key">MuiTextField</span>: {
+      <span class="key">defaultProps</span>: { <span class="key">size</span>: <span class="str">'small'</span> },
+      <span class="key">styleOverrides</span>: { <span class="key">root</span>: { <span class="str">'&amp; .MuiOutlinedInput-root'</span>: { <span class="key">borderRadius</span>: <span class="num">8</span> } } },
+    },
+  },
+});
+
+<span class="kw">export default</span> seatraceTheme;</pre>
+      </div>
+    </div>
+
+    <!-- ── TAB: APPLY ── -->
+    <div id="tab-apply" class="mui-panel">
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <pre><span class="cm">// main.tsx / App.tsx</span>
+<span class="kw">import</span> { <span class="fn">ThemeProvider</span>, <span class="fn">CssBaseline</span> } <span class="kw">from</span> <span class="str">'@mui/material'</span>;
+<span class="kw">import</span> seatraceTheme <span class="kw">from</span> <span class="str">'./seatraceTheme'</span>;
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    &lt;<span class="fn">ThemeProvider</span> theme={seatraceTheme}&gt;
+      &lt;<span class="fn">CssBaseline</span> /&gt;   <span class="cm">// resets browser defaults + applies background color</span>
+      {<span class="cm">/* your app */</span>}
+    &lt;/<span class="fn">ThemeProvider</span>&gt;
+  );
+}</pre>
+      </div>
+      <div class="note-box">
+        <span class="note-icon">💡</span>
+        <span><strong>CssBaseline</strong> applies <code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;">background.default</code> (<code style="background:rgba(0,0,0,0.06);padding:1px 5px;border-radius:3px;">#F9F9FA</code>) to the body and normalises browser styles — always include it at the root.</span>
+      </div>
+    </div>
+
+    <!-- ── TAB: COLORS ── -->
+    <div id="tab-colors" class="mui-panel">
+
+      <div style="margin-bottom:28px;">
+        <div style="font-size:13px;color:var(--neutral-60);line-height:1.7;margin-bottom:6px;">MUI ships <strong>22 pre-built color palettes</strong> from Material Design. Each has 10 standard shades (50–900) + 4 accent shades (A100–A700). The <strong>500</strong> shade is the primary hue.</div>
+        <div style="background:#1a1d23;border-radius:8px;padding:12px 18px;display:inline-block;margin-top:6px;">
+          <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#82aaff;">import</code>
+          <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;"> { </code>
+          <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#c3e88d;">red, blue, purple</code>
+          <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;"> } </code>
+          <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#82aaff;">from</code>
+          <code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#c3e88d;"> '@mui/material/colors'</code><code style="font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;">;</code>
+        </div>
+      </div>
+
+      <!-- Shade legend -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px;align-items:center;">
+        <span style="font-size:11px;font-weight:700;color:var(--neutral-50);margin-right:4px;">Shades:</span>
+        <span style="font-size:10px;font-weight:600;background:var(--neutral-10);color:var(--neutral-60);padding:2px 8px;border-radius:99px;">50</span>
+        <span style="font-size:10px;font-weight:600;background:var(--neutral-20);color:var(--neutral-70);padding:2px 8px;border-radius:99px;">100–400</span>
+        <span style="font-size:10px;font-weight:600;background:var(--brand-50);color:#fff;padding:2px 8px;border-radius:99px;">500 ★ primary</span>
+        <span style="font-size:10px;font-weight:600;background:var(--neutral-70);color:#fff;padding:2px 8px;border-radius:99px;">600–900</span>
+        <span style="font-size:10px;font-weight:600;background:#e040fb;color:#fff;padding:2px 8px;border-radius:99px;">A100 A200 A400 A700</span>
+      </div>
+
+      <!-- Palette groups -->
+      <div style="display:flex;flex-direction:column;gap:28px;">
+
+        <!-- Reds / Pinks -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Reds / Pinks</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">red</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div title="50"  style="flex:1;height:32px;border-radius:4px;background:#ffebee;border:1px solid rgba(0,0,0,0.06);"></div>
+                <div title="100" style="flex:1;height:32px;border-radius:4px;background:#ffcdd2;"></div>
+                <div title="200" style="flex:1;height:32px;border-radius:4px;background:#ef9a9a;"></div>
+                <div title="300" style="flex:1;height:32px;border-radius:4px;background:#e57373;"></div>
+                <div title="400" style="flex:1;height:32px;border-radius:4px;background:#ef5350;"></div>
+                <div title="500" style="flex:1;height:32px;border-radius:4px;background:#f44336;outline:2px solid #f44336;outline-offset:2px;"></div>
+                <div title="600" style="flex:1;height:32px;border-radius:4px;background:#e53935;"></div>
+                <div title="700" style="flex:1;height:32px;border-radius:4px;background:#d32f2f;"></div>
+                <div title="800" style="flex:1;height:32px;border-radius:4px;background:#c62828;"></div>
+                <div title="900" style="flex:1;height:32px;border-radius:4px;background:#b71c1c;"></div>
+                <div style="width:2px;"></div>
+                <div title="A100" style="flex:1;height:32px;border-radius:4px;background:#ff8a80;"></div>
+                <div title="A200" style="flex:1;height:32px;border-radius:4px;background:#ff5252;"></div>
+                <div title="A400" style="flex:1;height:32px;border-radius:4px;background:#ff1744;"></div>
+                <div title="A700" style="flex:1;height:32px;border-radius:4px;background:#d50000;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">pink</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:32px;border-radius:4px;background:#fce4ec;border:1px solid rgba(0,0,0,0.06);"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#f8bbd0;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#f48fb1;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#f06292;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ec407a;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#e91e63;outline:2px solid #e91e63;outline-offset:2px;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#d81b60;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#c2185b;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ad1457;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#880e4f;"></div>
+                <div style="width:2px;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ff80ab;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ff4081;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#f50057;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#c51162;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Purples -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Purples</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">purple</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:32px;border-radius:4px;background:#f3e5f5;border:1px solid rgba(0,0,0,0.06);"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#e1bee7;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ce93d8;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ba68c8;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ab47bc;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#9c27b0;outline:2px solid #9c27b0;outline-offset:2px;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#8e24aa;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#7b1fa2;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#6a1b9a;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#4a148c;"></div>
+                <div style="width:2px;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#ea80fc;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#e040fb;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#d500f9;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#aa00ff;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">deepPurple</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:32px;border-radius:4px;background:#ede7f6;border:1px solid rgba(0,0,0,0.06);"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#d1c4e9;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#b39ddb;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#9575cd;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#7e57c2;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#673ab7;outline:2px solid #673ab7;outline-offset:2px;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#5e35b1;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#512da8;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#4527a0;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#311b92;"></div>
+                <div style="width:2px;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#b388ff;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#7c4dff;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#651fff;"></div>
+                <div style="flex:1;height:32px;border-radius:4px;background:#6200ea;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blues -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Blues</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">indigo</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:28px;border-radius:4px;background:#e8eaf6;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#c5cae9;"></div><div style="flex:1;height:28px;border-radius:4px;background:#9fa8da;"></div><div style="flex:1;height:28px;border-radius:4px;background:#7986cb;"></div><div style="flex:1;height:28px;border-radius:4px;background:#5c6bc0;"></div><div style="flex:1;height:28px;border-radius:4px;background:#3f51b5;outline:2px solid #3f51b5;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#3949ab;"></div><div style="flex:1;height:28px;border-radius:4px;background:#303f9f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#283593;"></div><div style="flex:1;height:28px;border-radius:4px;background:#1a237e;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#8c9eff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#536dfe;"></div><div style="flex:1;height:28px;border-radius:4px;background:#3d5afe;"></div><div style="flex:1;height:28px;border-radius:4px;background:#304ffe;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">blue</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:28px;border-radius:4px;background:#e3f2fd;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#bbdefb;"></div><div style="flex:1;height:28px;border-radius:4px;background:#90caf9;"></div><div style="flex:1;height:28px;border-radius:4px;background:#64b5f6;"></div><div style="flex:1;height:28px;border-radius:4px;background:#42a5f5;"></div><div style="flex:1;height:28px;border-radius:4px;background:#2196f3;outline:2px solid #2196f3;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#1e88e5;"></div><div style="flex:1;height:28px;border-radius:4px;background:#1976d2;"></div><div style="flex:1;height:28px;border-radius:4px;background:#1565c0;"></div><div style="flex:1;height:28px;border-radius:4px;background:#0d47a1;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#82b1ff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#448aff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#2979ff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#2962ff;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">lightBlue</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:28px;border-radius:4px;background:#e1f5fe;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#b3e5fc;"></div><div style="flex:1;height:28px;border-radius:4px;background:#81d4fa;"></div><div style="flex:1;height:28px;border-radius:4px;background:#4fc3f7;"></div><div style="flex:1;height:28px;border-radius:4px;background:#29b6f6;"></div><div style="flex:1;height:28px;border-radius:4px;background:#03a9f4;outline:2px solid #03a9f4;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#039be5;"></div><div style="flex:1;height:28px;border-radius:4px;background:#0288d1;"></div><div style="flex:1;height:28px;border-radius:4px;background:#0277bd;"></div><div style="flex:1;height:28px;border-radius:4px;background:#01579b;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#80d8ff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#40c4ff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00b0ff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#0091ea;"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">cyan</span>
+              <div style="display:flex;gap:3px;flex:1;">
+                <div style="flex:1;height:28px;border-radius:4px;background:#e0f7fa;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#b2ebf2;"></div><div style="flex:1;height:28px;border-radius:4px;background:#80deea;"></div><div style="flex:1;height:28px;border-radius:4px;background:#4dd0e1;"></div><div style="flex:1;height:28px;border-radius:4px;background:#26c6da;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00bcd4;outline:2px solid #00bcd4;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00acc1;"></div><div style="flex:1;height:28px;border-radius:4px;background:#0097a7;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00838f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#006064;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#84ffff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#18ffff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00e5ff;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00b8d4;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Greens -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Greens</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">teal</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#e0f2f1;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#b2dfdb;"></div><div style="flex:1;height:28px;border-radius:4px;background:#80cbc4;"></div><div style="flex:1;height:28px;border-radius:4px;background:#4db6ac;"></div><div style="flex:1;height:28px;border-radius:4px;background:#26a69a;"></div><div style="flex:1;height:28px;border-radius:4px;background:#009688;outline:2px solid #009688;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00897b;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00796b;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00695c;"></div><div style="flex:1;height:28px;border-radius:4px;background:#004d40;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#a7ffeb;"></div><div style="flex:1;height:28px;border-radius:4px;background:#64ffda;"></div><div style="flex:1;height:28px;border-radius:4px;background:#1de9b6;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00bfa5;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">green</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#e8f5e9;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#c8e6c9;"></div><div style="flex:1;height:28px;border-radius:4px;background:#a5d6a7;"></div><div style="flex:1;height:28px;border-radius:4px;background:#81c784;"></div><div style="flex:1;height:28px;border-radius:4px;background:#66bb6a;"></div><div style="flex:1;height:28px;border-radius:4px;background:#4caf50;outline:2px solid #4caf50;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#43a047;"></div><div style="flex:1;height:28px;border-radius:4px;background:#388e3c;"></div><div style="flex:1;height:28px;border-radius:4px;background:#2e7d32;"></div><div style="flex:1;height:28px;border-radius:4px;background:#1b5e20;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#b9f6ca;"></div><div style="flex:1;height:28px;border-radius:4px;background:#69f0ae;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00e676;"></div><div style="flex:1;height:28px;border-radius:4px;background:#00c853;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">lightGreen</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#f1f8e9;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#dcedc8;"></div><div style="flex:1;height:28px;border-radius:4px;background:#c5e1a5;"></div><div style="flex:1;height:28px;border-radius:4px;background:#aed581;"></div><div style="flex:1;height:28px;border-radius:4px;background:#9ccc65;"></div><div style="flex:1;height:28px;border-radius:4px;background:#8bc34a;outline:2px solid #8bc34a;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#7cb342;"></div><div style="flex:1;height:28px;border-radius:4px;background:#689f38;"></div><div style="flex:1;height:28px;border-radius:4px;background:#558b2f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#33691e;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ccff90;"></div><div style="flex:1;height:28px;border-radius:4px;background:#b2ff59;"></div><div style="flex:1;height:28px;border-radius:4px;background:#76ff03;"></div><div style="flex:1;height:28px;border-radius:4px;background:#64dd17;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">lime</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#f9fbe7;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#f0f4c3;"></div><div style="flex:1;height:28px;border-radius:4px;background:#e6ee9c;"></div><div style="flex:1;height:28px;border-radius:4px;background:#dce775;"></div><div style="flex:1;height:28px;border-radius:4px;background:#d4e157;"></div><div style="flex:1;height:28px;border-radius:4px;background:#cddc39;outline:2px solid #cddc39;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#c0ca33;"></div><div style="flex:1;height:28px;border-radius:4px;background:#afb42b;"></div><div style="flex:1;height:28px;border-radius:4px;background:#9e9d24;"></div><div style="flex:1;height:28px;border-radius:4px;background:#827717;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#f4ff81;"></div><div style="flex:1;height:28px;border-radius:4px;background:#eeff41;"></div><div style="flex:1;height:28px;border-radius:4px;background:#c6ff00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#aeea00;"></div></div></div>
+          </div>
+        </div>
+
+        <!-- Yellows / Oranges -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Yellows / Oranges</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">yellow</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#fffde7;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#fff9c4;"></div><div style="flex:1;height:28px;border-radius:4px;background:#fff59d;"></div><div style="flex:1;height:28px;border-radius:4px;background:#fff176;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffee58;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffeb3b;outline:2px solid #ffeb3b;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#fdd835;"></div><div style="flex:1;height:28px;border-radius:4px;background:#f9a825;"></div><div style="flex:1;height:28px;border-radius:4px;background:#f57f17;"></div><div style="flex:1;height:28px;border-radius:4px;background:#e65100;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffff8d;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffff00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffea00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffd600;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">amber</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#fff8e1;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffecb3;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffe082;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffd54f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffca28;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffc107;outline:2px solid #ffc107;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffb300;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffa000;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff8f00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff6f00;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffe57f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffd740;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffab40;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff6d00;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">orange</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#fff3e0;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffe0b2;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffcc80;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffb74d;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffa726;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff9800;outline:2px solid #ff9800;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#fb8c00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#f57c00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ef6c00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#e65100;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffd180;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffab40;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff9100;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff6d00;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">deepOrange</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#fbe9e7;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffccbc;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ffab91;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff8a65;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff7043;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff5722;outline:2px solid #ff5722;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#f4511e;"></div><div style="flex:1;height:28px;border-radius:4px;background:#e64a19;"></div><div style="flex:1;height:28px;border-radius:4px;background:#d84315;"></div><div style="flex:1;height:28px;border-radius:4px;background:#bf360c;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff9e80;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff6e40;"></div><div style="flex:1;height:28px;border-radius:4px;background:#ff3d00;"></div><div style="flex:1;height:28px;border-radius:4px;background:#dd2c00;"></div></div></div>
+          </div>
+        </div>
+
+        <!-- Neutrals -->
+        <div>
+          <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:12px;">Neutrals</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">brown</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#efebe9;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#d7ccc8;"></div><div style="flex:1;height:28px;border-radius:4px;background:#bcaaa4;"></div><div style="flex:1;height:28px;border-radius:4px;background:#a1887f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#8d6e63;"></div><div style="flex:1;height:28px;border-radius:4px;background:#795548;outline:2px solid #795548;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#6d4c41;"></div><div style="flex:1;height:28px;border-radius:4px;background:#5d4037;"></div><div style="flex:1;height:28px;border-radius:4px;background:#4e342e;"></div><div style="flex:1;height:28px;border-radius:4px;background:#3e2723;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">grey</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#fafafa;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#f5f5f5;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#eeeeee;"></div><div style="flex:1;height:28px;border-radius:4px;background:#e0e0e0;"></div><div style="flex:1;height:28px;border-radius:4px;background:#bdbdbd;"></div><div style="flex:1;height:28px;border-radius:4px;background:#9e9e9e;outline:2px solid #9e9e9e;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#757575;"></div><div style="flex:1;height:28px;border-radius:4px;background:#616161;"></div><div style="flex:1;height:28px;border-radius:4px;background:#424242;"></div><div style="flex:1;height:28px;border-radius:4px;background:#212121;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div></div></div>
+            <div style="display:flex;align-items:center;gap:8px;"><span style="width:64px;font-size:11px;font-weight:600;color:var(--neutral-70);">blueGrey</span><div style="display:flex;gap:3px;flex:1;"><div style="flex:1;height:28px;border-radius:4px;background:#eceff1;border:1px solid rgba(0,0,0,0.06);"></div><div style="flex:1;height:28px;border-radius:4px;background:#cfd8dc;"></div><div style="flex:1;height:28px;border-radius:4px;background:#b0bec5;"></div><div style="flex:1;height:28px;border-radius:4px;background:#90a4ae;"></div><div style="flex:1;height:28px;border-radius:4px;background:#78909c;"></div><div style="flex:1;height:28px;border-radius:4px;background:#607d8b;outline:2px solid #607d8b;outline-offset:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:#546e7a;"></div><div style="flex:1;height:28px;border-radius:4px;background:#455a64;"></div><div style="flex:1;height:28px;border-radius:4px;background:#37474f;"></div><div style="flex:1;height:28px;border-radius:4px;background:#263238;"></div><div style="width:2px;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div><div style="flex:1;height:28px;border-radius:4px;background:transparent;opacity:0;"></div></div></div>
+          </div>
+        </div>
+
+      </div><!-- end palettes -->
+
+      <!-- Shade labels footer -->
+      <div style="display:flex;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--neutral-10);align-items:center;">
+        <span style="width:64px;font-size:10px;color:var(--neutral-40);">shade →</span>
+        <div style="display:flex;gap:3px;flex:1;font-size:9px;font-weight:700;color:var(--neutral-40);text-align:center;">
+          <span style="flex:1;">50</span><span style="flex:1;">100</span><span style="flex:1;">200</span><span style="flex:1;">300</span><span style="flex:1;">400</span><span style="flex:1;">500</span><span style="flex:1;">600</span><span style="flex:1;">700</span><span style="flex:1;">800</span><span style="flex:1;">900</span>
+          <span style="width:2px;"></span>
+          <span style="flex:1;">A100</span><span style="flex:1;">A200</span><span style="flex:1;">A400</span><span style="flex:1;">A700</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: CUSTOMIZATION ── -->
+    <div id="tab-customization" class="mui-panel">
+
+      <!-- Palette Structure -->
+      <div style="margin-bottom:36px;">
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:16px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">01</span> Palette Keys &amp; Structure</div>
+        <table style="width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px;">
+          <thead><tr style="background:var(--neutral-5);"><th style="text-align:left;padding:8px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;width:130px;">Key</th><th style="text-align:left;padding:8px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;">Sub-keys</th><th style="text-align:left;padding:8px 12px;border-bottom:1.5px solid var(--neutral-20);font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.4px;">Purpose</th></tr></thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">primary</code></td><td style="padding:9px 12px;color:var(--neutral-60);">main · light · dark · contrastText</td><td style="padding:9px 12px;color:var(--neutral-60);">Main brand actions &amp; interactive elements</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">secondary</code></td><td style="padding:9px 12px;color:var(--neutral-60);">main · light · dark · contrastText</td><td style="padding:9px 12px;color:var(--neutral-60);">Secondary actions alongside primary</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:#E82727;">error</code></td><td style="padding:9px 12px;color:var(--neutral-60);">main · light · dark · contrastText</td><td style="padding:9px 12px;color:var(--neutral-60);">Destructive and error states</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:#FFF3CD;padding:2px 6px;border-radius:3px;color:#856404;">warning</code></td><td style="padding:9px 12px;color:var(--neutral-60);">main · light · dark · contrastText</td><td style="padding:9px 12px;color:var(--neutral-60);">Caution and dangerous actions</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:#E0F2FE;padding:2px 6px;border-radius:3px;color:#0369A1;">info</code></td><td style="padding:9px 12px;color:var(--neutral-60);">main · light · dark · contrastText</td><td style="padding:9px 12px;color:var(--neutral-60);">Neutral informational messages</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:#D1FAE5;padding:2px 6px;border-radius:3px;color:#065F46;">success</code></td><td style="padding:9px 12px;color:var(--neutral-60);">main · light · dark · contrastText</td><td style="padding:9px 12px;color:var(--neutral-60);">Positive and success states</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">text</code></td><td style="padding:9px 12px;color:var(--neutral-60);">primary · secondary · disabled</td><td style="padding:9px 12px;color:var(--neutral-60);">Text rendering at different emphasis levels</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">background</code></td><td style="padding:9px 12px;color:var(--neutral-60);">default · paper</td><td style="padding:9px 12px;color:var(--neutral-60);">Page background and surface colours</td></tr>
+            <tr style="border-bottom:1px solid var(--neutral-10);"><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">divider</code></td><td style="padding:9px 12px;color:var(--neutral-60);">single value</td><td style="padding:9px 12px;color:var(--neutral-60);">Separator line colour</td></tr>
+            <tr><td style="padding:9px 12px;"><code style="font-size:11px;background:var(--neutral-10);padding:2px 6px;border-radius:3px;color:var(--brand-70);">action</code></td><td style="padding:9px 12px;color:var(--neutral-60);">active · hover · selected · disabled · disabledBackground · focus</td><td style="padding:9px 12px;color:var(--neutral-60);">Interactive state overlays</td></tr>
+          </tbody>
+        </table>
+        <div class="code-block" style="margin-top:0;">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><span class="kw">const</span> theme = <span class="fn">createTheme</span>({
+  <span class="key">palette</span>: {
+    <span class="key">primary</span>:    { <span class="key">main</span>: <span class="str">'#5189F3'</span> },  <span class="cm">// light, dark, contrastText auto-generated</span>
+    <span class="key">contrastThreshold</span>: <span class="num">4.5</span>,           <span class="cm">// WCAG AA (default: 3)</span>
+    <span class="key">tonalOffset</span>: <span class="num">0.2</span>,                 <span class="cm">// shift for auto light/dark calc</span>
+    <span class="cm">// or { light: 0.1, dark: 0.4 } for asymmetric</span>
+  },
+});</pre>
+        </div>
+      </div>
+
+      <!-- Custom Colors + augmentColor -->
+      <div style="margin-bottom:36px;">
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">02</span> Custom Palette Colors</div>
+        <div style="font-size:12px;color:var(--neutral-60);margin-bottom:12px;">Add any colour beyond the standard six. Option A requires manual tokens; Option B uses <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">augmentColor</code> to auto-calculate <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">light</code>, <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">dark</code>, and <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">contrastText</code> from just a <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">main</code>.</div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><span class="cm">// Option A — manual tokens</span>
+<span class="kw">const</span> theme = <span class="fn">createTheme</span>({
+  <span class="key">palette</span>: {
+    <span class="key">ocean</span>: { <span class="key">main</span>: <span class="str">'#0077B6'</span>, <span class="key">light</span>: <span class="str">'#00B4D8'</span>, <span class="key">dark</span>: <span class="str">'#03045E'</span>, <span class="key">contrastText</span>: <span class="str">'#fff'</span> },
+  },
+});
+
+<span class="cm">// Option B — augmentColor (auto-calculates light / dark / contrastText)</span>
+<span class="kw">let</span> theme = <span class="fn">createTheme</span>();
+theme = <span class="fn">createTheme</span>(theme, {
+  <span class="key">palette</span>: {
+    <span class="key">ocean</span>: theme.palette.<span class="fn">augmentColor</span>({
+      <span class="key">color</span>: { <span class="key">main</span>: <span class="str">'#0077B6'</span> },
+      <span class="key">name</span>: <span class="str">'ocean'</span>,
+    }),
+  },
+});</pre>
+        </div>
+      </div>
+
+      <!-- Palette Utility Functions -->
+      <div style="margin-bottom:36px;">
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">03</span> Palette Utility Functions</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:8px;padding:16px 18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--neutral-80);margin-bottom:6px;">alpha()</div>
+            <div style="font-size:11px;color:var(--neutral-60);margin-bottom:8px;">Apply opacity to any colour value</div>
+            <div style="background:var(--neutral-10);border-radius:5px;padding:8px 10px;font-family:'Cascadia Code','Fira Code',monospace;font-size:11px;color:var(--brand-70);">alpha('#5189F3', 0.5)<br><span style="color:var(--neutral-50);">// rgba(81,137,243,0.5)</span></div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:8px;padding:16px 18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--neutral-80);margin-bottom:6px;">getContrastRatio()</div>
+            <div style="font-size:11px;color:var(--neutral-60);margin-bottom:8px;">Check WCAG contrast between two colours</div>
+            <div style="background:var(--neutral-10);border-radius:5px;padding:8px 10px;font-family:'Cascadia Code','Fira Code',monospace;font-size:11px;color:var(--brand-70);">getContrastRatio('#5189F3','#fff')<br><span style="color:var(--neutral-50);">// e.g. 3.2 — AA needs ≥ 4.5</span></div>
+          </div>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><span class="kw">import</span> { <span class="fn">alpha</span>, <span class="fn">getContrastRatio</span> } <span class="kw">from</span> <span class="str">'@mui/material/styles'</span>;
+
+<span class="cm">// Opacity</span>
+<span class="kw">const</span> translucent = <span class="fn">alpha</span>(<span class="str">'#5189F3'</span>, <span class="num">0.5</span>);   <span class="cm">// rgba(81,137,243,0.5)</span>
+
+<span class="cm">// WCAG check — use contrastThreshold: 4.5 in theme for AA</span>
+<span class="kw">const</span> ratio = <span class="fn">getContrastRatio</span>(<span class="str">'#5189F3'</span>, <span class="str">'#fff'</span>);
+<span class="kw">const</span> textColor = ratio &gt; <span class="num">4.5</span> ? <span class="str">'#fff'</span> : <span class="str">'#111'</span>;</pre>
+        </div>
+      </div>
+
+      <!-- Dark Mode -->
+      <div style="margin-bottom:36px;">
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">04</span> Dark Mode / Color Schemes <span style="font-size:11px;font-weight:600;background:#D1FAE5;color:#065F46;padding:2px 8px;border-radius:99px;">v6+ preferred</span></div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><span class="kw">const</span> theme = <span class="fn">createTheme</span>({
+  <span class="key">colorSchemes</span>: {
+    <span class="key">light</span>: { <span class="key">palette</span>: { <span class="key">primary</span>: { <span class="key">main</span>: <span class="str">'#5189F3'</span> } } },
+    <span class="key">dark</span>:  { <span class="key">palette</span>: { <span class="key">primary</span>: { <span class="key">main</span>: <span class="str">'#B8D0FD'</span> } } },
+  },
+});</pre>
+        </div>
+      </div>
+
+      <!-- Typography -->
+      <div style="margin-bottom:36px;">
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">05</span> Typography</div>
+        <div style="font-size:12px;color:var(--neutral-60);margin-bottom:12px;">13 built-in variants: <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">h1–h6</code> <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">subtitle1–2</code> <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">body1–2</code> <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">button</code> <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">caption</code> <code style="background:var(--neutral-10);padding:1px 5px;border-radius:3px;font-size:11px;">overline</code></div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><span class="kw">import</span> { <span class="fn">createTheme</span>, <span class="fn">responsiveFontSizes</span> } <span class="kw">from</span> <span class="str">'@mui/material/styles'</span>;
+
+<span class="kw">let</span> theme = <span class="fn">createTheme</span>({
+  <span class="key">typography</span>: {
+    <span class="key">fontFamily</span>: <span class="str">'"Nunito", sans-serif'</span>,
+    <span class="key">fontSize</span>: <span class="num">14</span>,          <span class="cm">// base font size in px (default: 14)</span>
+    <span class="key">htmlFontSize</span>: <span class="num">16</span>,     <span class="cm">// &lt;html&gt; font size in px (default: 16)</span>
+    <span class="key">h1</span>: { <span class="key">fontSize</span>: <span class="str">'2rem'</span>, <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">letterSpacing</span>: <span class="str">'-0.25px'</span> },
+    <span class="key">body1</span>: { <span class="key">fontSize</span>: <span class="str">'1rem'</span>, <span class="key">lineHeight</span>: <span class="num">1.6</span> },
+    <span class="key">button</span>: { <span class="key">fontWeight</span>: <span class="num">600</span>, <span class="key">textTransform</span>: <span class="str">'none'</span> },
+    <span class="key">display1</span>: { <span class="key">fontSize</span>: <span class="str">'3rem'</span>, <span class="key">fontWeight</span>: <span class="num">700</span> }, <span class="cm">// custom variant</span>
+  },
+});
+theme = <span class="fn">responsiveFontSizes</span>(theme); <span class="cm">// auto-scales h1–h6 at breakpoints</span></pre>
+        </div>
+      </div>
+
+      <!-- Spacing -->
+      <div style="margin-bottom:36px;">
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:12px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">06</span> Spacing System</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:8px;padding:14px 16px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Number (Seatrace)</div>
+            <code style="font-size:11px;color:var(--brand-70);background:var(--brand-5);padding:3px 8px;border-radius:4px;">spacing: 4</code>
+            <div style="font-size:11px;color:var(--neutral-50);margin-top:6px;">spacing(1) → 4px</div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:8px;padding:14px 16px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Function</div>
+            <code style="font-size:11px;color:var(--brand-70);background:var(--brand-5);padding:3px 8px;border-radius:4px;">f => 0.25 * f + rem</code>
+            <div style="font-size:11px;color:var(--neutral-50);margin-top:6px;">Bootstrap approach</div>
+          </div>
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:8px;padding:14px 16px;text-align:center;">
+            <div style="font-size:11px;font-weight:700;color:var(--neutral-50);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px;">Array</div>
+            <code style="font-size:11px;color:var(--brand-70);background:var(--brand-5);padding:3px 8px;border-radius:4px;">[0,4,8,16,32,64]</code>
+            <div style="font-size:11px;color:var(--neutral-50);margin-top:6px;">Explicit scale</div>
+          </div>
+        </div>
+        <div class="code-block">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre><span class="cm">// Seatrace uses 4px unit</span>
+theme.<span class="fn">spacing</span>(<span class="num">1</span>)       <span class="cm">// → '4px'</span>
+theme.<span class="fn">spacing</span>(<span class="num">2</span>)       <span class="cm">// → '8px'</span>
+theme.<span class="fn">spacing</span>(<span class="num">4</span>)       <span class="cm">// → '16px'</span>
+theme.<span class="fn">spacing</span>(<span class="num">1</span>, <span class="num">2</span>)   <span class="cm">// → '4px 8px'  (shorthand)</span>
+theme.<span class="fn">spacing</span>(<span class="num">1</span>, <span class="str">'auto'</span>) <span class="cm">// → '4px auto'</span></pre>
+        </div>
+      </div>
+
+      <!-- Component Customization Methods -->
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--neutral-90);margin-bottom:16px;display:flex;align-items:center;gap:8px;"><span style="background:var(--brand-10);color:var(--brand-70);border-radius:6px;padding:4px 10px;font-size:12px;">07</span> Component Customization Methods</div>
+
+        <div style="display:flex;flex-direction:column;gap:20px;">
+
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:10px;overflow:hidden;">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--neutral-10);display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;background:#EEF2FF;color:#4338CA;padding:2px 8px;border-radius:99px;">Method 1</span>
+              <span style="font-size:13px;font-weight:700;color:var(--neutral-90);">Default Props</span>
+              <span style="font-size:11px;color:var(--neutral-50);">— change prop defaults globally</span>
+            </div>
+            <div class="code-block" style="margin:0;border-radius:0;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="key">components</span>: {
+  <span class="key">MuiButton</span>:     { <span class="key">defaultProps</span>: { <span class="key">disableElevation</span>: <span class="kw">true</span> } },
+  <span class="key">MuiTextField</span>:  { <span class="key">defaultProps</span>: { <span class="key">size</span>: <span class="str">'small'</span>, <span class="key">variant</span>: <span class="str">'outlined'</span> } },
+  <span class="key">MuiButtonBase</span>: { <span class="key">defaultProps</span>: { <span class="key">disableRipple</span>: <span class="kw">true</span> } },
+}</pre>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:10px;overflow:hidden;">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--neutral-10);display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;background:#EEF2FF;color:#4338CA;padding:2px 8px;border-radius:99px;">Method 2</span>
+              <span style="font-size:13px;font-weight:700;color:var(--neutral-90);">Style Overrides</span>
+              <span style="font-size:11px;color:var(--neutral-50);">— override CSS per slot</span>
+            </div>
+            <div class="code-block" style="margin:0;border-radius:0;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="key">MuiButton</span>: {
+  <span class="key">styleOverrides</span>: {
+    <span class="key">root</span>: { <span class="key">borderRadius</span>: <span class="num">4</span>, <span class="key">fontWeight</span>: <span class="num">600</span> },
+    <span class="key">containedPrimary</span>: {
+      <span class="key">boxShadow</span>: <span class="str">'none'</span>,
+      <span class="str">'&amp;:hover'</span>: { <span class="key">backgroundColor</span>: <span class="str">'#70A0FB'</span>, <span class="key">boxShadow</span>: <span class="str">'none'</span> },
+      <span class="str">'&amp;:active'</span>: { <span class="key">backgroundColor</span>: <span class="str">'#326DDD'</span> },
+    },
+    <span class="key">outlined</span>: { <span class="key">borderColor</span>: <span class="str">'#5189F3'</span> },
+  },
+}</pre>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:10px;overflow:hidden;">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--neutral-10);display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;background:#EEF2FF;color:#4338CA;padding:2px 8px;border-radius:99px;">Method 3</span>
+              <span style="font-size:13px;font-weight:700;color:var(--neutral-90);">Conditional Variants</span>
+              <span style="font-size:11px;color:var(--neutral-50);">— styles triggered by prop values</span>
+            </div>
+            <div class="code-block" style="margin:0;border-radius:0;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="key">MuiButton</span>: {
+  <span class="key">styleOverrides</span>: {
+    <span class="key">root</span>: {
+      <span class="key">variants</span>: [
+        { <span class="key">props</span>: { <span class="key">variant</span>: <span class="str">'dashed'</span> },
+          <span class="key">style</span>: { <span class="key">border</span>: <span class="str">'2px dashed #5189F3'</span> } },
+        { <span class="key">props</span>: { <span class="key">variant</span>: <span class="str">'contained'</span>, <span class="key">color</span>: <span class="str">'primary'</span> },
+          <span class="key">style</span>: { <span class="key">boxShadow</span>: <span class="str">'none'</span> } },
+      ],
+    },
+  },
+}</pre>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1.5px solid var(--neutral-20);border-radius:10px;overflow:hidden;">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--neutral-10);display:flex;align-items:center;gap:8px;">
+              <span style="font-size:11px;font-weight:700;background:#EEF2FF;color:#4338CA;padding:2px 8px;border-radius:99px;">Method 4</span>
+              <span style="font-size:13px;font-weight:700;color:var(--neutral-90);">Global Theme Variables</span>
+              <span style="font-size:11px;color:var(--neutral-50);">— cascades to all components automatically</span>
+            </div>
+            <div class="code-block" style="margin:0;border-radius:0;">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre><span class="fn">createTheme</span>({
+  <span class="key">typography</span>: { <span class="key">button</span>: { <span class="key">fontSize</span>: <span class="str">'0.875rem'</span> } },
+  <span class="key">shape</span>:      { <span class="key">borderRadius</span>: <span class="num">8</span> },
+  <span class="key">spacing</span>:    <span class="num">4</span>,
+});</pre>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: MAPPING ── -->
+    <div id="tab-mapping" class="mui-panel">
+      <div class="mapping-grid">
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#5189F3;"></div><span class="mapping-token">Brand 50 — Primary</span><span class="mapping-path">palette.primary.main</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#70A0FB;"></div><span class="mapping-token">Brand 40 — Light</span><span class="mapping-path">palette.primary.light</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#326DDD;"></div><span class="mapping-token">Brand 70 — Dark</span><span class="mapping-path">palette.primary.dark</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#6286F1;"></div><span class="mapping-token">Link 50 — Secondary</span><span class="mapping-path">palette.secondary.main</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#E82727;"></div><span class="mapping-token">Warning 50 — Error</span><span class="mapping-path">palette.error.main</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#4DAC4A;"></div><span class="mapping-token">Success 50</span><span class="mapping-path">palette.success.main</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#111111;"></div><span class="mapping-token">Neutral 100 — Text</span><span class="mapping-path">palette.text.primary</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#5E5E60;"></div><span class="mapping-token">Neutral 80 — Secondary</span><span class="mapping-path">palette.text.secondary</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#DFE2E6;border:1px solid #ccc;"></div><span class="mapping-token">Neutral 20 — Divider</span><span class="mapping-path">palette.divider</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#F9F9FA;border:1px solid #ccc;"></div><span class="mapping-token">Surface — BG Default</span><span class="mapping-path">palette.background.default</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#FFFFFF;border:1px solid #ccc;"></div><span class="mapping-token">Neutral 1 — Paper</span><span class="mapping-path">palette.background.paper</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:linear-gradient(90deg,#EBF0F4 50%,#5189F3 50%);"></div><span class="mapping-token">Border Radius 4 / 8 / 16</span><span class="mapping-path">shape.borderRadius</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#5189F3;">Aa</div><span class="mapping-token">Headline Large (h1)</span><span class="mapping-path">typography.h1</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#5189F3;">Aa</div><span class="mapping-token">Body Large (body1)</span><span class="mapping-path">typography.body1</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#5189F3;">Aa</div><span class="mapping-token">Label Large (subtitle1)</span><span class="mapping-path">typography.subtitle1</span></div>
+        <div class="mapping-row"><div class="mapping-swatch" style="background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#5189F3;">Aa</div><span class="mapping-token">Button Font</span><span class="mapping-path">typography.button</span></div>
+      </div>
+    </div>
+
+    <!-- ── TAB: COMPONENTS ── -->
+    <div id="tab-components" class="mui-panel">
+
+      <!-- Search bar -->
+      <div class="comp-search-bar">
+        <div class="comp-search-wrap">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="comp-search" id="compSearch" type="text" placeholder="Search components…" oninput="filterComponents(this.value)" autocomplete="off" />
+        </div>
+        <span class="comp-count-badge" id="compCount">55 components</span>
+      </div>
+
+      <!-- INPUTS -->
+      <div class="comp-category" data-category="inputs">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#EEF2FF;">⌨️</div>
+          <span class="comp-category-name">Inputs</span>
+          <span class="comp-category-count">14</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Autocomplete</td><td class="comp-desc">Combo box with free-form text input and suggestion dropdown</td></tr>
+            <tr class="comp-row"><td class="comp-name">Button</td><td class="comp-desc">Triggered actions — contained, outlined, and text variants</td></tr>
+            <tr class="comp-row"><td class="comp-name">Button Group</td><td class="comp-desc">Horizontally grouped set of related buttons</td></tr>
+            <tr class="comp-row"><td class="comp-name">Checkbox</td><td class="comp-desc">Binary on/off selection control</td></tr>
+            <tr class="comp-row"><td class="comp-name">Floating Action Button</td><td class="comp-desc">Circular primary-action button (FAB) floating above content</td></tr>
+            <tr class="comp-row"><td class="comp-name">Number Field</td><td class="comp-desc">Numeric input with increment/decrement controls</td></tr>
+            <tr class="comp-row"><td class="comp-name">Radio Group</td><td class="comp-desc">Single-selection from a list of mutually exclusive options</td></tr>
+            <tr class="comp-row"><td class="comp-name">Rating</td><td class="comp-desc">Star-based rating input for collecting user feedback</td></tr>
+            <tr class="comp-row"><td class="comp-name">Select</td><td class="comp-desc">Dropdown menu for picking one or multiple options</td></tr>
+            <tr class="comp-row"><td class="comp-name">Slider</td><td class="comp-desc">Drag handle for selecting a value within a range</td></tr>
+            <tr class="comp-row"><td class="comp-name">Switch</td><td class="comp-desc">Toggle between two states (on/off)</td></tr>
+            <tr class="comp-row"><td class="comp-name">Text Field</td><td class="comp-desc">Single-line or multi-line text input with label and helper text</td></tr>
+            <tr class="comp-row"><td class="comp-name">Transfer List</td><td class="comp-desc">Move items between two lists with checkboxes</td></tr>
+            <tr class="comp-row"><td class="comp-name">Toggle Button</td><td class="comp-desc">Exclusive or multi-select toggle group</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- DATA DISPLAY -->
+      <div class="comp-category" data-category="data-display">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#F0FDF4;">📊</div>
+          <span class="comp-category-name">Data Display</span>
+          <span class="comp-category-count">10</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Avatar</td><td class="comp-desc">User or entity image, icon, or initials</td></tr>
+            <tr class="comp-row"><td class="comp-name">Badge</td><td class="comp-desc">Small count or status indicator overlaid on an element</td></tr>
+            <tr class="comp-row"><td class="comp-name">Chip</td><td class="comp-desc">Compact element for tags, filters, or selections</td></tr>
+            <tr class="comp-row"><td class="comp-name">Divider</td><td class="comp-desc">Thin line separator between content regions</td></tr>
+            <tr class="comp-row"><td class="comp-name">Icons</td><td class="comp-desc">SVG icon wrapper component (base)</td></tr>
+            <tr class="comp-row"><td class="comp-name">Material Icons</td><td class="comp-desc">Full 2,000+ icon library via <code style="font-size:11px;background:var(--neutral-10);padding:1px 5px;border-radius:3px;">@mui/icons-material</code></td></tr>
+            <tr class="comp-row"><td class="comp-name">List</td><td class="comp-desc">Vertical list of items with optional icons and actions</td></tr>
+            <tr class="comp-row"><td class="comp-name">Table</td><td class="comp-desc">Structured rows and columns for tabular data</td></tr>
+            <tr class="comp-row"><td class="comp-name">Tooltip</td><td class="comp-desc">Informational label shown on hover or focus</td></tr>
+            <tr class="comp-row"><td class="comp-name">Typography</td><td class="comp-desc">Renders text with theme-scale variants (h1–h6, body, caption)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- FEEDBACK -->
+      <div class="comp-category" data-category="feedback">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#FFF7ED;">💬</div>
+          <span class="comp-category-name">Feedback</span>
+          <span class="comp-category-count">6</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Alert</td><td class="comp-desc">Inline message for success, warning, error, or info states</td></tr>
+            <tr class="comp-row"><td class="comp-name">Backdrop</td><td class="comp-desc">Dark overlay that blocks interaction with background content</td></tr>
+            <tr class="comp-row"><td class="comp-name">Dialog</td><td class="comp-desc">Modal overlay for confirmations, forms, or detailed content</td></tr>
+            <tr class="comp-row"><td class="comp-name">Progress</td><td class="comp-desc">Circular or linear loading indicator</td></tr>
+            <tr class="comp-row"><td class="comp-name">Skeleton</td><td class="comp-desc">Animated placeholder shown while content is loading</td></tr>
+            <tr class="comp-row"><td class="comp-name">Snackbar</td><td class="comp-desc">Brief toast notification anchored to the screen edge</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SURFACES -->
+      <div class="comp-category" data-category="surfaces">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#F8FAFF;">🗂️</div>
+          <span class="comp-category-name">Surfaces</span>
+          <span class="comp-category-count">4</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Accordion</td><td class="comp-desc">Collapsible/expandable content panel with header</td></tr>
+            <tr class="comp-row"><td class="comp-name">App Bar</td><td class="comp-desc">Top-level navigation and branding bar</td></tr>
+            <tr class="comp-row"><td class="comp-name">Card</td><td class="comp-desc">Contained surface for grouping related content and actions</td></tr>
+            <tr class="comp-row"><td class="comp-name">Paper</td><td class="comp-desc">Base elevation surface — foundation for Card and other surfaces</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- NAVIGATION -->
+      <div class="comp-category" data-category="navigation">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#F0FDF4;">🧭</div>
+          <span class="comp-category-name">Navigation</span>
+          <span class="comp-category-count">10</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Bottom Navigation</td><td class="comp-desc">Mobile tab bar fixed at the bottom of the screen</td></tr>
+            <tr class="comp-row"><td class="comp-name">Breadcrumbs</td><td class="comp-desc">Hierarchical location trail for deep navigation</td></tr>
+            <tr class="comp-row"><td class="comp-name">Drawer</td><td class="comp-desc">Side panel that slides in from any screen edge</td></tr>
+            <tr class="comp-row"><td class="comp-name">Link</td><td class="comp-desc">Styled anchor element that inherits theme typography</td></tr>
+            <tr class="comp-row"><td class="comp-name">Menu</td><td class="comp-desc">Contextual dropdown list of actions</td></tr>
+            <tr class="comp-row"><td class="comp-name">Menubar</td><td class="comp-desc">Horizontal application menu bar</td></tr>
+            <tr class="comp-row"><td class="comp-name">Pagination</td><td class="comp-desc">Page number controls for multi-page content</td></tr>
+            <tr class="comp-row"><td class="comp-name">Speed Dial</td><td class="comp-desc">Expandable FAB that reveals a set of action sub-buttons</td></tr>
+            <tr class="comp-row"><td class="comp-name">Stepper</td><td class="comp-desc">Step-by-step progress indicator for multi-step flows</td></tr>
+            <tr class="comp-row"><td class="comp-name">Tabs</td><td class="comp-desc">Horizontal tab switcher for views within a page</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LAYOUT -->
+      <div class="comp-category" data-category="layout">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#F5F3FF;">📐</div>
+          <span class="comp-category-name">Layout</span>
+          <span class="comp-category-count">5</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Box</td><td class="comp-desc">Generic wrapper with full <code style="font-size:11px;background:var(--neutral-10);padding:1px 5px;border-radius:3px;">sx</code> prop system access</td></tr>
+            <tr class="comp-row"><td class="comp-name">Container</td><td class="comp-desc">Responsive max-width content wrapper with auto margins</td></tr>
+            <tr class="comp-row"><td class="comp-name">Grid</td><td class="comp-desc">12-column responsive layout grid with breakpoints</td></tr>
+            <tr class="comp-row"><td class="comp-name">Stack</td><td class="comp-desc">One-dimensional flex layout helper with gap spacing</td></tr>
+            <tr class="comp-row"><td class="comp-name">Image List</td><td class="comp-desc">Responsive masonry or uniform-grid image collection</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LAB -->
+      <div class="comp-category" data-category="lab">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#FFF8F0;">🧪</div>
+          <span class="comp-category-name">Lab</span>
+          <span class="comp-category-count">2</span>
+          <span class="comp-badge badge-lab">Experimental</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Masonry</td><td class="comp-desc">Pinterest-style variable-height column grid layout</td></tr>
+            <tr class="comp-row"><td class="comp-name">Timeline</td><td class="comp-desc">Vertical chronological event list with connectors</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- UTILS -->
+      <div class="comp-category" data-category="utils">
+        <div class="comp-category-header">
+          <div class="comp-category-icon" style="background:#F8FAFC;">🔧</div>
+          <span class="comp-category-name">Utils</span>
+          <span class="comp-category-count">11</span>
+        </div>
+        <table class="comp-table">
+          <thead><tr><th style="width:200px;">Component</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr class="comp-row"><td class="comp-name">Click-Away Listener</td><td class="comp-desc">Detects and handles clicks outside a wrapped element</td></tr>
+            <tr class="comp-row"><td class="comp-name">CSS Baseline</td><td class="comp-desc">Global CSS reset + applies <code style="font-size:11px;background:var(--neutral-10);padding:1px 5px;border-radius:3px;">background.default</code> to body</td></tr>
+            <tr class="comp-row"><td class="comp-name">InitColorSchemeScript</td><td class="comp-desc">Prevents flash of unstyled content during color-scheme init</td></tr>
+            <tr class="comp-row"><td class="comp-name">Modal</td><td class="comp-desc">Low-level accessible overlay primitive (Dialog is built on this)</td></tr>
+            <tr class="comp-row"><td class="comp-name">No SSR</td><td class="comp-desc">Defers rendering of children to client-side only</td></tr>
+            <tr class="comp-row"><td class="comp-name">Popover</td><td class="comp-desc">Anchored floating content panel with backdrop</td></tr>
+            <tr class="comp-row"><td class="comp-name">Popper</td><td class="comp-desc">Low-level positioning primitive based on Popper.js</td></tr>
+            <tr class="comp-row"><td class="comp-name">Portal</td><td class="comp-desc">Renders children into a different DOM node (e.g. body)</td></tr>
+            <tr class="comp-row"><td class="comp-name">Textarea Autosize</td><td class="comp-desc">Textarea that grows automatically with content</td></tr>
+            <tr class="comp-row"><td class="comp-name">Transitions</td><td class="comp-desc">Fade, Slide, Grow, Zoom, Collapse animation helpers</td></tr>
+            <tr class="comp-row"><td class="comp-name">useMediaQuery</td><td class="comp-desc">React hook to evaluate CSS breakpoints in JavaScript</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- No results message -->
+      <div id="compNoResults" style="display:none; text-align:center; padding:48px 0; color:var(--neutral-50);">
+        <div style="font-size:32px; margin-bottom:10px;">🔍</div>
+        <div style="font-size:14px; font-weight:600;">No components found</div>
+        <div style="font-size:12px; margin-top:4px;">Try a different keyword</div>
+      </div>
+
+    </div>
+
+  </section>
+
+</div>
+
+<script>
+  function switchTab(e, id) {
+    const section = e.target.closest('section');
+    section.querySelectorAll('.mui-tab').forEach(t => t.classList.remove('active'));
+    section.querySelectorAll('.mui-panel').forEach(p => p.classList.remove('active'));
+    e.target.classList.add('active');
+    document.getElementById(id).classList.add('active');
+  }
+
+  function filterComponents(query) {
+    const q = query.toLowerCase().trim();
+    const rows = document.querySelectorAll('#tab-components .comp-row');
+    let visible = 0;
+    rows.forEach(row => {
+      const name = row.querySelector('.comp-name').textContent.toLowerCase();
+      const desc = row.querySelector('.comp-desc').textContent.toLowerCase();
+      const match = !q || name.includes(q) || desc.includes(q);
+      row.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    // hide empty categories
+    document.querySelectorAll('#tab-components .comp-category').forEach(cat => {
+      const anyVisible = [...cat.querySelectorAll('.comp-row')].some(r => r.style.display !== 'none');
+      cat.style.display = anyVisible ? '' : 'none';
+    });
+    document.getElementById('compCount').textContent = visible + (visible === 1 ? ' component' : ' components');
+    document.getElementById('compNoResults').style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  function copyCode(btn) {
+    const pre = btn.nextElementSibling;
+    navigator.clipboard.writeText(pre.innerText).then(() => {
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 1800);
+    });
+  }
+</script>
+</body>
+</html>

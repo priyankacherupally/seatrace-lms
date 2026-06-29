@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lab Test – Manager | SeaTrace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    /* ── Tokens ──────────────────────────────────────── */
+    :root {
+      --brand-50:   #5189F3;
+      --brand-40:   #70A0FB;
+      --neutral-5:  #F8FAFC;
+      --neutral-10: #EBF0F4;
+      --neutral-20: #DFE2E6;
+      --neutral-50: #A7AAAD;
+      --neutral-80: #5E5E60;
+      --neutral-100:#111111;
+      --surface:    #F9F9FA;
+      --success-10: #E9FFEC;
+      --success-60: #408F3D;
+      --success-border: #C6EEC9;
+      --error-10:   #FFEBEE;
+      --error-50:   #E82727;
+      --error-border: #F5C6CB;
+      --pass-bg:    #E5F6E4;
+      --pass-text:  #2E7D32;
+      --fail-bg:    #FFEBEB;
+      --fail-text:  #C62828;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--surface);
+      color: var(--neutral-100);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Navbar ──────────────────────────────────────── */
+    .navbar {
+      height: 52px;
+      background: #fff;
+      border-bottom: 1px solid var(--neutral-10);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--neutral-100);
+      letter-spacing: 0.5px;
+    }
+    .navbar-logo-icon {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--brand-50);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      color: var(--brand-50); letter-spacing: -0.5px;
+    }
+    .navbar-actions { display: flex; align-items: center; gap: 8px; }
+    .navbar-icon-btn {
+      width: 32px; height: 32px;
+      border: none; background: none; cursor: pointer;
+      color: var(--neutral-80);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px; border-radius: 4px; transition: background 0.15s;
+    }
+    .navbar-icon-btn:hover { background: var(--neutral-5); }
+
+    /* ── App body ─────────────────────────────────────── */
+    .app-body { display: flex; flex: 1; min-height: 0; }
+
+    /* ── Sidebar ─────────────────────────────────────── */
+    .sidebar {
+      width: 52px;
+      background: #fff;
+      border-right: 1px solid var(--neutral-10);
+      display: flex; flex-direction: column;
+      align-items: center; padding: 12px 0; gap: 4px; flex-shrink: 0;
+    }
+    .sidebar-icon {
+      width: 36px; height: 36px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--neutral-50); font-size: 17px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-icon:hover { background: var(--neutral-5); color: var(--neutral-80); }
+    .sidebar-icon.active { background: var(--brand-50); color: #fff; }
+    .sidebar-spacer { flex: 1; }
+
+    /* ── Main content ────────────────────────────────── */
+    .main-content {
+      flex: 1; min-width: 0; display: flex; flex-direction: column;
+      padding: 20px 32px 0; overflow: hidden;
+    }
+
+    /* ── Breadcrumb ──────────────────────────────────── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--neutral-50);
+      margin-bottom: 18px; flex-shrink: 0; letter-spacing: -0.25px;
+    }
+    .breadcrumb-link { color: var(--neutral-80); cursor: pointer; }
+    .breadcrumb-link:hover { color: var(--brand-50); }
+    .breadcrumb-sep { font-size: 11px; }
+
+    /* ── Page header ─────────────────────────────────── */
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 16px; flex-shrink: 0;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .back-btn {
+      width: 34px; height: 34px;
+      border: 1px solid var(--neutral-20); background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--neutral-80); font-size: 15px;
+      transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
+    }
+    .back-btn:hover { border-color: var(--brand-50); color: var(--brand-50); }
+
+    .page-title {
+      font-size: 18px; font-weight: 600;
+      color: var(--neutral-100); letter-spacing: -0.3px;
+    }
+
+    /* Date range */
+    .date-range {
+      display: flex; align-items: center;
+      height: 36px; border: 1px solid var(--neutral-20); background: #fff;
+      padding: 0 12px; font-size: 13px; color: var(--neutral-80);
+      cursor: pointer; transition: border-color 0.2s; white-space: nowrap;
+    }
+    .date-range:hover { border-color: var(--brand-50); }
+    .date-range-sep { margin: 0 8px; color: var(--neutral-50); }
+    .date-range-cal { margin-left: 10px; color: var(--neutral-50); }
+
+    /* Harvest select */
+    .harvest-select {
+      height: 36px; border: 1px solid var(--neutral-20); background: #fff;
+      padding: 0 10px; font-size: 13px; color: var(--neutral-80);
+      cursor: pointer; appearance: none; font-family: 'Nunito', sans-serif;
+      min-width: 140px; transition: border-color 0.2s;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A7AAAD' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 30px;
+    }
+    .harvest-select:hover, .harvest-select:focus { border-color: var(--brand-50); outline: none; }
+
+    /* Icon btn */
+    .icon-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--neutral-20); background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--neutral-80); font-size: 16px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .icon-btn:hover { border-color: var(--brand-50); color: var(--brand-50); }
+
+    /* ── Card ────────────────────────────────────────── */
+    .card {
+      flex: 1; min-height: 0; display: flex; flex-direction: column;
+      background: #fff; border: 1px solid var(--neutral-10); overflow: hidden;
+    }
+
+    /* ── Main tabs ───────────────────────────────────── */
+    .main-tabs {
+      display: flex; align-items: flex-end;
+      border-bottom: 1px solid var(--neutral-10);
+      padding: 0 24px; flex-shrink: 0;
+    }
+    .main-tab {
+      padding: 14px 2px; margin-right: 28px;
+      font-size: 14px; font-weight: 500; color: var(--neutral-50);
+      background: none; border: none; border-bottom: 2px solid transparent;
+      cursor: pointer; letter-spacing: -0.25px; font-family: 'Nunito', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .main-tab:hover { color: var(--neutral-80); }
+    .main-tab.active { color: var(--neutral-100); border-bottom-color: var(--brand-50); }
+
+    /* ── Sub-tabs ────────────────────────────────────── */
+    .sub-tabs-wrapper {
+      border-bottom: 1px solid var(--neutral-10);
+      flex-shrink: 0; overflow-x: auto;
+      margin-top: 12px;
+    }
+    .sub-tabs-wrapper::-webkit-scrollbar { height: 3px; }
+    .sub-tabs-wrapper::-webkit-scrollbar-track { background: var(--neutral-5); }
+    .sub-tabs-wrapper::-webkit-scrollbar-thumb { background: var(--neutral-20); }
+
+    .sub-tabs { display: flex; align-items: flex-end; padding: 0 24px; white-space: nowrap; }
+    .sub-tab {
+      padding: 11px 2px; margin-right: 32px;
+      font-size: 13px; font-weight: 500; color: var(--neutral-50);
+      background: none; border: none; border-bottom: 2px solid transparent;
+      cursor: pointer; white-space: nowrap; letter-spacing: -0.25px;
+      font-family: 'Nunito', sans-serif; transition: color 0.2s, border-color 0.2s;
+    }
+    .sub-tab:hover { color: var(--neutral-80); }
+    .sub-tab.active { color: var(--brand-50); border-bottom-color: var(--brand-50); }
+
+    /* ── Table wrapper ───────────────────────────────── */
+    .table-wrapper { flex: 1; overflow: auto; margin-top: 12px; }
+    .table-wrapper::-webkit-scrollbar { width: 5px; height: 5px; }
+    .table-wrapper::-webkit-scrollbar-track { background: var(--neutral-5); }
+    .table-wrapper::-webkit-scrollbar-thumb { background: var(--neutral-20); border-radius: 3px; }
+
+    /* ── Table ───────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; border-spacing: 0; font-size: 14px; min-width: 1200px; }
+    thead tr { background: var(--neutral-5); }
+    th {
+      padding: 11px 16px; text-align: left;
+      font-size: 13px; font-weight: 600; color: var(--neutral-80);
+      border-top: 1px solid var(--neutral-10);
+      border-bottom: 1px solid var(--neutral-10);
+      white-space: nowrap; letter-spacing: -0.25px; user-select: none;
+    }
+    th.sortable { cursor: pointer; }
+    th.sortable:hover { color: var(--neutral-100); }
+
+    .sort-icon { display: inline-flex; flex-direction: column; margin-left: 5px; vertical-align: middle; gap: 1px; }
+
+    td {
+      padding: 11px 16px; border-bottom: 1px solid var(--neutral-10);
+      color: var(--neutral-100); font-size: 14px; letter-spacing: -0.25px;
+      white-space: nowrap; font-variant-numeric: tabular-nums;
+    }
+    tbody tr:hover td { background: var(--neutral-5); }
+    tbody tr:first-child td { border-top: none; }
+
+    .col-check { width: 48px; }
+    th.col-check, td.col-check { padding-left: 16px; padding-right: 8px; }
+    .row-check, .header-check { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand-50); }
+
+    /* Sample number — muted, single line */
+    .sample-num {
+      color: var(--neutral-50);
+      font-size: 13px;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.25px;
+    }
+
+    /* Value cells */
+    .value-cell {
+      display: inline-block; padding: 3px 12px;
+      font-size: 13px; font-weight: 600; min-width: 54px;
+      text-align: center; letter-spacing: -0.25px;
+    }
+    .value-pass { background: var(--pass-bg); color: var(--pass-text); }
+    .value-fail { background: var(--fail-bg); color: var(--fail-text); }
+
+    /* Status badge */
+    .status-badge {
+      display: inline-block; padding: 4px 18px;
+      font-size: 13px; font-weight: 600;
+      min-width: 68px; text-align: center; letter-spacing: -0.25px;
+    }
+    .status-pass { background: var(--success-10); color: var(--success-60); }
+    .status-fail { background: var(--error-10);   color: var(--error-50);   }
+
+    /* Action pill */
+    .action-pill {
+      display: inline-block; padding: 5px 16px;
+      border-radius: 20px; font-size: 13px; font-weight: 500;
+      letter-spacing: -0.25px; text-align: center; white-space: nowrap;
+    }
+    .action-approved  { background: var(--success-10); color: var(--success-60); border: 1px solid var(--success-border); }
+    .action-rejected  { background: var(--error-10);   color: var(--error-50);   border: 1px solid var(--error-border);   }
+    .action-submitted { background: var(--neutral-10); color: var(--neutral-80); border: 1px solid var(--neutral-20);     }
+
+    /* ── OI split-pane table ─────────────────────────── */
+    /* Two side-by-side tables, each independently scrollable horizontally.
+       Row heights are synced via JS after each render so rows stay aligned. */
+    .split-table-wrapper { display: flex; align-items: flex-start; min-width: 0; }
+    .details-pane {
+      flex: 0 0 auto; max-width: 55%; min-width: 0; overflow-x: auto;
+      border-right: 2px solid var(--neutral-10);
+    }
+    .params-pane { flex: 1; min-width: 0; overflow-x: auto; }
+    .details-pane::-webkit-scrollbar,
+    .params-pane::-webkit-scrollbar  { height: 4px; }
+    .details-pane::-webkit-scrollbar-track,
+    .params-pane::-webkit-scrollbar-track { background: var(--neutral-5); }
+    .details-pane::-webkit-scrollbar-thumb,
+    .params-pane::-webkit-scrollbar-thumb { background: var(--neutral-20); border-radius: 2px; }
+    .oi-table { border-collapse: collapse; min-width: max-content; font-size: 14px; width: 100%; }
+    .oi-th {
+      background: #F8FAFF; font-weight: 600; font-size: 13px;
+      color: var(--neutral-80); border-top: 1px solid var(--neutral-10);
+      border-bottom: 1px solid var(--neutral-10); padding: 11px 16px;
+      white-space: nowrap; text-align: left; position: sticky; top: 0; z-index: 2;
+    }
+    .oi-td {
+      border-bottom: 1px solid var(--neutral-10); padding: 11px 16px;
+      color: var(--neutral-100); font-size: 14px; white-space: nowrap; vertical-align: middle;
+    }
+    .oi-td-detail { background: #fafafa; }
+    .oi-checkbox-th {
+      width: 48px; padding-left: 16px; padding-right: 8px;
+      position: sticky; left: 0; z-index: 3; background: #F8FAFF;
+    }
+    .oi-checkbox-td {
+      width: 48px; padding-left: 16px; padding-right: 8px;
+      position: sticky; left: 0; z-index: 1; background: #fafafa;
+    }
+    .oi-sticky-right    { position: sticky; z-index: 2; background: #F8FAFF; }
+    .oi-sticky-right-td { position: sticky; z-index: 1; background: #fff; }
+    .oi-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: var(--brand-50); display: block; }
+    .view-btn {
+      border: 1px solid var(--neutral-20); background: #fff;
+      padding: 4px 16px; font-size: 13px; color: var(--neutral-80); cursor: pointer;
+    }
+    .view-btn:hover { border-color: var(--brand-50); color: var(--brand-50); }
+    .pass-text { color: #408F3D; font-weight: 500; }
+    .fail-text { color: #E82727; font-weight: 500; }
+
+    /* ── Footer ──────────────────────────────────────── */
+    .footer-actions {
+      display: flex; justify-content: flex-end;
+      padding: 16px 0 20px; flex-shrink: 0;
+    }
+    .reviewed-btn {
+      height: 40px; padding: 0 32px;
+      background: var(--brand-50); border: none; color: #fff;
+      font-size: 14px; font-weight: 600; cursor: pointer;
+      letter-spacing: -0.25px; font-family: 'Nunito', sans-serif;
+      transition: background 0.2s;
+    }
+    .reviewed-btn:hover { background: var(--brand-40); }
+    .reviewed-btn:active { background: #326DDD; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ───────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <div class="navbar-logo-icon">ST</div>
+      SEATRACE
+    </div>
+    <div class="navbar-actions">
+      <button class="navbar-icon-btn" title="Export">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </button>
+      <button class="navbar-icon-btn" title="Home">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── App body ─────────────────────────────────── -->
+  <div class="app-body">
+
+    <!-- ── Sidebar ────────────────────────────────── -->
+    <aside class="sidebar">
+      <div class="sidebar-icon" title="Dashboard">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+        </svg>
+      </div>
+      <div class="sidebar-icon" title="Records">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+        </svg>
+      </div>
+      <div class="sidebar-icon" title="Analytics">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+      </div>
+      <div class="sidebar-icon" title="Users">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <div class="sidebar-icon" title="Reports">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
+        </svg>
+      </div>
+      <div class="sidebar-icon" title="Documents">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/>
+        </svg>
+      </div>
+      <div class="sidebar-icon active" title="Quality Control">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+      </div>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-icon" title="Settings">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </div>
+    </aside>
+
+    <!-- ── Main content ──────────────────────────── -->
+    <main class="main-content">
+
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <span class="breadcrumb-link">Home Screen</span>
+        <span class="breadcrumb-sep">&gt;</span>
+        <span class="breadcrumb-link">Quality Control</span>
+        <span class="breadcrumb-sep">&gt;</span>
+        <span class="breadcrumb-current">Lab Test - Review Manager</span>
+      </div>
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div class="header-left">
+          <button class="back-btn" title="Back">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>
+            </svg>
+          </button>
+          <h1 class="page-title">Lab Test - Review Manager</h1>
+        </div>
+        <div class="header-right">
+          <div class="date-range">
+            <span>01/01/2026</span>
+            <span class="date-range-sep">-</span>
+            <span>01/04/2026</span>
+            <span class="date-range-cal">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+            </span>
+          </div>
+          <select class="harvest-select">
+            <option value="pre-harvest" selected>Pre-Harvest</option>
+            <option value="processing">Processing</option>
+            <option value="others">Others</option>
+          </select>
+          <button class="icon-btn" title="Download">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Card -->
+      <div class="card">
+
+        <!-- Main tabs -->
+        <div class="main-tabs" id="mainTabs"></div>
+
+        <!-- Sub-tabs -->
+        <div class="sub-tabs-wrapper">
+          <div class="sub-tabs" id="subTabs"></div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrapper" id="tableWrapper">
+          <table id="dataTable">
+            <thead id="tableHead"></thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer-actions">
+        <button class="reviewed-btn">Reviewed</button>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    /* ── Static JSON ─────────────────────────────── */
+    const MAIN_TABS   = ["Lab Test", "Organoleptic Inspection"];
+    const SUB_TABS    = ["Antibiotic", "Micro", "Sulphate", "Sodium", "Moisture"];
+    const OI_SUB_TABS = ["Beheading", "Grading", "Peeling & Cutting", "Soaking", "Nobashi", "Frozen/Cooked/Breaded-IQF", "Temperature", "Cooking Peeling & Cutting", "Breading"];
+
+    const HARVEST_BASE_COLS = {
+      "pre-harvest": [
+        { key:"sampleNumber",     label:"Sample Number",     sortable:true, type:"sample" },
+        { key:"supplierName",     label:"Supplier Name",     sortable:true, type:"text"   },
+        { key:"supplierLocation", label:"Supplier Location", sortable:true, type:"text"   },
+        { key:"count",            label:"Count",             sortable:true, type:"text"   },
+        { key:"samplerName",      label:"Sampler Name",      sortable:true, type:"text"   },
+        { key:"samplerID",        label:"Sampler ID",        sortable:true, type:"text"   },
+      ],
+      "processing": [
+        { key:"sampleNumber", label:"Sample Number", sortable:true, type:"sample" },
+        { key:"batchNumber",  label:"Batch Number",  sortable:true, type:"sample" },
+        { key:"section",      label:"Section",       sortable:true, type:"text"   },
+        { key:"grade",        label:"Grade",         sortable:true, type:"text"   },
+        { key:"count",        label:"Count",         sortable:true, type:"text"   },
+        { key:"variety",      label:"Variety",       sortable:true, type:"text"   },
+        { key:"quantity",     label:"Quantity",      sortable:true, type:"text"   },
+      ],
+      "others": [
+        { key:"sampleNumber", label:"Sample Number", sortable:true, type:"sample" },
+        { key:"others",       label:"Others",        sortable:true, type:"text"   },
+        { key:"date",         label:"Date",          sortable:true, type:"text"   },
+      ],
+    };
+
+    const TAB_CONFIG = {
+      Antibiotic: {
+        extraCols: [],
+        valueCols: [
+          { key:"aoz",  label:"AOZ",  sortable:true, type:"value" },
+          { key:"amoz", label:"AMOZ", sortable:true, type:"value" },
+          { key:"ahd",  label:"AHD",  sortable:true, type:"value" },
+          { key:"sem",  label:"SEM",  sortable:true, type:"value" },
+          { key:"cap",  label:"CAP",  sortable:true, type:"value" },
+        ],
+        actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, sampleNumber:"PH-2026-000654", supplierName:"Santosh", supplierLocation:"Madhapur",     count:12,   samplerName:"Rohan",  samplerID:"PH-20260511-00011", aoz:{value:0.15,pass:true},  amoz:{value:0.36,pass:true},  ahd:{value:0.23,pass:false}, sem:{value:0.13,pass:true},  cap:{value:0.22,pass:false}, status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PH-2026-000655", supplierName:"Anita",   supplierLocation:"Banjara Hills",count:13,   samplerName:"Kavya",  samplerID:"PH-20260511-00012", aoz:{value:0.25,pass:true},  amoz:{value:0.31,pass:false}, ahd:{value:0.19,pass:true},  sem:{value:0.15,pass:true},  cap:{value:0.26,pass:true},  status:"Fail", action:"Approved" },
+            { id:3, sampleNumber:"PH-2026-000656", supplierName:"Rahul",   supplierLocation:"Gachibowli",  count:15,   samplerName:"Nikhil", samplerID:"PH-20260511-00013", aoz:{value:0.20,pass:true},  amoz:{value:0.33,pass:true},  ahd:{value:0.21,pass:false}, sem:{value:0.10,pass:true},  cap:{value:0.30,pass:false}, status:"Pass", action:"Rejected" },
+            { id:4, sampleNumber:"PH-2026-000657", supplierName:"Sneha",   supplierLocation:"Kondapur",    count:18,   samplerName:"Priya",  samplerID:"PH-20260511-00014", aoz:{value:0.19,pass:true},  amoz:{value:0.32,pass:true},  ahd:{value:0.24,pass:false}, sem:{value:0.16,pass:true},  cap:{value:0.27,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, sampleNumber:"PH-2026-000658", supplierName:"Amit",    supplierLocation:"Hitech City", count:18,   samplerName:"Deepak", samplerID:"PH-20260511-00015", aoz:{value:0.21,pass:true},  amoz:{value:0.29,pass:false}, ahd:{value:0.20,pass:true},  sem:{value:0.11,pass:true},  cap:{value:0.24,pass:true},  status:"Fail", action:"Rejected" },
+            { id:6, sampleNumber:"PH-2026-000659", supplierName:"Neha",    supplierLocation:"Secunderabad",count:12,   samplerName:"Suresh", samplerID:"PH-20260511-00016", aoz:{value:0.32,pass:true},  amoz:{value:0.30,pass:true},  ahd:{value:0.30,pass:true},  sem:{value:0.21,pass:false}, cap:{value:0.27,pass:true},  status:"Pass", action:"Rejected" },
+            { id:7, sampleNumber:"PH-2026-000660", supplierName:"Vijay",   supplierLocation:"Kukatpally",  count:"09", samplerName:"Ravi",   samplerID:"PH-20260511-00017", aoz:{value:0.22,pass:false}, amoz:{value:0.30,pass:true},  ahd:{value:0.18,pass:false}, sem:{value:0.12,pass:true},  cap:{value:0.28,pass:false}, status:"Fail", action:"Approved" },
+          ],
+          "processing": [
+            { id:1, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, aoz:{value:0.18,pass:true},  amoz:{value:0.28,pass:true},  ahd:{value:0.17,pass:true},  sem:{value:0.09,pass:true},  cap:{value:0.19,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, aoz:{value:0.27,pass:true},  amoz:{value:0.35,pass:false}, ahd:{value:0.22,pass:false}, sem:{value:0.18,pass:true},  cap:{value:0.31,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PR-2026-000654", batchNumber:"2026-048266", section:"Grading", grade:"10/16", count:15, variety:"H-ON",   quantity:24146, aoz:{value:0.14,pass:true},  amoz:{value:0.26,pass:true},  ahd:{value:0.15,pass:true},  sem:{value:0.08,pass:true},  cap:{value:0.21,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, aoz:{value:0.23,pass:false}, amoz:{value:0.34,pass:true},  ahd:{value:0.26,pass:false}, sem:{value:0.14,pass:true},  cap:{value:0.29,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, sampleNumber:"PR-2026-000654", batchNumber:"2026-048268", section:"Grading", grade:"13/16", count:16, variety:"H-ON",   quantity:24148, aoz:{value:0.16,pass:true},  amoz:{value:0.27,pass:true},  ahd:{value:0.19,pass:true},  sem:{value:0.11,pass:true},  cap:{value:0.23,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, sampleNumber:"PR-2026-000654", batchNumber:"2026-048269", section:"Soaking", grade:"11/16", count:10, variety:"H-Less", quantity:24149, aoz:{value:0.29,pass:false}, amoz:{value:0.32,pass:true},  ahd:{value:0.28,pass:false}, sem:{value:0.20,pass:true},  cap:{value:0.26,pass:true},  status:"Fail", action:"Rejected" },
+            { id:7, sampleNumber:"PR-2026-000654", batchNumber:"2026-048270", section:"IQF",     grade:"12/16", count:13, variety:"H-ON",   quantity:24150, aoz:{value:0.11,pass:true},  amoz:{value:0.24,pass:true},  ahd:{value:0.13,pass:true},  sem:{value:0.07,pass:true},  cap:{value:0.17,pass:true},  status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, sampleNumber:"OT-2026-000654", others:"Gloves",     date:"11 May 2026", aoz:{value:0.16,pass:true},  amoz:{value:0.27,pass:true},  ahd:{value:0.18,pass:true},  sem:{value:0.10,pass:true},  cap:{value:0.20,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"OT-2026-000655", others:"Apron",      date:"11 May 2026", aoz:{value:0.24,pass:false}, amoz:{value:0.33,pass:true},  ahd:{value:0.25,pass:false}, sem:{value:0.17,pass:true},  cap:{value:0.28,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"OT-2026-000656", others:"Mouth Mask", date:"10 May 2026", aoz:{value:0.13,pass:true},  amoz:{value:0.25,pass:true},  ahd:{value:0.14,pass:true},  sem:{value:0.08,pass:true},  cap:{value:0.18,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"OT-2026-000657", others:"Shoes",      date:"09 May 2026", aoz:{value:0.22,pass:true},  amoz:{value:0.31,pass:true},  ahd:{value:0.22,pass:false}, sem:{value:0.15,pass:true},  cap:{value:0.25,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, sampleNumber:"OT-2026-000658", others:"Hair Net",   date:"08 May 2026", aoz:{value:0.28,pass:false}, amoz:{value:0.36,pass:false}, ahd:{value:0.29,pass:false}, sem:{value:0.20,pass:false}, cap:{value:0.32,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, sampleNumber:"OT-2026-000659", others:"Gloves",     date:"07 May 2026", aoz:{value:0.17,pass:true},  amoz:{value:0.28,pass:true},  ahd:{value:0.16,pass:true},  sem:{value:0.09,pass:true},  cap:{value:0.21,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"OT-2026-000660", others:"Apron",      date:"06 May 2026", aoz:{value:0.21,pass:true},  amoz:{value:0.30,pass:true},  ahd:{value:0.20,pass:false}, sem:{value:0.12,pass:true},  cap:{value:0.24,pass:true},  status:"Pass", action:"Rejected" },
+          ],
+        },
+      },
+      Micro: {
+        extraCols: [],
+        valueCols: [
+          { key:"tpc",            label:"TPC",             sortable:true, type:"value" },
+          { key:"salmonella",     label:"Salmonella",      sortable:true, type:"value" },
+          { key:"vc",             label:"VC",              sortable:true, type:"value" },
+          { key:"vp",             label:"VP",              sortable:true, type:"value" },
+          { key:"ecoliColiforms", label:"ECOLI/COLIFORMS", sortable:true, type:"value" },
+          { key:"staph",          label:"STAPH",           sortable:true, type:"value" },
+          { key:"listeria",       label:"Listeria",        sortable:true, type:"value" },
+        ],
+        actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, sampleNumber:"PH-2026-000654", supplierName:"Santosh", supplierLocation:"Madhapur",     count:12, samplerName:"Rohan",  samplerID:"PH-20260511-00011", tpc:{value:0.18,pass:true},  salmonella:{value:0.34,pass:true},  vc:{value:0.20,pass:false}, vp:{value:0.14,pass:true},  ecoliColiforms:{value:0.34,pass:true},  staph:{value:0.25,pass:true},  listeria:{value:0.34,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PH-2026-000655", supplierName:"Anita",   supplierLocation:"Banjara Hills",count:13, samplerName:"Kavya",  samplerID:"PH-20260511-00012", tpc:{value:0.22,pass:false}, salmonella:{value:0.30,pass:true},  vc:{value:0.18,pass:false}, vp:{value:0.12,pass:true},  ecoliColiforms:{value:0.30,pass:true},  staph:{value:0.28,pass:false}, listeria:{value:0.30,pass:true},  status:"Fail", action:"Approved" },
+            { id:3, sampleNumber:"PH-2026-000656", supplierName:"Rahul",   supplierLocation:"Gachibowli",  count:15, samplerName:"Nikhil", samplerID:"PH-20260511-00013", tpc:{value:0.15,pass:true},  salmonella:{value:0.36,pass:true},  vc:{value:0.23,pass:false}, vp:{value:0.13,pass:true},  ecoliColiforms:{value:0.36,pass:true},  staph:{value:0.22,pass:false}, listeria:{value:0.36,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"PH-2026-000657", supplierName:"Sneha",   supplierLocation:"Kondapur",    count:18, samplerName:"Priya",  samplerID:"PH-20260511-00014", tpc:{value:0.20,pass:true},  salmonella:{value:0.33,pass:true},  vc:{value:0.21,pass:false}, vp:{value:0.10,pass:true},  ecoliColiforms:{value:0.33,pass:true},  staph:{value:0.30,pass:false}, listeria:{value:0.33,pass:true},  status:"Pass", action:"Rejected" },
+            { id:5, sampleNumber:"PH-2026-000658", supplierName:"Amit",    supplierLocation:"Hitech City", count:18, samplerName:"Deepak", samplerID:"PH-20260511-00015", tpc:{value:0.19,pass:true},  salmonella:{value:0.32,pass:true},  vc:{value:0.24,pass:false}, vp:{value:0.16,pass:true},  ecoliColiforms:{value:0.32,pass:true},  staph:{value:0.27,pass:true},  listeria:{value:0.32,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, sampleNumber:"PH-2026-000659", supplierName:"Neha",    supplierLocation:"Secunderabad",count:12, samplerName:"Suresh", samplerID:"PH-20260511-00016", tpc:{value:0.21,pass:true},  salmonella:{value:0.29,pass:true},  vc:{value:0.20,pass:true},  vp:{value:0.11,pass:true},  ecoliColiforms:{value:0.29,pass:false}, staph:{value:0.24,pass:true},  listeria:{value:0.29,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, tpc:{value:0.12,pass:true},  salmonella:{value:0.28,pass:true},  vc:{value:0.15,pass:true},  vp:{value:0.09,pass:true},  ecoliColiforms:{value:0.28,pass:true},  staph:{value:0.19,pass:true},  listeria:{value:0.28,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, tpc:{value:0.25,pass:false}, salmonella:{value:0.33,pass:true},  vc:{value:0.22,pass:false}, vp:{value:0.17,pass:true},  ecoliColiforms:{value:0.33,pass:true},  staph:{value:0.31,pass:false}, listeria:{value:0.33,pass:true},  status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PR-2026-000654", batchNumber:"2026-048266", section:"Grading", grade:"10/16", count:15, variety:"H-ON",   quantity:24146, tpc:{value:0.10,pass:true},  salmonella:{value:0.25,pass:true},  vc:{value:0.13,pass:true},  vp:{value:0.08,pass:true},  ecoliColiforms:{value:0.25,pass:true},  staph:{value:0.16,pass:true},  listeria:{value:0.25,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, tpc:{value:0.28,pass:false}, salmonella:{value:0.37,pass:true},  vc:{value:0.27,pass:false}, vp:{value:0.19,pass:true},  ecoliColiforms:{value:0.37,pass:false}, staph:{value:0.34,pass:false}, listeria:{value:0.37,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, sampleNumber:"PR-2026-000654", batchNumber:"2026-048268", section:"Grading", grade:"13/16", count:16, variety:"H-ON",   quantity:24148, tpc:{value:0.14,pass:true},  salmonella:{value:0.29,pass:true},  vc:{value:0.16,pass:true},  vp:{value:0.10,pass:true},  ecoliColiforms:{value:0.29,pass:true},  staph:{value:0.21,pass:true},  listeria:{value:0.29,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, sampleNumber:"PR-2026-000654", batchNumber:"2026-048269", section:"Soaking", grade:"11/16", count:10, variety:"H-Less", quantity:24149, tpc:{value:0.19,pass:true},  salmonella:{value:0.31,pass:true},  vc:{value:0.18,pass:false}, vp:{value:0.13,pass:true},  ecoliColiforms:{value:0.31,pass:false}, staph:{value:0.23,pass:true},  listeria:{value:0.31,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, sampleNumber:"PR-2026-000654", batchNumber:"2026-048270", section:"IQF",     grade:"12/16", count:13, variety:"H-ON",   quantity:24150, tpc:{value:0.09,pass:true},  salmonella:{value:0.22,pass:true},  vc:{value:0.11,pass:true},  vp:{value:0.07,pass:true},  ecoliColiforms:{value:0.22,pass:true},  staph:{value:0.14,pass:true},  listeria:{value:0.22,pass:true},  status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, sampleNumber:"OT-2026-000654", others:"Gloves",     date:"11 May 2026", tpc:{value:0.11,pass:true},  salmonella:{value:0.26,pass:true},  vc:{value:0.14,pass:true},  vp:{value:0.08,pass:true},  ecoliColiforms:{value:0.26,pass:true},  staph:{value:0.18,pass:true},  listeria:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"OT-2026-000655", others:"Apron",      date:"11 May 2026", tpc:{value:0.26,pass:false}, salmonella:{value:0.34,pass:true},  vc:{value:0.23,pass:false}, vp:{value:0.18,pass:true},  ecoliColiforms:{value:0.34,pass:true},  staph:{value:0.32,pass:false}, listeria:{value:0.34,pass:true},  status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"OT-2026-000656", others:"Mouth Mask", date:"10 May 2026", tpc:{value:0.09,pass:true},  salmonella:{value:0.24,pass:true},  vc:{value:0.12,pass:true},  vp:{value:0.07,pass:true},  ecoliColiforms:{value:0.24,pass:true},  staph:{value:0.15,pass:true},  listeria:{value:0.24,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"OT-2026-000657", others:"Shoes",      date:"09 May 2026", tpc:{value:0.20,pass:true},  salmonella:{value:0.30,pass:true},  vc:{value:0.19,pass:false}, vp:{value:0.13,pass:true},  ecoliColiforms:{value:0.30,pass:true},  staph:{value:0.27,pass:true},  listeria:{value:0.30,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, sampleNumber:"OT-2026-000658", others:"Hair Net",   date:"08 May 2026", tpc:{value:0.29,pass:false}, salmonella:{value:0.38,pass:true},  vc:{value:0.28,pass:false}, vp:{value:0.20,pass:false}, ecoliColiforms:{value:0.38,pass:false}, staph:{value:0.35,pass:false}, listeria:{value:0.38,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, sampleNumber:"OT-2026-000659", others:"Gloves",     date:"07 May 2026", tpc:{value:0.13,pass:true},  salmonella:{value:0.27,pass:true},  vc:{value:0.15,pass:true},  vp:{value:0.09,pass:true},  ecoliColiforms:{value:0.27,pass:true},  staph:{value:0.20,pass:true},  listeria:{value:0.27,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"OT-2026-000660", others:"Apron",      date:"06 May 2026", tpc:{value:0.17,pass:true},  salmonella:{value:0.29,pass:true},  vc:{value:0.17,pass:false}, vp:{value:0.11,pass:true},  ecoliColiforms:{value:0.29,pass:false}, staph:{value:0.24,pass:true},  listeria:{value:0.29,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      Sulphate: {
+        extraCols: {
+          default: [
+            { key:"analyst",    label:"Analyst",     sortable:true, type:"text" },
+            { key:"testedDate", label:"Tested Date", sortable:true, type:"text" },
+            { key:"approvedBy", label:"Approved By", sortable:true, type:"text" },
+          ],
+          "others": [],
+        },
+        valueCols: [
+          { key:"residualSO2",     label:"Residual SO₂",    sortable:true, type:"value" },
+          { key:"sulphateContent", label:"Sulphate Content", sortable:true, type:"value" },
+        ],
+        actionLabel: "Approval",
+        data: {
+          "pre-harvest": [
+            { id:1, sampleNumber:"PH-2026-000654", supplierName:"Santosh", supplierLocation:"Madhapur",     count:12,   samplerName:"Rohan",  samplerID:"PH-20260511-00011", analyst:"Priya", testedDate:"11 May 2026", approvedBy:"Sunil", residualSO2:{value:0.18,pass:true},  sulphateContent:{value:0.34,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PH-2026-000655", supplierName:"Anita",   supplierLocation:"Banjara Hills",count:13,   samplerName:"Kavya",  samplerID:"PH-20260511-00012", analyst:"Sarah", testedDate:"11 May 2026", approvedBy:"Ravi",  residualSO2:{value:0.22,pass:false}, sulphateContent:{value:0.30,pass:true},  status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PH-2026-000656", supplierName:"Rahul",   supplierLocation:"Gachibowli",  count:15,   samplerName:"Nikhil", samplerID:"PH-20260511-00013", analyst:"Fassi", testedDate:"10 May 2026", approvedBy:"Farah", residualSO2:{value:0.15,pass:true},  sulphateContent:{value:0.31,pass:false}, status:"Fail", action:"Rejected" },
+            { id:4, sampleNumber:"PH-2026-000657", supplierName:"Sneha",   supplierLocation:"Kondapur",    count:18,   samplerName:"Priya",  samplerID:"PH-20260511-00014", analyst:"Neha",  testedDate:"09 May 2026", approvedBy:"Neha",  residualSO2:{value:0.25,pass:true},  sulphateContent:{value:0.31,pass:false}, status:"Fail", action:"Approved" },
+            { id:5, sampleNumber:"PH-2026-000658", supplierName:"Amit",    supplierLocation:"Hitech City", count:18,   samplerName:"Deepak", samplerID:"PH-20260511-00015", analyst:"Rahul", testedDate:"08 May 2026", approvedBy:"Rahul", residualSO2:{value:0.20,pass:true},  sulphateContent:{value:0.33,pass:true},  status:"Pass", action:"Rejected" },
+            { id:6, sampleNumber:"PH-2026-000659", supplierName:"Neha",    supplierLocation:"Secunderabad",count:12,   samplerName:"Suresh", samplerID:"PH-20260511-00016", analyst:"Srinu", testedDate:"07 May 2026", approvedBy:"Srinu", residualSO2:{value:0.19,pass:true},  sulphateContent:{value:0.32,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"PH-2026-000660", supplierName:"Vijay",   supplierLocation:"Kukatpally",  count:"09", samplerName:"Ravi",   samplerID:"PH-20260511-00017", analyst:"Balu",  testedDate:"06 May 2026", approvedBy:"Balu",  residualSO2:{value:0.21,pass:true},  sulphateContent:{value:0.29,pass:false}, status:"Fail", action:"Approved" },
+          ],
+          "processing": [
+            { id:1, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Divya", testedDate:"12 May 2026", approvedBy:"Kiran",  residualSO2:{value:0.16,pass:true},  sulphateContent:{value:0.29,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Pooja", testedDate:"12 May 2026", approvedBy:"Srini",  residualSO2:{value:0.24,pass:false}, sulphateContent:{value:0.35,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PR-2026-000654", batchNumber:"2026-048266", section:"Grading", grade:"10/16", count:15, variety:"H-ON",   quantity:24146, analyst:"Arun",  testedDate:"11 May 2026", approvedBy:"Meena",  residualSO2:{value:0.13,pass:true},  sulphateContent:{value:0.27,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Hari",  testedDate:"10 May 2026", approvedBy:"Rekha",  residualSO2:{value:0.28,pass:false}, sulphateContent:{value:0.38,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, sampleNumber:"PR-2026-000654", batchNumber:"2026-048268", section:"Grading", grade:"13/16", count:16, variety:"H-ON",   quantity:24148, analyst:"Venk",  testedDate:"09 May 2026", approvedBy:"Aditya", residualSO2:{value:0.17,pass:true},  sulphateContent:{value:0.31,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, sampleNumber:"PR-2026-000654", batchNumber:"2026-048269", section:"Soaking", grade:"11/16", count:10, variety:"H-Less", quantity:24149, analyst:"Preet", testedDate:"08 May 2026", approvedBy:"Venkat", residualSO2:{value:0.22,pass:true},  sulphateContent:{value:0.30,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"PR-2026-000654", batchNumber:"2026-048270", section:"IQF",     grade:"12/16", count:13, variety:"H-ON",   quantity:24150, analyst:"Sunil", testedDate:"07 May 2026", approvedBy:"Preet",  residualSO2:{value:0.26,pass:false}, sulphateContent:{value:0.36,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "others": [
+            { id:1, sampleNumber:"OT-2026-000654", others:"Gloves",     date:"11 May 2026", residualSO2:{value:0.14,pass:true},  sulphateContent:{value:0.28,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"OT-2026-000655", others:"Apron",      date:"11 May 2026", residualSO2:{value:0.23,pass:false}, sulphateContent:{value:0.34,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"OT-2026-000656", others:"Mouth Mask", date:"10 May 2026", residualSO2:{value:0.12,pass:true},  sulphateContent:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"OT-2026-000657", others:"Shoes",      date:"09 May 2026", residualSO2:{value:0.19,pass:true},  sulphateContent:{value:0.30,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, sampleNumber:"OT-2026-000658", others:"Hair Net",   date:"08 May 2026", residualSO2:{value:0.27,pass:false}, sulphateContent:{value:0.39,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, sampleNumber:"OT-2026-000659", others:"Gloves",     date:"07 May 2026", residualSO2:{value:0.16,pass:true},  sulphateContent:{value:0.29,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"OT-2026-000660", others:"Apron",      date:"06 May 2026", residualSO2:{value:0.21,pass:true},  sulphateContent:{value:0.31,pass:true},  status:"Pass", action:"Rejected" },
+          ],
+        },
+      },
+      Sodium: {
+        extraCols: {
+          default: [
+            { key:"analyst",    label:"Analyst",     sortable:true, type:"text" },
+            { key:"testedDate", label:"Tested Date", sortable:true, type:"text" },
+            { key:"approvedBy", label:"Approved By", sortable:true, type:"text" },
+          ],
+          "others": [],
+        },
+        valueCols: [
+          { key:"sodiumPct", label:"Sodium %", sortable:true, type:"value" },
+        ],
+        actionLabel: "Approval",
+        data: {
+          "pre-harvest": [
+            { id:1, sampleNumber:"PH-2026-000654", supplierName:"Santosh", supplierLocation:"Madhapur",     count:12,   samplerName:"Rohan",  samplerID:"PH-20260511-00011", analyst:"Priya", testedDate:"11 May 2026", approvedBy:"Sunil", sodiumPct:{value:0.34,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PH-2026-000655", supplierName:"Anita",   supplierLocation:"Banjara Hills",count:13,   samplerName:"Kavya",  samplerID:"PH-20260511-00012", analyst:"Sarah", testedDate:"11 May 2026", approvedBy:"Ravi",  sodiumPct:{value:0.30,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PH-2026-000656", supplierName:"Rahul",   supplierLocation:"Gachibowli",  count:15,   samplerName:"Nikhil", samplerID:"PH-20260511-00013", analyst:"Fassi", testedDate:"10 May 2026", approvedBy:"Farah", sodiumPct:{value:0.36,pass:true},  status:"Pass", action:"Rejected" },
+            { id:4, sampleNumber:"PH-2026-000657", supplierName:"Sneha",   supplierLocation:"Kondapur",    count:18,   samplerName:"Priya",  samplerID:"PH-20260511-00014", analyst:"Neha",  testedDate:"09 May 2026", approvedBy:"Neha",  sodiumPct:{value:0.31,pass:false}, status:"Fail", action:"Approved" },
+            { id:5, sampleNumber:"PH-2026-000658", supplierName:"Amit",    supplierLocation:"Hitech City", count:18,   samplerName:"Deepak", samplerID:"PH-20260511-00015", analyst:"Rahul", testedDate:"08 May 2026", approvedBy:"Rahul", sodiumPct:{value:0.33,pass:true},  status:"Pass", action:"Rejected" },
+            { id:6, sampleNumber:"PH-2026-000659", supplierName:"Neha",    supplierLocation:"Secunderabad",count:12,   samplerName:"Suresh", samplerID:"PH-20260511-00016", analyst:"Srinu", testedDate:"07 May 2026", approvedBy:"Srinu", sodiumPct:{value:0.32,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"PH-2026-000660", supplierName:"Vijay",   supplierLocation:"Kukatpally",  count:"09", samplerName:"Ravi",   samplerID:"PH-20260511-00017", analyst:"Balu",  testedDate:"06 May 2026", approvedBy:"Balu",  sodiumPct:{value:0.29,pass:false}, status:"Fail", action:"Approved" },
+          ],
+          "processing": [
+            { id:1, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Divya", testedDate:"12 May 2026", approvedBy:"Kiran",  sodiumPct:{value:0.31,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Pooja", testedDate:"12 May 2026", approvedBy:"Srini",  sodiumPct:{value:0.38,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PR-2026-000654", batchNumber:"2026-048266", section:"Grading", grade:"10/16", count:15, variety:"H-ON",   quantity:24146, analyst:"Arun",  testedDate:"11 May 2026", approvedBy:"Meena",  sodiumPct:{value:0.29,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Hari",  testedDate:"10 May 2026", approvedBy:"Rekha",  sodiumPct:{value:0.35,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, sampleNumber:"PR-2026-000654", batchNumber:"2026-048268", section:"Grading", grade:"13/16", count:16, variety:"H-ON",   quantity:24148, analyst:"Venk",  testedDate:"09 May 2026", approvedBy:"Aditya", sodiumPct:{value:0.27,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, sampleNumber:"PR-2026-000654", batchNumber:"2026-048269", section:"Soaking", grade:"11/16", count:10, variety:"H-Less", quantity:24149, analyst:"Preet", testedDate:"08 May 2026", approvedBy:"Venkat", sodiumPct:{value:0.33,pass:true},  status:"Pass", action:"Rejected" },
+            { id:7, sampleNumber:"PR-2026-000654", batchNumber:"2026-048270", section:"IQF",     grade:"12/16", count:13, variety:"H-ON",   quantity:24150, analyst:"Sunil", testedDate:"07 May 2026", approvedBy:"Preet",  sodiumPct:{value:0.40,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "others": [
+            { id:1, sampleNumber:"OT-2026-000654", others:"Gloves",     date:"11 May 2026", sodiumPct:{value:0.32,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"OT-2026-000655", others:"Apron",      date:"11 May 2026", sodiumPct:{value:0.39,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"OT-2026-000656", others:"Mouth Mask", date:"10 May 2026", sodiumPct:{value:0.28,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"OT-2026-000657", others:"Shoes",      date:"09 May 2026", sodiumPct:{value:0.34,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, sampleNumber:"OT-2026-000658", others:"Hair Net",   date:"08 May 2026", sodiumPct:{value:0.41,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, sampleNumber:"OT-2026-000659", others:"Gloves",     date:"07 May 2026", sodiumPct:{value:0.30,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"OT-2026-000660", others:"Apron",      date:"06 May 2026", sodiumPct:{value:0.36,pass:true},  status:"Pass", action:"Rejected" },
+          ],
+        },
+      },
+      Moisture: {
+        extraCols: {
+          default: [
+            { key:"analyst",    label:"Analyst",     sortable:true, type:"text" },
+            { key:"testedDate", label:"Tested Date", sortable:true, type:"text" },
+            { key:"approvedBy", label:"Approved By", sortable:true, type:"text" },
+          ],
+          "others": [],
+        },
+        valueCols: [
+          { key:"moisturePct", label:"Moisture %", sortable:true, type:"value" },
+        ],
+        actionLabel: "Approval",
+        data: {
+          "pre-harvest": [
+            { id:1, sampleNumber:"PH-2026-000654", supplierName:"Santosh", supplierLocation:"Madhapur",     count:12,   samplerName:"Rohan",  samplerID:"PH-20260511-00011", analyst:"Priya", testedDate:"11 May 2026", approvedBy:"Sunil", moisturePct:{value:0.34,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PH-2026-000655", supplierName:"Anita",   supplierLocation:"Banjara Hills",count:13,   samplerName:"Kavya",  samplerID:"PH-20260511-00012", analyst:"Sarah", testedDate:"11 May 2026", approvedBy:"Ravi",  moisturePct:{value:0.30,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PH-2026-000656", supplierName:"Rahul",   supplierLocation:"Gachibowli",  count:15,   samplerName:"Nikhil", samplerID:"PH-20260511-00013", analyst:"Fassi", testedDate:"10 May 2026", approvedBy:"Farah", moisturePct:{value:0.36,pass:true},  status:"Pass", action:"Rejected" },
+            { id:4, sampleNumber:"PH-2026-000657", supplierName:"Sneha",   supplierLocation:"Kondapur",    count:18,   samplerName:"Priya",  samplerID:"PH-20260511-00014", analyst:"Neha",  testedDate:"09 May 2026", approvedBy:"Neha",  moisturePct:{value:0.31,pass:false}, status:"Fail", action:"Approved" },
+            { id:5, sampleNumber:"PH-2026-000658", supplierName:"Amit",    supplierLocation:"Hitech City", count:18,   samplerName:"Deepak", samplerID:"PH-20260511-00015", analyst:"Rahul", testedDate:"08 May 2026", approvedBy:"Rahul", moisturePct:{value:0.33,pass:true},  status:"Pass", action:"Rejected" },
+            { id:6, sampleNumber:"PH-2026-000659", supplierName:"Neha",    supplierLocation:"Secunderabad",count:12,   samplerName:"Suresh", samplerID:"PH-20260511-00016", analyst:"Srinu", testedDate:"07 May 2026", approvedBy:"Srinu", moisturePct:{value:0.32,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"PH-2026-000660", supplierName:"Vijay",   supplierLocation:"Kukatpally",  count:"09", samplerName:"Ravi",   samplerID:"PH-20260511-00017", analyst:"Balu",  testedDate:"06 May 2026", approvedBy:"Balu",  moisturePct:{value:0.29,pass:false}, status:"Fail", action:"Approved" },
+          ],
+          "processing": [
+            { id:1, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Divya", testedDate:"12 May 2026", approvedBy:"Kiran",  moisturePct:{value:0.28,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Pooja", testedDate:"12 May 2026", approvedBy:"Srini",  moisturePct:{value:0.41,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"PR-2026-000654", batchNumber:"2026-048266", section:"Grading", grade:"10/16", count:15, variety:"H-ON",   quantity:24146, analyst:"Arun",  testedDate:"11 May 2026", approvedBy:"Meena",  moisturePct:{value:0.25,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"PR-2026-000654", batchNumber:"2026-048264", section:"Grading", grade:"12/16", count:14, variety:"H-Less", quantity:24144, analyst:"Hari",  testedDate:"10 May 2026", approvedBy:"Rekha",  moisturePct:{value:0.37,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, sampleNumber:"PR-2026-000654", batchNumber:"2026-048268", section:"Grading", grade:"13/16", count:16, variety:"H-ON",   quantity:24148, analyst:"Venk",  testedDate:"09 May 2026", approvedBy:"Aditya", moisturePct:{value:0.23,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, sampleNumber:"PR-2026-000654", batchNumber:"2026-048269", section:"Soaking", grade:"11/16", count:10, variety:"H-Less", quantity:24149, analyst:"Preet", testedDate:"08 May 2026", approvedBy:"Venkat", moisturePct:{value:0.30,pass:true},  status:"Pass", action:"Rejected" },
+            { id:7, sampleNumber:"PR-2026-000654", batchNumber:"2026-048270", section:"IQF",     grade:"12/16", count:13, variety:"H-ON",   quantity:24150, analyst:"Sunil", testedDate:"07 May 2026", approvedBy:"Preet",  moisturePct:{value:0.44,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "others": [
+            { id:1, sampleNumber:"OT-2026-000654", others:"Gloves",     date:"11 May 2026", moisturePct:{value:0.33,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, sampleNumber:"OT-2026-000655", others:"Apron",      date:"11 May 2026", moisturePct:{value:0.41,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, sampleNumber:"OT-2026-000656", others:"Mouth Mask", date:"10 May 2026", moisturePct:{value:0.27,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, sampleNumber:"OT-2026-000657", others:"Shoes",      date:"09 May 2026", moisturePct:{value:0.35,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, sampleNumber:"OT-2026-000658", others:"Hair Net",   date:"08 May 2026", moisturePct:{value:0.43,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, sampleNumber:"OT-2026-000659", others:"Gloves",     date:"07 May 2026", moisturePct:{value:0.31,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, sampleNumber:"OT-2026-000660", others:"Apron",      date:"06 May 2026", moisturePct:{value:0.37,pass:true},  status:"Pass", action:"Rejected" },
+          ],
+        },
+      },
+    };
+
+    const OI_BASE_COLS = [
+      { key:"section",      label:"Section",       sortable:true, type:"text" },
+      { key:"grade",        label:"Grade",         sortable:true, type:"text" },
+      { key:"variety",      label:"Variety",       sortable:true, type:"text" },
+      { key:"brand",        label:"Brand",         sortable:true, type:"text" },
+      { key:"packingStyle", label:"Packing Style", sortable:true, type:"text" },
+    ];
+
+    const HARVEST_OPTIONS = ['pre-harvest', 'processing', 'others'];
+
+    /* ── Organoleptic Inspection tab config ──────── */
+    const OI_VALUE_COLS = [
+      { key:"dehydration",   label:"Dehydration",        sortable:true, type:"value" },
+      { key:"discoloration", label:"Discoloration",      sortable:true, type:"value" },
+      { key:"damaged",       label:"Damaged/Broken",     sortable:true, type:"value" },
+      { key:"sandVeins",     label:"Sand Veins Present", sortable:true, type:"value" },
+      { key:"blackspot",     label:"Blackspot",          sortable:true, type:"value" },
+    ];
+    const OI_TAB_CONFIG = {
+      "Beheading": {
+        extraCols: [
+          { key:"deglazeWeight", label:"Deglazed Weight",           sortable:true,  type:"text"     },
+          { key:"stickWeight",   label:"Stick Weight",              sortable:true,  type:"text"     },
+          { key:"totalPieces",   label:"Total Pieces",              sortable:true,  type:"number"   },
+          { key:"weight",        label:"Weight (Kg's) (Big/Small)", sortable:true,  type:"text"     },
+          { key:"uniformity",    label:"Uniformity",                sortable:true,  type:"text"     },
+          { key:"netCount",      label:"Net Count",                 sortable:true,  type:"text"     },
+          { key:"photo",         label:"Photo",                     sortable:false, type:"photo"    },
+          { key:"prodMetSpec",   label:"Prod.Met.Spec.",            sortable:true,  type:"passFail" },
+          { key:"supervisor",    label:"Supervisor",                sortable:true,  type:"text"     },
+          { key:"teamLeader",    label:"Team Leader",               sortable:true,  type:"text"     },
+        ],
+        valueCols: [
+          { key:"dehydration",        label:"Dehydration",            sortable:true, type:"value" },
+          { key:"discoloration",      label:"Discoloration",          sortable:true, type:"value" },
+          { key:"damaged",            label:"Damaged/Broken",         sortable:true, type:"value" },
+          { key:"sandVeins",          label:"Sand Veins Present",     sortable:true, type:"value" },
+          { key:"blackspotTail",      label:"Blackspot/Tail",         sortable:true, type:"value" },
+          { key:"brokenChippedTail",  label:"Broken/Chipped Tail",    sortable:true, type:"value" },
+          { key:"softTailLooseShell", label:"Soft Tail/Loose Shell",  sortable:true, type:"value" },
+          { key:"hangingMeat",        label:"Hanging Meat/Neck Meat", sortable:true, type:"value" },
+          { key:"wrongCut",           label:"Wrong Cut/Uncut",        sortable:true, type:"value" },
+          { key:"clumps",             label:"Clumps",                 sortable:true, type:"value" },
+        ],
+        actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.5 grams", totalPieces:6,  weight:"3000/200", uniformity:"3:2",   netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Rahul",   teamLeader:"Revi",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.22,pass:false}, clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.3 grams", totalPieces:8,  weight:"1500/100", uniformity:"15:1",  netCount:"Over Count", prodMetSpec:"Pass", supervisor:"Sofia",   teamLeader:"Yang",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.4 grams", totalPieces:5,  weight:"2000/150", uniformity:"2:1.2", netCount:"Low Count",  prodMetSpec:"Fail", supervisor:"Michael", teamLeader:"Lee",   dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.22,pass:false}, clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.2 grams", totalPieces:10, weight:"2500/180", uniformity:"2:1.1", netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Emily",   teamLeader:"Khan",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.6 grams", totalPieces:4,  weight:"3500/220", uniformity:"3:0.2", netCount:"Over Count", prodMetSpec:"Fail", supervisor:"David",   teamLeader:"Smith", dehydration:{value:0.26,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.1 grams", totalPieces:2,  weight:"4000/250", uniformity:"4:0.5", netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Laura",   teamLeader:"Choi",  dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.7 grams", totalPieces:3,  weight:"1800/120", uniformity:"5:1",   netCount:"Low Count",  prodMetSpec:"Fail", supervisor:"Kevin",   teamLeader:"Park",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.26,pass:true},  clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.4 grams", totalPieces:7,  weight:"2800/180", uniformity:"3:1",   netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Rahul",   teamLeader:"Revi",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.28,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.22,pass:false}, clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.2 grams", totalPieces:9,  weight:"1600/110", uniformity:"12:1",  netCount:"Over Count", prodMetSpec:"Fail", supervisor:"Sofia",   teamLeader:"Yang",  dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.26,pass:true},  clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.5 grams", totalPieces:6,  weight:"2200/160", uniformity:"2:0.8", netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Michael", teamLeader:"Lee",   dehydration:{value:0.28,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.28,pass:true},  wrongCut:{value:0.22,pass:false}, clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.3 grams", totalPieces:11, weight:"2700/190", uniformity:"2:1",   netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Emily",   teamLeader:"Khan",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.6 grams", totalPieces:5,  weight:"3200/210", uniformity:"4:0.5", netCount:"Over Count", prodMetSpec:"Fail", supervisor:"David",   teamLeader:"Smith", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.22,pass:false}, clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.1 grams", totalPieces:8,  weight:"3600/230", uniformity:"3:2",   netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Laura",   teamLeader:"Choi",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.28,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.8 grams", totalPieces:4,  weight:"1900/130", uniformity:"6:1",   netCount:"Over Count", prodMetSpec:"Fail", supervisor:"Kevin",   teamLeader:"Park",  dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.22,pass:false}, clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.5 grams", totalPieces:6,  weight:"3000/200", uniformity:"3:2",   netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Rahul",   teamLeader:"Revi",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.22,pass:false}, clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.3 grams", totalPieces:8,  weight:"1500/100", uniformity:"15:1",  netCount:"Over Count", prodMetSpec:"Fail", supervisor:"Sofia",   teamLeader:"Yang",  dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.22,pass:false}, clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.4 grams", totalPieces:5,  weight:"2000/150", uniformity:"2:1.2", netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Michael", teamLeader:"Lee",   dehydration:{value:0.26,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.2 grams", totalPieces:10, weight:"2500/180", uniformity:"2:1.1", netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Emily",   teamLeader:"Khan",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.6 grams", totalPieces:4,  weight:"3500/220", uniformity:"3:0.2", netCount:"Over Count", prodMetSpec:"Fail", supervisor:"David",   teamLeader:"Smith", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.22,pass:false}, clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", deglazeWeight:"Excess Weight", stickWeight:"0.1 grams", totalPieces:2,  weight:"4000/250", uniformity:"4:0.5", netCount:"Low Count",  prodMetSpec:"Pass", supervisor:"Laura",   teamLeader:"Choi",  dehydration:{value:0.26,pass:true},  discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspotTail:{value:0.26,pass:true},  brokenChippedTail:{value:0.26,pass:true},  softTailLooseShell:{value:0.26,pass:true},  hangingMeat:{value:0.26,pass:true},  wrongCut:{value:0.26,pass:true},  clumps:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", deglazeWeight:"Short Weight",  stickWeight:"0.7 grams", totalPieces:3,  weight:"1800/120", uniformity:"5:1",   netCount:"Low Count",  prodMetSpec:"Fail", supervisor:"Kevin",   teamLeader:"Park",  dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:{value:0.22,pass:false}, blackspotTail:{value:0.22,pass:false}, brokenChippedTail:{value:0.22,pass:false}, softTailLooseShell:{value:0.22,pass:false}, hangingMeat:{value:0.22,pass:false}, wrongCut:{value:0.22,pass:false}, clumps:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Grading": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:{value:0.26,pass:true},  discoloration:null,                    damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:null,               discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.24,pass:false}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.28,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.30,pass:true},  discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:null,                    damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:{value:0.28,pass:true},  discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:{value:0.24,pass:false}, damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.30,pass:true}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.28,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Peeling & Cutting": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.28,pass:true}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Fail", action:"Rejected" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:{value:0.20,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:{value:0.30,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.28,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.24,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.30,pass:true},  damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.28,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.28,pass:true}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Soaking": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.30,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.28,pass:true}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:null,               discoloration:{value:0.24,pass:false}, damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.28,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:{value:0.24,pass:false}, damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.30,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.28,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Nobashi": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.30,pass:true}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.22,pass:false}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.28,pass:true},  sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.28,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.24,pass:false}, sandVeins:null,                blackspot:{value:0.24,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.30,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Frozen/Cooked/Breaded-IQF": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:{value:0.28,pass:true},  status:"Pass", action:"Approved" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.30,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.24,pass:false}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:null,               discoloration:{value:0.28,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:{value:0.20,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.28,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.24,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.30,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.30,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.28,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Temperature": {
+        extraCols: [],
+        valueCols: [{ key:"temperature", label:"Temperature (°C)", sortable:true, type:"value" }],
+        actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", temperature:{value:-18.50,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", temperature:{value:-14.20,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", temperature:{value:-19.00,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", temperature:{value:-20.50,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", temperature:{value:-12.80,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", temperature:{value:-18.00,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", temperature:{value:-15.50,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", temperature:{value:-19.20,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", temperature:{value:-13.10,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", temperature:{value:-20.00,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", temperature:{value:-18.80,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", temperature:{value:-11.50,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", temperature:{value:-17.50,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", temperature:{value:-16.00,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", temperature:{value:-18.50,pass:true},  status:"Pass", action:"Approved" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", temperature:{value:-13.80,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", temperature:{value:-19.50,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", temperature:{value:-20.00,pass:true},  status:"Pass", action:"Approved" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", temperature:{value:-12.50,pass:false}, status:"Fail", action:"Rejected" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", temperature:{value:-17.80,pass:true},  status:"Pass", action:"Approved" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", temperature:{value:-14.90,pass:false}, status:"Fail", action:"Rejected" },
+          ],
+        },
+      },
+      "Cooking Peeling & Cutting": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.28,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:{value:0.30,pass:true},  sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:{value:0.26,pass:true},  blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.28,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.30,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.24,pass:false}, sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+        },
+      },
+      "Breading": {
+        extraCols: [], valueCols: OI_VALUE_COLS, actionLabel: "Action",
+        data: {
+          "pre-harvest": [
+            { id:1, section:"Peel & Cut", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Beheading",  grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"Grading",    grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.28,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"Packing",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Beheading",  grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"Peel & Cut", grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Grading",    grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.28,pass:true}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+          ],
+          "processing": [
+            { id:1, section:"Grading",           grade:"12/14", variety:"H-Less", brand:"Costco",       packingStyle:"6*4 Lbs", dehydration:null,               discoloration:{value:0.26,pass:true},  damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"Soaking",           grade:"10/12", variety:"H-ON",   brand:"Walmart",      packingStyle:"4*6 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:3, section:"IQF",               grade:"8/10",  variety:"H-Less", brand:"Target",       packingStyle:"5*4 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:null,                blackspot:{value:0.26,pass:true},  status:"Pass", action:"Approved" },
+            { id:4, section:"Beheading",         grade:"14/16", variety:"H-ON",   brand:"Kroger",       packingStyle:"3*6 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:{value:0.24,pass:false}, sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:5, section:"Peeling & Cutting", grade:"6/8",   variety:"H-Less", brand:"Whole Foods",  packingStyle:"7*2 Lbs", dehydration:{value:0.30,pass:true}, discoloration:{value:0.26,pass:true},  damaged:{value:0.28,pass:true},  sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"Packing",           grade:"16/18", variety:"H-ON",   brand:"Sam's Club",   packingStyle:"8*4 Lbs", dehydration:{value:0.22,pass:false}, discoloration:null,               damaged:null,                sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Nobashi",           grade:"21/25", variety:"H-Less", brand:"Trader Joe's", packingStyle:"5*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.28,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+          "others": [
+            { id:1, section:"Final Check", grade:"12/14", variety:"EZPL",   brand:"Costco",       packingStyle:"6*5 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:2, section:"QC Check",    grade:"10/12", variety:"FRESH",  brand:"Walmart",      packingStyle:"4*7 Lbs", dehydration:{value:0.22,pass:false}, discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:null,                blackspot:null,                status:"Fail", action:"Rejected" },
+            { id:3, section:"Final Check", grade:"8/10",  variety:"FROZEN", brand:"Target",       packingStyle:"5*6 Lbs", dehydration:{value:0.26,pass:true}, discoloration:null,               damaged:{value:0.26,pass:true},  sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+            { id:4, section:"QC Check",    grade:"14/16", variety:"FRESH",  brand:"Kroger",       packingStyle:"3*8 Lbs", dehydration:null,               discoloration:{value:0.22,pass:false}, damaged:null,                sandVeins:{value:0.22,pass:false}, blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:5, section:"Final Check", grade:"6/8",   variety:"EZPL",   brand:"Whole Foods",  packingStyle:"7*3 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.26,pass:true},  damaged:null,                sandVeins:{value:0.26,pass:true},  blackspot:null,                status:"Pass", action:"Approved" },
+            { id:6, section:"QC Check",    grade:"16/18", variety:"FROZEN", brand:"Sam's Club",   packingStyle:"8*2 Lbs", dehydration:null,               discoloration:null,               damaged:{value:0.22,pass:false}, sandVeins:null,                blackspot:{value:0.22,pass:false}, status:"Fail", action:"Rejected" },
+            { id:7, section:"Final Check", grade:"21/25", variety:"EZPL",   brand:"Trader Joe's", packingStyle:"5*5 Lbs", dehydration:{value:0.26,pass:true}, discoloration:{value:0.28,pass:true},  damaged:null,                sandVeins:null,                blackspot:null,                status:"Pass", action:"Approved" },
+          ],
+        },
+      },
+    };
+
+    /* ── State ───────────────────────────────────── */
+    let activeMainTab = 0;
+    let activeSubTab  = 0;
+    let activeHarvest = 0;
+    let sortKey       = null;
+    let sortDir       = 1;
+    let selected      = new Set();
+
+    function isOI()             { return activeMainTab === 1; }
+    function currentSubTabs()   { return isOI() ? OI_SUB_TABS : SUB_TABS; }
+    function activeTabName()    { return currentSubTabs()[activeSubTab]; }
+    function activeHarvestKey() { return HARVEST_OPTIONS[activeHarvest]; }
+    function activeTabConfig()  {
+      const cfg = isOI()
+        ? (OI_TAB_CONFIG[activeTabName()] ?? { extraCols:[], valueCols:[], actionLabel:"Action", data:{} })
+        : (TAB_CONFIG[activeTabName()]    ?? { extraCols:[], valueCols:[], actionLabel:"Action", data:{} });
+      return cfg;
+    }
+    function activeColumns() {
+      const cfg      = activeTabConfig();
+      const baseCols = isOI()
+        ? OI_BASE_COLS
+        : (HARVEST_BASE_COLS[activeHarvestKey()] ?? HARVEST_BASE_COLS["pre-harvest"]);
+      const rawExtra = Array.isArray(cfg.extraCols)
+        ? cfg.extraCols
+        : (cfg.extraCols[activeHarvestKey()] ?? cfg.extraCols["default"] ?? []);
+      return [
+        ...baseCols,
+        ...rawExtra,
+        ...cfg.valueCols,
+        { key:"status", label:"Status",        sortable:false, type:"status" },
+        { key:"action", label:cfg.actionLabel, sortable:false, type:"action" },
+      ];
+    }
+    function activeRows() { return activeTabConfig().data[activeHarvestKey()] ?? []; }
+
+    /* ── Sort icons ──────────────────────────────── */
+    const sortDefault = `<span class="sort-icon"><svg width="7" height="5" viewBox="0 0 7 5"><path d="M3.5 0L7 5H0z" fill="currentColor" opacity="0.3"/></svg><svg width="7" height="5" viewBox="0 0 7 5"><path d="M3.5 5L0 0H7z" fill="currentColor" opacity="0.3"/></svg></span>`;
+    const sortAsc     = `<span class="sort-icon"><svg width="7" height="5" viewBox="0 0 7 5"><path d="M3.5 0L7 5H0z" fill="#5189F3"/></svg><svg width="7" height="5" viewBox="0 0 7 5"><path d="M3.5 5L0 0H7z" fill="currentColor" opacity="0.3"/></svg></span>`;
+    const sortDesc    = `<span class="sort-icon"><svg width="7" height="5" viewBox="0 0 7 5"><path d="M3.5 0L7 5H0z" fill="currentColor" opacity="0.3"/></svg><svg width="7" height="5" viewBox="0 0 7 5"><path d="M3.5 5L0 0H7z" fill="#5189F3"/></svg></span>`;
+
+    /* ── Cell renderers ──────────────────────────── */
+    function renderValue(cell) {
+      if (!cell) return `<span style="color:var(--neutral-50)">-</span>`;
+      return `<span class="value-cell ${cell.pass?'value-pass':'value-fail'}">${cell.value.toFixed(2)}</span>`;
+    }
+    function renderStatus(s) {
+      return `<span class="status-badge ${s==='Pass'?'status-pass':'status-fail'}">${s}</span>`;
+    }
+    function renderAction(a) {
+      const cls = a==='Approved' ? 'action-approved' : a==='Rejected' ? 'action-rejected' : 'action-submitted';
+      return `<span class="action-pill ${cls}">${a}</span>`;
+    }
+
+    /* ── Main tabs ───────────────────────────────── */
+    function updatePageTitle() {
+      const title = isOI() ? 'Organoleptic Inspection - Review Manager' : 'Lab Test - Review Manager';
+      const h1 = document.querySelector('.page-title');
+      const bc = document.querySelector('.breadcrumb-current');
+      if (h1) h1.textContent = title;
+      if (bc) bc.textContent = title;
+    }
+    function renderMainTabs() {
+      const el = document.getElementById('mainTabs');
+      el.innerHTML = MAIN_TABS.map((t,i) =>
+        `<button class="main-tab${i===activeMainTab?' active':''}" data-i="${i}">${t}</button>`
+      ).join('');
+      el.querySelectorAll('.main-tab').forEach(b => b.addEventListener('click', () => {
+        activeMainTab = +b.dataset.i;
+        activeSubTab  = 0;
+        sortKey = null; sortDir = 1; selected.clear(); selectedOIKeys.clear();
+        updatePageTitle();
+        renderMainTabs(); renderSubTabs(); renderTable();
+      }));
+    }
+
+    /* ── Sub-tabs ────────────────────────────────── */
+    function renderSubTabs() {
+      const el = document.getElementById('subTabs');
+      el.innerHTML = currentSubTabs().map((t,i) =>
+        `<button class="sub-tab${i===activeSubTab?' active':''}" data-i="${i}">${t}</button>`
+      ).join('');
+      el.querySelectorAll('.sub-tab').forEach(b => b.addEventListener('click', () => {
+        activeSubTab = +b.dataset.i;
+        sortKey = null; sortDir = 1; selected.clear(); selectedOIKeys.clear();
+        renderSubTabs(); renderTable();
+      }));
+    }
+
+    /* ── Sorting ─────────────────────────────────── */
+    function sortedRows() {
+      const rows = activeRows();
+      if (!sortKey) return rows;
+      const col = activeColumns().find(c => c.key === sortKey);
+      return [...rows].sort((a, b) => {
+        let va = a[sortKey], vb = b[sortKey];
+        if (col && col.type === 'value') { va = va?.value ?? -Infinity; vb = vb?.value ?? -Infinity; }
+        else { va = String(va ?? ''); vb = String(vb ?? ''); }
+        return (va < vb ? -1 : va > vb ? 1 : 0) * sortDir;
+      });
+    }
+
+    /* ── Table ───────────────────────────────────── */
+    function renderHead() {
+      const rows = activeRows();
+      const cols = activeColumns();
+      const allChecked = rows.length > 0 && rows.every(r => selected.has(r.id));
+      const cells = cols.map(col => {
+        let icon = '';
+        if (col.sortable) icon = sortKey===col.key ? (sortDir===1?sortAsc:sortDesc) : sortDefault;
+        return `<th class="${col.sortable?'sortable':''}" data-key="${col.key}">${col.label}${icon}</th>`;
+      }).join('');
+      document.getElementById('tableHead').innerHTML =
+        `<tr><th class="col-check"><input type="checkbox" class="header-check" id="hc" ${allChecked?'checked':''}></th>${cells}</tr>`;
+
+      document.getElementById('tableHead').querySelectorAll('th[data-key]').forEach(th => {
+        if (!th.classList.contains('sortable')) return;
+        th.addEventListener('click', () => {
+          const k = th.dataset.key;
+          sortKey===k ? sortDir*=-1 : (sortKey=k, sortDir=1);
+          renderTable();
+        });
+      });
+      document.getElementById('hc').addEventListener('change', e => {
+        const rows = activeRows();
+        if (e.target.checked) rows.forEach(r => selected.add(r.id)); else selected.clear();
+        renderTable();
+      });
+    }
+
+    function renderBody() {
+      const cols = activeColumns();
+      document.getElementById('tableBody').innerHTML = sortedRows().map(row => {
+        const cells = cols.map(col => {
+          let c = '';
+          if      (col.type==='sample') c = `<span class="sample-num">${row[col.key]}</span>`;
+          else if (col.type==='value')  c = renderValue(row[col.key]);
+          else if (col.type==='status') c = renderStatus(row.status);
+          else if (col.type==='action') c = renderAction(row.action);
+          else c = row[col.key] ?? '-';
+          return `<td>${c}</td>`;
+        }).join('');
+        return `<tr><td class="col-check"><input type="checkbox" class="row-check" data-id="${row.id}" ${selected.has(row.id)?'checked':''}></td>${cells}</tr>`;
+      }).join('');
+
+      document.getElementById('tableBody').querySelectorAll('.row-check').forEach(cb => {
+        cb.addEventListener('change', e => {
+          const id = +cb.dataset.id;
+          e.target.checked ? selected.add(id) : selected.delete(id);
+          renderTable();
+        });
+      });
+    }
+
+    /* ── OI split-table renderer ─────────────────────── */
+    function renderDetailCell(row, col) {
+      if (col.type === 'photo')    return `<button class="view-btn">View</button>`;
+      if (col.type === 'passFail') {
+        const v = row[col.key];
+        return `<span class="${v === 'Pass' ? 'pass-text' : 'fail-text'}">${v != null ? v : '-'}</span>`;
+      }
+      return row[col.key] != null ? row[col.key] : '-';
+    }
+
+    /* Checkbox state for OI tables */
+    let selectedOIKeys = new Set();
+
+    function renderOITable() {
+      const cfg        = activeTabConfig();
+      const rows       = activeRows();
+      const baseCols   = OI_BASE_COLS;
+      const extraCols  = Array.isArray(cfg.extraCols) ? cfg.extraCols : [];
+      const valueCols  = cfg.valueCols || [];
+      const detailCols = [...baseCols, ...extraCols];
+
+      const allSelected  = rows.length > 0 && rows.every(r => selectedOIKeys.has(r.key));
+      const someSelected = rows.some(r => selectedOIKeys.has(r.key));
+
+      /* Details pane */
+      const detailHead = [
+        `<th class="oi-th oi-checkbox-th"><input type="checkbox" class="oi-checkbox" id="oi-chk-all"${allSelected ? ' checked' : ''}></th>`,
+        ...detailCols.map(c => `<th class="oi-th">${c.label}</th>`),
+      ].join('');
+
+      const detailBody = rows.map(row => {
+        const cells = detailCols.map(c =>
+          `<td class="oi-td oi-td-detail">${renderDetailCell(row, c)}</td>`
+        ).join('');
+        return `<tr data-key="${row.key}">
+          <td class="oi-td oi-td-detail oi-checkbox-td"><input type="checkbox" class="oi-checkbox oi-row-chk" data-key="${row.key}"${selectedOIKeys.has(row.key) ? ' checked' : ''}></td>
+          ${cells}
+        </tr>`;
+      }).join('');
+
+      /* Params pane */
+      const paramsHead = [
+        ...valueCols.map(c => `<th class="oi-th">${c.label}</th>`),
+        `<th class="oi-th oi-sticky-right">Status</th>`,
+        `<th class="oi-th oi-sticky-right">${cfg.actionLabel || 'Action'}</th>`,
+      ].join('');
+
+      const paramsBody = rows.map(row => {
+        const cells = [
+          ...valueCols.map(c => `<td class="oi-td">${renderValue(row[c.key])}</td>`),
+          `<td class="oi-td oi-sticky-right-td">${renderStatus(row.status)}</td>`,
+          `<td class="oi-td oi-sticky-right-td">${renderAction(row.action)}</td>`,
+        ].join('');
+        return `<tr data-key="${row.key}">${cells}</tr>`;
+      }).join('');
+
+      document.getElementById('tableWrapper').innerHTML = `
+        <div class="split-table-wrapper">
+          <div class="details-pane">
+            <table class="oi-table" id="oi-details-table">
+              <thead><tr>${detailHead}</tr></thead>
+              <tbody id="oi-details-tbody">${detailBody}</tbody>
+            </table>
+          </div>
+          <div class="params-pane">
+            <table class="oi-table" id="oi-params-table">
+              <thead><tr>${paramsHead}</tr></thead>
+              <tbody id="oi-params-tbody">${paramsBody}</tbody>
+            </table>
+          </div>
+        </div>`;
+
+      /* Sync row heights + set sticky-right offsets for Status/Action columns */
+      requestAnimationFrame(() => {
+        const dRows = [...(document.getElementById('oi-details-tbody')?.querySelectorAll('tr') ?? [])];
+        const pRows = [...(document.getElementById('oi-params-tbody')?.querySelectorAll('tr') ?? [])];
+        dRows.forEach(r => (r.style.height = ''));
+        pRows.forEach(r => (r.style.height = ''));
+        const len = Math.min(dRows.length, pRows.length);
+        for (let i = 0; i < len; i++) {
+          const h = Math.max(dRows[i].offsetHeight, pRows[i].offsetHeight) + 'px';
+          dRows[i].style.height = h;
+          pRows[i].style.height = h;
+        }
+        // Compute action column width from first body row, then pin right offsets
+        const pTable = document.getElementById('oi-params-table');
+        if (pTable && pRows.length > 0) {
+          const firstBodyCells = pRows[0].querySelectorAll('td');
+          const actionW = firstBodyCells[firstBodyCells.length - 1]?.offsetWidth ?? 0;
+          pTable.querySelectorAll('thead tr, tbody tr').forEach(row => {
+            const cells = row.querySelectorAll('th, td');
+            const n = cells.length;
+            if (n >= 1) cells[n - 1].style.right = '0px';
+            if (n >= 2) cells[n - 2].style.right = actionW + 'px';
+          });
+        }
+      });
+
+      /* Set indeterminate on select-all */
+      requestAnimationFrame(() => {
+        const chkAll = document.getElementById('oi-chk-all');
+        if (chkAll) chkAll.indeterminate = someSelected && !allSelected;
+      });
+
+      /* Checkbox event listeners */
+      document.getElementById('oi-chk-all')?.addEventListener('change', e => {
+        selectedOIKeys = e.target.checked ? new Set(rows.map(r => r.key)) : new Set();
+        renderOITable();
+      });
+      document.querySelectorAll('.oi-row-chk').forEach(chk => {
+        chk.addEventListener('change', e => {
+          const k = e.target.dataset.key;
+          if (e.target.checked) selectedOIKeys.add(k); else selectedOIKeys.delete(k);
+          renderOITable();
+        });
+      });
+    }
+
+    function renderTable() {
+      if (isOI()) {
+        renderOITable();
+      } else {
+        const wrapper = document.getElementById('tableWrapper');
+        if (!wrapper.querySelector('#dataTable')) {
+          wrapper.innerHTML = `<table id="dataTable"><thead id="tableHead"></thead><tbody id="tableBody"></tbody></table>`;
+        }
+        renderHead(); renderBody();
+      }
+    }
+
+    /* ── Init ────────────────────────────────────── */
+    document.querySelector('.harvest-select').addEventListener('change', function() {
+      activeHarvest = HARVEST_OPTIONS.indexOf(this.value);
+      sortKey = null; sortDir = 1; selected.clear(); selectedOIKeys.clear();
+      renderTable();
+    });
+
+    renderMainTabs();
+    renderSubTabs();
+    renderTable();
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+@use '../styles/variables.scss' as *;
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: $bg-soft;
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  min-width: 0;
+  padding-left: 4px;
+}

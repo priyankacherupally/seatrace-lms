@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knowledge Hub – SeaTrace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: #F7F8FA; color: #111; min-height: 100vh; }
+
+    /* ── Navbar ── */
+    .navbar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 28px; height: 54px; background: #fff;
+      border-bottom: 1px solid #DFE2E6; position: sticky; top: 0; z-index: 200;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .brand-name { font-size: 15px; font-weight: 900; letter-spacing: .01em; }
+    .brand-name .sea { color: #5189F3; }
+    .nav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: #5189F3; color: #fff; font-size: 12px; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav-user-name { font-size: 13px; font-weight: 700; color: #333; }
+
+    /* ── Layout ── */
+    .layout { display: flex; min-height: calc(100vh - 54px); }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 220px; flex-shrink: 0; background: #fff;
+      border-right: 1px solid #DFE2E6; padding: 20px 0;
+      position: sticky; top: 54px; height: calc(100vh - 54px); overflow-y: auto;
+    }
+    .sidebar-label {
+      font-size: 10px; font-weight: 800; color: #bbb; letter-spacing: .08em;
+      text-transform: uppercase; padding: 0 20px; margin-bottom: 8px;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px; cursor: pointer; transition: background 0.12s;
+      border: none; background: none; width: 100%; text-align: left;
+      font-family: 'Nunito', sans-serif;
+    }
+    .sidebar-item:hover { background: #F5F7FF; }
+    .sidebar-item.active { background: #EEF3FF; }
+    .sidebar-item-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .sidebar-item-name { font-size: 13px; font-weight: 700; flex: 1; }
+    .sidebar-item.active .sidebar-item-name { color: #5189F3; }
+    .sidebar-item-count {
+      font-size: 10px; font-weight: 800; padding: 1px 7px; border-radius: 10px;
+    }
+
+    /* ── Main ── */
+    .main { flex: 1; padding: 28px 32px; max-width: 860px; }
+    .main-title { font-size: 20px; font-weight: 900; color: #111; }
+    .main-sub { font-size: 12px; color: #888; font-weight: 600; margin-top: 4px; margin-bottom: 20px; }
+
+    /* ── Module progress ── */
+    .mod-progress-bar {
+      background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
+      padding: 14px 18px; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .mod-prog-label { font-size: 12px; font-weight: 700; color: #888; white-space: nowrap; }
+    .mod-prog-track { flex: 1; height: 6px; background: #F0F0F0; border-radius: 3px; overflow: hidden; }
+    .mod-prog-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+    .mod-prog-pct { font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .mod-prog-certs { font-size: 11px; font-weight: 700; color: #888; white-space: nowrap; }
+
+    /* ── Class cards ── */
+    .class-list { display: flex; flex-direction: column; gap: 10px; }
+    .class-card {
+      background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
+      display: flex; align-items: stretch; overflow: hidden; transition: box-shadow 0.12s;
+    }
+    .class-card:not(.locked):hover { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+    .class-card.locked { opacity: 0.52; }
+    .class-card-bar { width: 4px; flex-shrink: 0; }
+    .class-card-icon {
+      width: 52px; flex-shrink: 0; display: flex; align-items: center;
+      justify-content: center; padding: 0 4px;
+    }
+    .class-icon-circle {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .class-card-body { flex: 1; padding: 14px 16px 14px 4px; min-width: 0; }
+    .class-card-top { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .class-num { font-size: 10px; font-weight: 800; color: #bbb; letter-spacing: .04em; white-space: nowrap; }
+    .class-name { font-size: 14px; font-weight: 800; color: #111; flex: 1; }
+    .class-locked-label {
+      font-size: 10px; font-weight: 700; color: #bbb;
+      display: flex; align-items: center; gap: 4px; white-space: nowrap;
+    }
+    .video-prog { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .video-prog-track { flex: 1; height: 4px; background: #F0F0F0; border-radius: 2px; overflow: hidden; }
+    .video-prog-fill { height: 100%; border-radius: 2px; }
+    .video-prog-label { font-size: 11px; font-weight: 700; color: #aaa; white-space: nowrap; }
+    .quiz-state-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .quiz-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 2px; font-size: 11px; font-weight: 700;
+    }
+    .quiz-attempt-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 11px; font-weight: 600; color: #888; padding: 2px 8px;
+      border: 1px solid #E5E7EB; border-radius: 2px; background: #FAFAFA;
+    }
+    .quiz-attempt-chip.pass { color: #16a34a; border-color: #BBF7D0; background: #F0FDF4; }
+    .quiz-attempt-chip.fail { color: #EF4444; border-color: #FECACA; background: #FEF2F2; }
+    .cooldown-badge {
+      display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px;
+      background: #FFFBEB; border: 1px solid #FDE68A;
+      border-radius: 2px; font-size: 11px; font-weight: 700; color: #D97706;
+    }
+    .class-card-actions {
+      display: flex; align-items: center; padding: 14px 16px;
+      gap: 8px; flex-shrink: 0;
+    }
+    .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; background: #5189F3; color: #fff; border: none; border-radius: 2px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: opacity 0.12s; white-space: nowrap; }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-outline { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #fff; color: #555; border: 1px solid #DFE2E6; border-radius: 2px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: border-color 0.12s, color 0.12s; white-space: nowrap; }
+    .btn-outline:hover { border-color: #5189F3; color: #5189F3; }
+    .btn-disabled { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: #F5F5F5; color: #bbb; border: 1px solid #E5E7EB; border-radius: 2px; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700; cursor: not-allowed; white-space: nowrap; }
+
+    /* Status colors */
+    .s-certified   { --bar:#16a34a; --ibg:#F0FDF4; --ic:#16a34a; }
+    .s-quiz-ready  { --bar:#5189F3; --ibg:#EEF3FF; --ic:#5189F3; }
+    .s-in-progress { --bar:#5189F3; --ibg:#EEF3FF; --ic:#5189F3; }
+    .s-cooldown    { --bar:#F59E0B; --ibg:#FFFBEB; --ic:#F59E0B; }
+    .s-att2-ready  { --bar:#EA580C; --ibg:#FFF7ED; --ic:#EA580C; }
+    .s-failed      { --bar:#EF4444; --ibg:#FEF2F2; --ic:#EF4444; }
+    .s-available   { --bar:#5189F3; --ibg:#F0F0F0; --ic:#aaa; }
+    .s-locked      { --bar:#E5E7EB; --ibg:#F5F5F5; --ic:#ccc; }
+    .class-card-bar     { background: var(--bar,#E5E7EB); }
+    .class-icon-circle  { background: var(--ibg,#F5F5F5); }
+    .class-icon-circle svg { color: var(--ic,#ccc); }
+
+    /* ══════════════════
+       QUIZ MODAL
+    ══════════════════ */
+    .quiz-overlay {
+      position: fixed; inset: 0; background: rgba(8,18,36,0.6);
+      backdrop-filter: blur(4px); display: none; align-items: center;
+      justify-content: center; z-index: 500; padding: 20px;
+    }
+    .quiz-overlay.open { display: flex; }
+    .quiz-box {
+      background: #fff; border-radius: 4px; width: 100%; max-width: 560px;
+      max-height: 90vh; overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.28);
+    }
+    .quiz-head {
+      padding: 18px 22px 14px; border-bottom: 1px solid #F0F0F0; flex-shrink: 0;
+    }
+    .quiz-head-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px; margin-bottom: 12px;
+    }
+    .quiz-head-title { font-size: 15px; font-weight: 900; color: #111; }
+    .quiz-head-meta { font-size: 12px; color: #888; font-weight: 600; margin-top: 2px; }
+    .quiz-close {
+      width: 28px; height: 28px; border: none; background: #F5F5F5;
+      border-radius: 50%; cursor: pointer; display: grid; place-items: center;
+      flex-shrink: 0; color: #666; font-size: 14px;
+    }
+    .quiz-prog-row { display: flex; align-items: center; gap: 10px; }
+    .quiz-prog-track { flex: 1; height: 5px; background: #F0F0F0; border-radius: 3px; overflow: hidden; }
+    .quiz-prog-fill { height: 100%; border-radius: 3px; background: #5189F3; transition: width 0.3s; }
+    .quiz-prog-label { font-size: 11px; font-weight: 800; color: #888; white-space: nowrap; }
+    .quiz-body { flex: 1; overflow-y: auto; padding: 22px; }
+    .quiz-q-num { font-size: 10px; font-weight: 800; color: #bbb; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+    .quiz-q-text { font-size: 15px; font-weight: 700; color: #111; line-height: 1.5; margin-bottom: 20px; }
+    /* MCQ */
+    .quiz-options { display: flex; flex-direction: column; gap: 9px; }
+    .quiz-opt {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+      border: 1.5px solid #DFE2E6; border-radius: 2px; cursor: pointer;
+      transition: border-color 0.12s, background 0.12s; background: #fff;
+      font-family: 'Nunito', sans-serif; text-align: left; width: 100%;
+    }
+    .quiz-opt:hover { border-color: #5189F3; background: #F8FAFF; }
+    .quiz-opt.selected { border-color: #5189F3; background: #EEF3FF; }
+    .quiz-opt-letter {
+      width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid #DFE2E6;
+      font-size: 11px; font-weight: 800; color: #aaa;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .quiz-opt.selected .quiz-opt-letter { background: #5189F3; border-color: #5189F3; color: #fff; }
+    .quiz-opt-text { font-size: 13px; font-weight: 600; color: #333; }
+    /* TF */
+    .tf-row { display: flex; gap: 12px; }
+    .tf-btn {
+      flex: 1; padding: 16px; border: 1.5px solid #DFE2E6; border-radius: 2px;
+      background: #fff; cursor: pointer; font-family: 'Nunito', sans-serif;
+      font-size: 15px; font-weight: 700; color: #666; transition: all 0.12s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .tf-btn:hover { border-color: #5189F3; background: #F8FAFF; }
+    .tf-btn.sel-t { border-color: #16a34a; background: #F0FDF4; color: #16a34a; }
+    .tf-btn.sel-f { border-color: #EF4444; background: #FEF2F2; color: #EF4444; }
+    .quiz-foot {
+      border-top: 1px solid #F0F0F0; padding: 14px 22px;
+      display: flex; align-items: center; flex-shrink: 0;
+    }
+    .quiz-unanswered { font-size: 11px; font-weight: 700; color: #F59E0B; flex: 1; }
+
+    /* ══════════════════
+       RESULT MODAL
+    ══════════════════ */
+    .result-overlay {
+      position: fixed; inset: 0; background: rgba(8,18,36,0.6);
+      backdrop-filter: blur(4px); display: none; align-items: center;
+      justify-content: center; z-index: 600; padding: 20px;
+    }
+    .result-overlay.open { display: flex; }
+    .result-box {
+      background: #fff; border-radius: 4px; width: 100%; max-width: 440px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.28); overflow: hidden;
+    }
+    .result-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; border-bottom: 1px solid #F0F0F0;
+    }
+    .result-head-title { font-size: 14px; font-weight: 800; color: #111; }
+    .result-close { width: 28px; height: 28px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: grid; place-items: center; color: #666; font-size: 14px; }
+    .result-body { padding: 24px 22px 18px; }
+    .result-ring { display: flex; justify-content: center; margin-bottom: 16px; }
+    .result-status { text-align: center; margin-bottom: 18px; }
+    .result-status-label { font-size: 16px; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .result-status-msg { font-size: 12px; color: #888; font-weight: 600; line-height: 1.6; }
+    .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .result-stat { background: #F8F8F8; border-radius: 2px; padding: 10px 14px; text-align: center; }
+    .result-stat-num { font-size: 20px; font-weight: 900; color: #111; }
+    .result-stat-label { font-size: 10px; color: #aaa; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; margin-top: 2px; }
+    .result-next { border-radius: 2px; padding: 12px 14px; font-size: 12px; font-weight: 700; line-height: 1.6; }
+    .result-foot { padding: 14px 20px; border-top: 1px solid #F0F0F0; display: flex; justify-content: flex-end; }
+
+    /* ══════════════════
+       LEADERBOARD
+    ══════════════════ */
+    .sidebar-divider { height: 1px; background: #F0F0F0; margin: 10px 16px; }
+    .lb-section { display: none; padding: 0; }
+    .lb-section.active { display: block; }
+    .lb-hero {
+      display: grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+      gap: 12px; margin-bottom: 22px;
+    }
+    .lb-stat-card {
+      background: #fff; border: 1px solid #DFE2E6; border-radius: 2px;
+      padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+    }
+    .lb-stat-icon {
+      width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-stat-val { font-size: 22px; font-weight: 900; color: #111; line-height: 1; }
+    .lb-stat-lbl { font-size: 11px; color: #888; font-weight: 700; margin-top: 3px; }
+    /* Podium */
+    .lb-podium { display: flex; align-items: flex-end; justify-content: center; gap: 10px; margin-bottom: 24px; }
+    .podium-slot { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .podium-crown { font-size: 20px; line-height: 1; }
+    .podium-av {
+      width: 48px; height: 48px; border-radius: 50%;
+      font-size: 14px; font-weight: 900; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .podium-av.me { outline: 3px solid #5189F3; outline-offset: 2px; }
+    .podium-name { font-size: 11px; font-weight: 800; color: #111; text-align: center; max-width: 70px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .podium-cert { font-size: 10px; font-weight: 700; color: #888; }
+    .podium-block { border-radius: 2px 2px 0 0; width: 70px; display: flex; align-items: center; justify-content: center; }
+    .podium-rank { font-size: 18px; font-weight: 900; color: rgba(255,255,255,0.85); }
+    /* Table */
+    .lb-table-wrap { background: #fff; border: 1px solid #DFE2E6; border-radius: 2px; overflow: hidden; }
+    .lb-table-head {
+      display: flex; align-items: center; padding: 12px 16px;
+      border-bottom: 1px solid #F0F0F0; gap: 10px;
+    }
+    .lb-table-head-title { font-size: 13px; font-weight: 800; color: #111; flex: 1; }
+    .lb-search {
+      padding: 6px 12px; border: 1px solid #DFE2E6; border-radius: 2px;
+      font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600;
+      outline: none; width: 200px;
+    }
+    .lb-search:focus { border-color: #5189F3; }
+    table.lb-tbl { width: 100%; border-collapse: collapse; }
+    table.lb-tbl th {
+      padding: 10px 14px; font-size: 10px; font-weight: 800; color: #aaa;
+      text-transform: uppercase; letter-spacing: .05em; background: #FAFAFA;
+      border-bottom: 1px solid #F0F0F0; text-align: left;
+    }
+    table.lb-tbl td { padding: 12px 14px; border-bottom: 1px solid #F5F5F5; vertical-align: middle; }
+    table.lb-tbl tr:last-child td { border-bottom: none; }
+    table.lb-tbl tr.is-me td { background: #F5F9FF; }
+    table.lb-tbl tr.is-me td:first-child { border-left: 3px solid #5189F3; }
+    .lb-rank-num { font-size: 13px; font-weight: 900; color: #bbb; }
+    .lb-rank-num.top1 { color: #F59E0B; }
+    .lb-rank-num.top2 { color: #94A3B8; }
+    .lb-rank-num.top3 { color: #F97316; }
+    .lb-user-cell { display: flex; align-items: center; gap: 10px; }
+    .lb-av {
+      width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+      font-size: 11px; font-weight: 900; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .lb-av.me { outline: 2px solid #5189F3; outline-offset: 2px; }
+    .lb-user-name { font-size: 13px; font-weight: 800; color: #111; }
+    .lb-user-role { font-size: 10px; font-weight: 700; color: #aaa; margin-top: 1px; }
+    .lb-you-tag {
+      font-size: 9px; font-weight: 800; padding: 1px 6px; border-radius: 6px;
+      background: #EEF3FF; color: #5189F3; vertical-align: middle; margin-left: 4px;
+    }
+    .lb-bar-wrap { display: flex; align-items: center; gap: 8px; }
+    .lb-bar-track { flex: 1; height: 5px; background: #F0F0F0; border-radius: 3px; overflow: hidden; min-width: 60px; }
+    .lb-bar-fill { height: 100%; border-radius: 3px; }
+    .lb-bar-pct { font-size: 11px; font-weight: 800; white-space: nowrap; }
+    .lb-cert-count { font-size: 14px; font-weight: 900; color: #7C3AED; }
+    .lb-cert-total { font-size: 10px; font-weight: 700; color: #bbb; }
+    .lb-sync-note { font-size: 11px; color: #aaa; font-weight: 600; text-align: right; margin-bottom: 10px; }
+    .lb-no-sync {
+      background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 2px;
+      padding: 10px 14px; font-size: 12px; font-weight: 700; color: #D97706; margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="brand">
+      <svg width="32" height="32" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="22" fill="none" stroke="#111" stroke-width="2"/>
+        <path d="M9 27c3.2 0 3.2-4 6.4-4s3.2 4 6.4 4 3.2-4 6.4-4 3.2 4 6.4 4 3.2-4 6.4-4"
+          fill="none" stroke="#5189F3" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name"><span class="sea">SEA</span>TRACE</span>
+    </div>
+    <div class="nav-right">
+      <div class="nav-avatar">AM</div>
+      <span class="nav-user-name">Arjun Mehta</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-label">Modules</div>
+      <button class="sidebar-item active" id="sidebarForms" onclick="switchModule('Forms',this)">
+        <div class="sidebar-item-dot" style="background:#5189F3"></div>
+        <span class="sidebar-item-name">Forms</span>
+        <span class="sidebar-item-count" style="background:#EEF3FF;color:#5189F3">8</span>
+      </button>
+      <button class="sidebar-item" onclick="switchModule('Master Forms',this)">
+        <div class="sidebar-item-dot" style="background:#7C3AED"></div>
+        <span class="sidebar-item-name">Master Forms</span>
+        <span class="sidebar-item-count" style="background:#F5F3FF;color:#7C3AED">5</span>
+      </button>
+      <button class="sidebar-item" onclick="switchModule('Quality Control',this)">
+        <div class="sidebar-item-dot" style="background:#16a34a"></div>
+        <span class="sidebar-item-name">Quality Control</span>
+        <span class="sidebar-item-count" style="background:#F0FDF4;color:#16a34a">5</span>
+      </button>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-label">Team</div>
+      <button class="sidebar-item" onclick="switchLeaderboard(this)">
+        <div class="sidebar-item-dot" style="background:#F59E0B"></div>
+        <span class="sidebar-item-name">Leaderboard</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      </button>
+    </aside>
+
+    <main class="main">
+      <!-- Module learning view -->
+      <div id="moduleView">
+        <div class="main-title" id="mainTitle">Forms</div>
+        <div class="main-sub">Complete classes in order — pass the assessment to unlock the next class</div>
+        <div class="mod-progress-bar">
+          <span class="mod-prog-label">Module Progress</span>
+          <div class="mod-prog-track">
+            <div class="mod-prog-fill" id="modProgFill" style="width:0%"></div>
+          </div>
+          <span class="mod-prog-pct" id="modProgPct">0%</span>
+          <span class="mod-prog-certs" id="modProgCerts">0 / 0 certified</span>
+        </div>
+        <div class="class-list" id="classList"></div>
+      </div>
+
+      <!-- Leaderboard view -->
+      <div id="lbView" style="display:none">
+        <div class="main-title" style="margin-bottom:4px">Team Leaderboard</div>
+        <div class="main-sub" id="lbSyncNote">Ranked by class certifications earned</div>
+
+        <!-- Stat cards -->
+        <div class="lb-hero" id="lbHero"></div>
+
+        <!-- Podium -->
+        <div class="lb-podium" id="lbPodium"></div>
+
+        <!-- Table -->
+        <div class="lb-table-wrap">
+          <div class="lb-table-head">
+            <span class="lb-table-head-title">All Learners</span>
+            <input class="lb-search" id="lbSearch" placeholder="Search name or department…" oninput="renderLbTable()" />
+          </div>
+          <table class="lb-tbl">
+            <thead><tr>
+              <th style="width:6%">Rank</th>
+              <th style="width:26%">Learner</th>
+              <th style="width:16%">Department</th>
+              <th style="width:28%">Completion</th>
+              <th style="width:12%;text-align:center">Certs</th>
+              <th style="width:12%;text-align:center">Points</th>
+            </tr></thead>
+            <tbody id="lbBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Quiz Modal -->
+  <div class="quiz-overlay" id="quizOverlay">
+    <div class="quiz-box">
+      <div class="quiz-head">
+        <div class="quiz-head-top">
+          <div>
+            <div class="quiz-head-title" id="quizTitle"></div>
+            <div class="quiz-head-meta" id="quizMeta"></div>
+          </div>
+          <button class="quiz-close" onclick="closeQuiz()">&#x2715;</button>
+        </div>
+        <div class="quiz-prog-row">
+          <div class="quiz-prog-track"><div class="quiz-prog-fill" id="quizProgFill" style="width:0%"></div></div>
+          <span class="quiz-prog-label" id="quizProgLabel">1 / 5</span>
+        </div>
+      </div>
+      <div class="quiz-body" id="quizBody"></div>
+      <div class="quiz-foot">
+        <span class="quiz-unanswered" id="quizUnanswered"></span>
+        <button class="btn-outline" id="quizPrev" onclick="quizNav(-1)" style="display:none">&#8592; Back</button>
+        <div style="display:flex;gap:8px;margin-left:8px">
+          <button class="btn-outline" id="quizNext" onclick="quizNav(1)">Next &#8594;</button>
+          <button class="btn-primary" id="quizSubmit" onclick="submitQuiz()" style="display:none">Submit Assessment</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Result Modal -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-box">
+      <div class="result-head">
+        <div class="result-head-title" id="resultTitle"></div>
+        <button class="result-close" onclick="closeResult()">&#x2715;</button>
+      </div>
+      <div class="result-body">
+        <div class="result-ring" id="resultRing"></div>
+        <div class="result-status">
+          <div class="result-status-label" id="resultLabel"></div>
+          <div class="result-status-msg" id="resultMsg"></div>
+        </div>
+        <div class="result-stats">
+          <div class="result-stat">
+            <div class="result-stat-num" id="rScore"></div>
+            <div class="result-stat-label">Your Score</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" id="rPass"></div>
+            <div class="result-stat-label">Pass Mark</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" id="rCorrect"></div>
+            <div class="result-stat-label">Correct</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-num" id="rTotal"></div>
+            <div class="result-stat-label">Questions</div>
+          </div>
+        </div>
+        <div class="result-next" id="resultNext"></div>
+      </div>
+      <div class="result-foot">
+        <button class="btn-outline" onclick="closeResult()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── Modules ── */
+    var MODULES = {
+      'Forms':           { color:'#5189F3', classes:['Beheading','Grading','Peeling & Cutting','De-veining','Weighing & Packing','IQF Freezing','Cold Store Inward','Cold Store Outward'] },
+      'Master Forms':    { color:'#7C3AED', classes:['Supplier Registration','Raw Material Intake','Batch Traceability','Equipment Log','Staff Records'] },
+      'Quality Control': { color:'#16a34a', classes:['Organoleptic Test','Microbiological Check','Chemical Analysis','Packaging Inspection','Final Release'] }
+    };
+
+    /* ── Quiz Questions ── */
+    var QQ = {
+      'Forms': {
+        'Beheading':{ passMark:70, questions:[
+          { type:'mcq', text:'What is the correct hand position during the beheading process?', options:['Palm facing up','Thumb tucked inward','Fingers extended outward','Grip at the tail'], correct:1 },
+          { type:'tf',  text:'PPE gloves must be worn at all times during the beheading operation.', correct:'true' },
+          { type:'mcq', text:'What is the primary quality check performed after beheading?', options:['Weight of batch','Shell colour uniformity','Clean separation at the head joint','Shrimp temperature'], correct:2 },
+          { type:'tf',  text:'Beheading blades can be shared between workstations without sanitising.', correct:'false' },
+          { type:'mcq', text:'Which metric measures processing efficiency in beheading?', options:['IQF temperature','Yield percentage','Cold store humidity','Glazing weight'], correct:1 },
+        ]},
+        'Grading':{ passMark:70, questions:[
+          { type:'mcq', text:'What does "count" mean in shrimp grading?', options:['Total batch weight','Number of shrimp per kilogram','Percentage of rejects','Freezing time'], correct:1 },
+          { type:'tf',  text:'Black spot discolouration automatically classifies shrimp as rejects.', correct:'true' },
+          { type:'mcq', text:'Which factor is NOT used in quality grading?', options:['Shell texture','Odour','Country of origin','Colour uniformity'], correct:2 },
+          { type:'tf',  text:'Grading must be completed before the IQF freezing step.', correct:'true' },
+          { type:'mcq', text:'A batch labelled "21/25" contains approximately how many shrimp per pound?', options:['10 to 15','21 to 25','30 to 35','40 to 50'], correct:1 },
+        ]},
+        'Peeling & Cutting':{ passMark:70, questions:[
+          { type:'mcq', text:'When must knives be sanitised during peeling?', options:['End of shift only','Between each shrimp','Between batches and after breaks','Once per hour'], correct:2 },
+          { type:'tf',  text:'The belly cut exposes the vein for easy removal during peeling.', correct:'true' },
+          { type:'mcq', text:'What is the acceptable standard for shell removal quality?', options:['≥ 95% shell removed','≥ 80% shell removed','≥ 70% shell removed','Visual judgement only'], correct:0 },
+          { type:'tf',  text:'Knife handles and blades must be inspected for damage before each shift.', correct:'true' },
+          { type:'mcq', text:'What is the correct method for disposing of shell waste?', options:['Leave on the line','Transfer to dedicated waste bins','Flush with water','Mix with product rejects'], correct:1 },
+        ]},
+        'De-veining':{ passMark:70, questions:[
+          { type:'mcq', text:'Where does the digestive tract (vein) run in shrimp?', options:['Underside near legs','The dorsal (back) side','Inside the head','Between shell layers'], correct:1 },
+          { type:'tf',  text:'Incomplete vein removal is acceptable if less than 30% of the vein remains.', correct:'false' },
+          { type:'mcq', text:'What tool is typically used for de-veining?', options:['Peeling knife','De-veining needle or tool','Kitchen scissors','High-pressure water jet'], correct:1 },
+          { type:'tf',  text:'Yield percentage typically drops after de-veining compared to head-on weight.', correct:'true' },
+          { type:'mcq', text:'During quality inspection, inspectors primarily check for:', options:['Correct count per kg','Complete vein removal and clean cuts','Shell colour','Freezing temperature'], correct:1 },
+        ]},
+        'Weighing & Packing':{ passMark:70, questions:[
+          { type:'mcq', text:'How often must weighing scales be calibrated?', options:['Annually','Daily before use','Weekly','Only after breakdown'], correct:1 },
+          { type:'tf',  text:'A pack labelled 500g must contain exactly 500g — no tolerance is permitted.', correct:'false' },
+          { type:'mcq', text:'What is the primary purpose of glazing IQF shrimp before packing?', options:['Improve flavour','Add bulk weight','Protect from freezer burn','Improve colour'], correct:2 },
+          { type:'tf',  text:'Batch traceability codes must appear on every individual pack.', correct:'true' },
+          { type:'mcq', text:'Which document accompanies each packed batch for traceability?', options:['Employee attendance record','Batch packing sheet','Maintenance log','Temperature chart only'], correct:1 },
+        ]},
+        'IQF Freezing':{ passMark:70, questions:[
+          { type:'mcq', text:'What does IQF stand for?', options:['Instant Quality Freeze','Individual Quick Freezing','Internal Quality Freezer','Integrated Quick Flow'], correct:1 },
+          { type:'tf',  text:'The core temperature target for IQF shrimp is -18°C or below.', correct:'true' },
+          { type:'mcq', text:'Why is IQF preferred over block freezing?', options:['It is cheaper','It prevents pieces from clumping','It adds glaze automatically','It speeds processing by 50%'], correct:1 },
+          { type:'tf',  text:'IQF tunnels should be cleaned and inspected at least weekly.', correct:'true' },
+          { type:'mcq', text:'If shrimp dwell time in the IQF tunnel is too short, what happens?', options:['Over-freezing occurs','Core temperature target is not reached','Glaze percentage increases','Yield drops'], correct:1 },
+        ]},
+        'Cold Store Inward':{ passMark:70, questions:[
+          { type:'mcq', text:'What temperature must the cold store maintain for frozen product?', options:['-12°C or below','-18°C or below','-5°C or below','0°C to 4°C'], correct:1 },
+          { type:'tf',  text:'Inward temperature of product must be recorded at the time of receipt.', correct:'true' },
+          { type:'mcq', text:'What does FIFO stand for?', options:['First In, First Out','Frozen In Frozen Out','First Inspection Final Output','Freeze Index for Operations'], correct:0 },
+          { type:'tf',  text:'Product can be stacked directly on the cold store floor to save space.', correct:'false' },
+          { type:'mcq', text:'What document must accompany every inward cold store transfer?', options:['Vehicle registration','Packing and batch record','Employee ID','Calibration log only'], correct:1 },
+        ]},
+        'Cold Store Outward':{ passMark:70, questions:[
+          { type:'mcq', text:'Before loading, the transport vehicle must be checked for:', options:['Fuel level','Cleanliness and temperature','Driver licence','GPS functionality'], correct:1 },
+          { type:'tf',  text:'Product temperature must be verified and logged before dispatch.', correct:'true' },
+          { type:'mcq', text:'Which principle ensures older batches are dispatched before newer ones?', options:['LIFO','FIFO','FEFO','FILO'], correct:1 },
+          { type:'tf',  text:'Dispatch documentation can be completed after the vehicle has departed.', correct:'false' },
+          { type:'mcq', text:'If product temperature exceeds -15°C at dispatch, you must:', options:['Proceed — minor deviation','Place on hold and notify QC','Refreeze in blast tunnel','Reduce pack weight and dispatch'], correct:1 },
+        ]},
+      },
+      'Master Forms': {
+        'Supplier Registration':{ passMark:70, questions:[
+          { type:'mcq', text:'KYC in supplier registration stands for:', options:['Keep Your Credentials','Know Your Customer','Key Yield Control','Know Your Compliance'], correct:1 },
+          { type:'tf',  text:'A supplier can begin deliveries before their registration is fully approved.', correct:'false' },
+          { type:'mcq', text:'Which document is NOT typically required during supplier registration?', options:['Business registration certificate','Food safety audit report','Employee attendance records','Insurance certificate'], correct:2 },
+          { type:'tf',  text:'Supplier approvals must be re-verified on an annual basis.', correct:'true' },
+          { type:'mcq', text:'Who is responsible for final approval of a new supplier?', options:['Floor supervisor','QC Manager or authorised approver','Delivery driver','Packing line operator'], correct:1 },
+        ]},
+        'Raw Material Intake':{ passMark:70, questions:[
+          { type:'mcq', text:'What is the first check performed when shrimp arrives at intake?', options:['Count per kg','Temperature of consignment','Supplier name','Vehicle weight'], correct:1 },
+          { type:'tf',  text:'Fresh shrimp with minor black spots must be rejected immediately without assessment.', correct:'false' },
+          { type:'mcq', text:'What is the acceptable ice-to-shrimp ratio for fresh delivery?', options:['1:10','1:1 or better','No ice required','2:1 (double ice)'], correct:1 },
+          { type:'tf',  text:'Temperature and batch details must be logged in the intake register at time of receipt.', correct:'true' },
+          { type:'mcq', text:'If a consignment fails the freshness check, the correct action is:', options:['Accept and process quickly','Place on hold and notify QC','Return without documentation','Reduce the purchase price'], correct:1 },
+        ]},
+        'Batch Traceability':{ passMark:70, questions:[
+          { type:'mcq', text:'What is the purpose of a Batch ID?', options:['Track employee productivity','Uniquely identify a production lot from intake to dispatch','Label equipment','Log vehicle inspections'], correct:1 },
+          { type:'tf',  text:'A single Batch ID can cover multiple supplier consignments mixed together.', correct:'false' },
+          { type:'mcq', text:'Traceability records must be retained for a minimum of:', options:['1 year','2 years','5 years','10 years'], correct:2 },
+          { type:'tf',  text:'In a recall, traceability records are used to identify and isolate affected product.', correct:'true' },
+          { type:'mcq', text:'Chain of custody documentation must be updated at each:', options:['Change of supervisor','Production stage or transfer point','Calendar month','New employee induction'], correct:1 },
+        ]},
+        'Equipment Log':{ passMark:70, questions:[
+          { type:'mcq', text:'Minimum frequency for logging equipment inspections is:', options:['Annually','Monthly','Daily before each shift','Every 6 months'], correct:2 },
+          { type:'tf',  text:'A faulty piece of equipment can continue to be used if the fault is minor.', correct:'false' },
+          { type:'mcq', text:'Calibration records are most critical for:', options:['Conveyor belts','Weighing scales and thermometers','Packing tables','Storage shelving'], correct:1 },
+          { type:'tf',  text:'Downtime incidents must be recorded with time and reason in the equipment log.', correct:'true' },
+          { type:'mcq', text:'Who signs off on completed equipment maintenance?', options:['The employee who reported the fault','An authorised maintenance supervisor','Any floor worker','The HR department'], correct:1 },
+        ]},
+        'Staff Records':{ passMark:70, questions:[
+          { type:'mcq', text:'Which document confirms a new employee completed food safety induction?', options:['Employment contract','Signed induction training record','Payslip','Medical certificate'], correct:1 },
+          { type:'tf',  text:'Medical fitness records must be updated annually for all food handling staff.', correct:'true' },
+          { type:'mcq', text:'If an employee changes role, which record must be updated?', options:['Attendance log','Role change and training record','Payroll only','Emergency contact form'], correct:1 },
+          { type:'tf',  text:'PPE issue records do not need to be maintained for audit purposes.', correct:'false' },
+          { type:'mcq', text:'Minimum period to retain employee training records:', options:['6 months','Duration of employment only','Duration of employment + 2 years','10 years'], correct:2 },
+        ]},
+      },
+      'Quality Control': {
+        'Organoleptic Test':{ passMark:75, questions:[
+          { type:'mcq', text:'Organoleptic evaluation uses:', options:['Lab equipment only','The five human senses','Computer imaging','Spectral analysis'], correct:1 },
+          { type:'tf',  text:'A strong ammonia odour in fresh shrimp is normal and acceptable.', correct:'false' },
+          { type:'mcq', text:'Which colour indicates spoilage during shrimp evaluation?', options:['Pale grey-white','Pink at the tail','Yellowing or black discolouration','Translucent appearance'], correct:2 },
+          { type:'tf',  text:'Texture (firmness) assessment is part of the organoleptic test protocol.', correct:'true' },
+          { type:'mcq', text:'Organoleptic test results must be recorded in:', options:['Employee attendance log','QC sensory evaluation register','Equipment maintenance log','Dispatch checklist'], correct:1 },
+        ]},
+        'Microbiological Check':{ passMark:75, questions:[
+          { type:'mcq', text:'Microbiological swabs are taken from:', options:['Office desks','Contact surfaces: boards, knives, belts','Vehicle exteriors','Cold store exterior walls'], correct:1 },
+          { type:'tf',  text:'Microbiological test results are available immediately from a swab.', correct:'false' },
+          { type:'mcq', text:'The acceptable limit for Total Viable Count is typically:', options:['Defined in the product specification','Zero CFU in all cases','No limit if frozen','Set by the delivery driver'], correct:0 },
+          { type:'tf',  text:'Lab samples must be stored correctly during transport to avoid contamination.', correct:'true' },
+          { type:'mcq', text:'If microbiological results exceed limits, you must:', options:['Reduce sample size','Place batch on hold and escalate to QC Manager','Release and monitor','Retest once then release if pass'], correct:1 },
+        ]},
+        'Chemical Analysis':{ passMark:75, questions:[
+          { type:'mcq', text:'Why are sulphites tested in shrimp products?', options:['Improve flavour','Ensure levels are within safe legal limits','Check freshness','Verify yield'], correct:1 },
+          { type:'tf',  text:'Antibiotic screening is required for all export product batches.', correct:'true' },
+          { type:'mcq', text:'A Certificate of Analysis (COA) is issued for:', options:['Each employee','Each batch that passes all chemical tests','Every weekly run','Each vehicle inspection'], correct:1 },
+          { type:'tf',  text:'Heavy metal testing is only required if a customer specifically requests it.', correct:'false' },
+          { type:'mcq', text:'Which test confirms shrimp was not treated with unauthorised antibiotics?', options:['Sulphite residue test','Antibiotic screening test','Heavy metal analysis','Organoleptic evaluation'], correct:1 },
+        ]},
+        'Packaging Inspection':{ passMark:75, questions:[
+          { type:'mcq', text:'Which detail is mandatory on every product label?', options:['Factory supervisor name','Best before date, batch number, and net weight','Employee ID of packer','Vehicle registration number'], correct:1 },
+          { type:'tf',  text:'Seal integrity testing involves applying pressure to verify each seal is airtight.', correct:'true' },
+          { type:'mcq', text:'A failed seal integrity test means the product should be:', options:['Resealed and approved immediately','Rejected or reprocessed — not dispatched','Dispatched with a disclaimer','Accepted if only one pack fails'], correct:1 },
+          { type:'tf',  text:'Net weight on the label must match the actual packed weight within permitted tolerance.', correct:'true' },
+          { type:'mcq', text:'Barcode verification is performed to ensure:', options:['Aesthetic alignment','Correct product information is encoded and readable','Colour is accurate','Font size meets brand guidelines'], correct:1 },
+        ]},
+        'Final Release':{ passMark:75, questions:[
+          { type:'mcq', text:'A product can be released for dispatch only when:', options:['The factory manager is present','All release criteria are met and signed off by QC','The batch has been frozen 24 hours','The customer confirms receipt'], correct:1 },
+          { type:'tf',  text:'A product on "Hold" status can be dispatched with verbal management approval.', correct:'false' },
+          { type:'mcq', text:'The hold procedure is initiated when:', options:['Any product fails a release criterion','Stock space is insufficient','A customer requests early delivery','The shift ends before QC completes'], correct:0 },
+          { type:'tf',  text:'Dispatch clearance documentation must be signed before the vehicle departs.', correct:'true' },
+          { type:'mcq', text:'Who has authority to release a product from Hold status?', options:['Any QC team member','Authorised QC Manager or Quality Director','Floor supervisor on duty','Customer representative'], correct:1 },
+        ]},
+      }
+    };
+
+    /* ── State (localStorage persisted) ── */
+    var LS = 'st_kh_arjun';
+    var INIT = {
+      'Forms':{
+        'Beheading':         { vp:100, a1:{score:82,pass:true, date:'01 Mar 2026',c:4,t:5}, a2:null },
+        'Grading':           { vp:100, a1:{score:48,pass:false,date:'05 Mar 2026',c:2,t:5}, a2:{score:74,pass:true,date:'07 Mar 2026',c:4,t:5} },
+        'Peeling & Cutting': { vp:100, a1:{score:40,pass:false,date:'25 Jun 2026',c:2,t:5}, a2:null,
+                               cd: new Date(Date.now()+14*3600000).toISOString() },
+        'De-veining':        { vp:55,  a1:null, a2:null },
+        'Weighing & Packing':{ vp:0,   a1:null, a2:null },
+        'IQF Freezing':      { vp:0,   a1:null, a2:null },
+        'Cold Store Inward': { vp:0,   a1:null, a2:null },
+        'Cold Store Outward':{ vp:0,   a1:null, a2:null },
+      },
+      'Master Forms':{
+        'Supplier Registration':{ vp:100, a1:null, a2:null },
+        'Raw Material Intake':  { vp:0,   a1:null, a2:null },
+        'Batch Traceability':   { vp:0,   a1:null, a2:null },
+        'Equipment Log':        { vp:0,   a1:null, a2:null },
+        'Staff Records':        { vp:0,   a1:null, a2:null },
+      },
+      'Quality Control':{
+        'Organoleptic Test':    { vp:60,  a1:null, a2:null },
+        'Microbiological Check':{ vp:0,   a1:null, a2:null },
+        'Chemical Analysis':    { vp:0,   a1:null, a2:null },
+        'Packaging Inspection': { vp:0,   a1:null, a2:null },
+        'Final Release':        { vp:0,   a1:null, a2:null },
+      }
+    };
+    function loadS(){ try{ var v=localStorage.getItem(LS); if(v) return JSON.parse(v); }catch(e){} return JSON.parse(JSON.stringify(INIT)); }
+    function saveS(){ try{ localStorage.setItem(LS, JSON.stringify(ST)); }catch(e){} }
+    var ST = loadS();
+
+    /* ── Status logic ── */
+    function getStatus(mod, cls, idx){
+      if(idx>0){
+        var pc=(ST[mod]||{})[MODULES[mod].classes[idx-1]]||{};
+        if(!((pc.a1&&pc.a1.pass)||(pc.a2&&pc.a2.pass))) return 'locked';
+      }
+      var s=(ST[mod]||{})[cls]||{};
+      if((s.a1&&s.a1.pass)||(s.a2&&s.a2.pass)) return 'certified';
+      if(s.a2&&!s.a2.pass) return 'quiz-failed';
+      if(s.a1&&!s.a1.pass){
+        if(s.cd && new Date()<new Date(s.cd)) return 'cooldown';
+        return 'att2-ready';
+      }
+      if(s.vp>=100) return 'quiz-ready';
+      if(s.vp>0)    return 'in-progress';
+      return 'available';
+    }
+    function cdRemain(mod,cls){
+      var cd=((ST[mod]||{})[cls]||{}).cd;
+      if(!cd) return null;
+      var ms=new Date(cd)-Date.now(); if(ms<=0) return null;
+      var h=Math.floor(ms/3600000), m=Math.floor((ms%3600000)/60000);
+      return h>0 ? h+'h '+m+'m' : m+'m';
+    }
+
+    /* ── SVG icons ── */
+    var I={
+      lock:  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
+      check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+      play:  '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>',
+      quiz:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+      clock: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+      retry: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.88"/></svg>',
+      trophy:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H3.5A2.5 2.5 0 0 1 1 6.5v0A2.5 2.5 0 0 1 3.5 4H6"/><path d="M18 9h2.5A2.5 2.5 0 0 0 23 6.5v0A2.5 2.5 0 0 0 20.5 4H18"/><path d="M6 4h12v8a6 6 0 0 1-12 0V4z"/><path d="M9 22h6"/><path d="M12 18v4"/></svg>',
+      xmark: '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+    };
+
+    function ring(score,pass,sz){
+      var s=sz||92, r=(s-10)/2, c=2*Math.PI*r, col=pass?'#16a34a':'#EF4444';
+      return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'">'+
+        '<circle cx="'+(s/2)+'" cy="'+(s/2)+'" r="'+r+'" fill="none" stroke="#F0F0F0" stroke-width="7"/>'+
+        '<circle cx="'+(s/2)+'" cy="'+(s/2)+'" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="7"'+
+        ' stroke-dasharray="'+(score/100*c)+' '+c+'" stroke-linecap="round"'+
+        ' transform="rotate(-90 '+(s/2)+' '+(s/2)+')"/>'+
+        '<text x="'+(s/2)+'" y="'+(s/2+6)+'" text-anchor="middle"'+
+        ' font-family="Nunito,sans-serif" font-weight="900" font-size="18" fill="'+col+'">'+score+'%</text></svg>';
+    }
+
+    /* ── Render ── */
+    var curMod = 'Forms';
+    function renderModule(){
+      var m=MODULES[curMod], cls=m.classes, cert=0;
+      cls.forEach(function(c,i){ if(getStatus(curMod,c,i)==='certified') cert++; });
+      var pct=Math.round(cert/cls.length*100);
+      document.getElementById('modProgFill').style.width=pct+'%';
+      document.getElementById('modProgFill').style.background=m.color;
+      document.getElementById('modProgPct').textContent=pct+'%';
+      document.getElementById('modProgPct').style.color=m.color;
+      document.getElementById('modProgCerts').textContent=cert+' / '+cls.length+' certified';
+      document.getElementById('classList').innerHTML=cls.map(function(c,i){return renderCard(curMod,c,i);}).join('');
+    }
+
+    function renderCard(mod,cls,idx){
+      var m=MODULES[mod], s=(ST[mod]||{})[cls]||{}, st=getStatus(mod,cls,idx);
+      var locked=st==='locked';
+      var SC={'certified':'s-certified','quiz-ready':'s-quiz-ready','in-progress':'s-in-progress',
+              'cooldown':'s-cooldown','att2-ready':'s-att2-ready','quiz-failed':'s-failed',
+              'available':'s-available','locked':'s-locked'}[st]||'s-locked';
+      var icons={'certified':I.trophy,'quiz-ready':I.quiz,'in-progress':I.play,
+                 'cooldown':I.clock,'att2-ready':I.retry,'quiz-failed':I.xmark,
+                 'available':I.play,'locked':I.lock};
+      var bs={'certified':'background:#F0FDF4;color:#16a34a','quiz-ready':'background:#EEF3FF;color:#5189F3',
+              'in-progress':'background:#EEF3FF;color:#5189F3','cooldown':'background:#FFFBEB;color:#D97706',
+              'att2-ready':'background:#FFF7ED;color:#EA580C','quiz-failed':'background:#FEF2F2;color:#EF4444',
+              'available':'background:#F5F5F5;color:#888','locked':'background:#F5F5F5;color:#aaa'}[st];
+      var bt={'certified':I.check+' Certified','quiz-ready':I.quiz+' Quiz Ready',
+              'in-progress':I.play+' In Progress','cooldown':I.clock+' Cooldown',
+              'att2-ready':I.retry+' Attempt 2 Ready','quiz-failed':I.xmark+' Quiz Locked',
+              'available':'Available','locked':I.lock+' Locked'}[st];
+
+      var chips='';
+      if(s.a1) chips+='<span class="quiz-attempt-chip '+(s.a1.pass?'pass':'fail')+'">Att 1 · '+s.a1.score+'%</span>';
+      if(s.a2) chips+='<span class="quiz-attempt-chip '+(s.a2.pass?'pass':'fail')+'">Att 2 · '+s.a2.score+'%</span>';
+      var extra='';
+      if(st==='cooldown'){ var r=cdRemain(mod,cls); extra='<span class="cooldown-badge">'+I.clock+' Attempt 2 in '+(r||'< 1m')+'</span>'; }
+
+      var sm=mod.replace(/'/g,"\\'"), sc=cls.replace(/'/g,"\\'"), actions='';
+      if(locked){
+        actions='<button class="btn-disabled">'+I.lock+' Locked</button>';
+      } else if(st==='certified'){
+        actions='<button class="btn-outline" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
+      } else if(st==='quiz-ready'){
+        actions='<button class="btn-primary" onclick="startQuiz(\''+sm+'\',\''+sc+'\',1)">'+I.quiz+' Take Assessment</button>';
+      } else if(st==='in-progress'||st==='available'){
+        actions='<button class="btn-primary" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Continue Videos</button>';
+      } else if(st==='cooldown'){
+        actions='<button class="btn-outline" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'+
+                '<button class="btn-disabled">'+I.clock+' Locked</button>';
+      } else if(st==='att2-ready'){
+        actions='<button class="btn-outline" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'+
+                '<button class="btn-primary" style="background:#EA580C" onclick="startQuiz(\''+sm+'\',\''+sc+'\',2)">'+I.retry+' Attempt 2</button>';
+      } else if(st==='quiz-failed'){
+        actions='<button class="btn-outline" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Watch Videos</button>'+
+                '<button class="btn-disabled">'+I.xmark+' Quiz Locked</button>';
+      }
+
+      return '<div class="class-card '+SC+(locked?' locked':'')+'">'+
+        '<div class="class-card-bar"></div>'+
+        '<div class="class-card-icon"><div class="class-icon-circle">'+(icons[st]||I.lock)+'</div></div>'+
+        '<div class="class-card-body">'+
+          '<div class="class-card-top">'+
+            '<span class="class-num">CLASS '+String(idx+1).padStart(2,'0')+'</span>'+
+            '<span class="class-name">'+cls+'</span>'+
+            (locked?'<span class="class-locked-label">'+I.lock+' Complete previous class first</span>':'')+
+          '</div>'+
+          '<div class="video-prog">'+
+            '<div class="video-prog-track"><div class="video-prog-fill" style="width:'+(s.vp||0)+'%;background:'+m.color+'"></div></div>'+
+            '<span class="video-prog-label">'+(s.vp||0)+'% videos</span>'+
+          '</div>'+
+          '<div class="quiz-state-row">'+
+            '<span class="quiz-badge" style="'+bs+'">'+bt+'</span>'+chips+extra+
+          '</div>'+
+        '</div>'+
+        '<div class="class-card-actions">'+actions+'</div>'+
+      '</div>';
+    }
+
+    function watchVid(mod,cls){ alert('Opening video player for: '+cls+' ('+mod+')'); }
+
+    /* ── Quiz flow ── */
+    var _qM,_qC,_qA,_qQs,_qIdx,_qAns;
+
+    function startQuiz(mod,cls,att){
+      var qd=(QQ[mod]||{})[cls];
+      if(!qd){ alert('No assessment available for this class yet.'); return; }
+      _qM=mod; _qC=cls; _qA=att; _qQs=qd.questions.slice(); _qIdx=0; _qAns=new Array(_qQs.length).fill(null);
+      document.getElementById('quizTitle').textContent=cls+' — Assessment';
+      document.getElementById('quizMeta').textContent='Attempt '+att+' · Pass mark: '+qd.passMark+'%';
+      document.getElementById('quizOverlay').classList.add('open');
+      renderQ();
+    }
+
+    function renderQ(){
+      var q=_qQs[_qIdx], tot=_qQs.length, pct=Math.round((_qIdx+1)/tot*100);
+      document.getElementById('quizProgFill').style.width=pct+'%';
+      document.getElementById('quizProgLabel').textContent=(_qIdx+1)+' / '+tot;
+      document.getElementById('quizPrev').style.display=_qIdx>0?'':'none';
+      document.getElementById('quizNext').style.display=_qIdx<tot-1?'':'none';
+      document.getElementById('quizSubmit').style.display=_qIdx===tot-1?'':'none';
+      var body='<div class="quiz-q-num">Question '+(_qIdx+1)+' of '+tot+'</div>'+
+               '<div class="quiz-q-text">'+q.text+'</div>';
+      if(q.type==='mcq'){
+        var letters=['A','B','C','D'];
+        body+='<div class="quiz-options">'+q.options.map(function(o,i){
+          var sel=_qAns[_qIdx]===i?' selected':'';
+          return '<button class="quiz-opt'+sel+'" onclick="selMCQ('+i+')">'+
+            '<span class="quiz-opt-letter">'+letters[i]+'</span>'+
+            '<span class="quiz-opt-text">'+o+'</span>'+
+          '</button>';
+        }).join('')+'</div>';
+      } else {
+        var ta=_qAns[_qIdx]==='true'?' sel-t':'', fa=_qAns[_qIdx]==='false'?' sel-f':'';
+        body+='<div class="tf-row">'+
+          '<button class="tf-btn'+ta+'" onclick="selTF(\'true\')">'+
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>True'+
+          '</button>'+
+          '<button class="tf-btn'+fa+'" onclick="selTF(\'false\')">'+
+            '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>False'+
+          '</button>'+
+        '</div>';
+      }
+      document.getElementById('quizBody').innerHTML=body;
+      updUnanswered();
+    }
+
+    function selMCQ(i){ _qAns[_qIdx]=i; renderQ(); }
+    function selTF(v){ _qAns[_qIdx]=v; renderQ(); }
+    function quizNav(d){ _qIdx=Math.max(0,Math.min(_qQs.length-1,_qIdx+d)); renderQ(); }
+    function updUnanswered(){
+      var n=_qAns.filter(function(a){return a===null;}).length;
+      document.getElementById('quizUnanswered').textContent=n>0?n+' question'+(n>1?'s':'')+' not yet answered':'';
+    }
+    function closeQuiz(){ document.getElementById('quizOverlay').classList.remove('open'); }
+
+    function submitQuiz(){
+      var n=_qAns.filter(function(a){return a===null;}).length;
+      if(n>0){ document.getElementById('quizUnanswered').textContent='Please answer all '+n+' remaining question(s) first.'; return; }
+      var correct=0;
+      _qQs.forEach(function(q,i){
+        if(q.type==='mcq'&&_qAns[i]===q.correct) correct++;
+        if(q.type==='tf' &&_qAns[i]===q.correct) correct++;
+      });
+      var total=_qQs.length, score=Math.round(correct/total*100);
+      var pm=QQ[_qM][_qC].passMark, pass=score>=pm;
+      var today=new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+      var res={score:score,pass:pass,date:today,c:correct,t:total};
+      if(!ST[_qM]) ST[_qM]={};
+      if(!ST[_qM][_qC]) ST[_qM][_qC]={vp:100};
+      if(_qA===1){
+        ST[_qM][_qC].a1=res;
+        if(!pass) ST[_qM][_qC].cd=new Date(Date.now()+24*3600000).toISOString();
+      } else {
+        ST[_qM][_qC].a2=res;
+        delete ST[_qM][_qC].cd;
+      }
+      saveS(); closeQuiz(); renderModule();
+      showResult(_qM,_qC,_qA,res,pm,pass);
+    }
+
+    function showResult(mod,cls,att,res,pm,pass){
+      var classes=MODULES[mod].classes, ci=classes.indexOf(cls), next=ci<classes.length-1?classes[ci+1]:null;
+      document.getElementById('resultTitle').textContent=cls+' — Attempt '+att+' Result';
+      document.getElementById('resultRing').innerHTML=ring(res.score,pass,100);
+      document.getElementById('rScore').textContent=res.score+'%';
+      document.getElementById('rPass').textContent=pm+'%';
+      document.getElementById('rCorrect').textContent=res.c;
+      document.getElementById('rTotal').textContent=res.t;
+
+      var lEl=document.getElementById('resultLabel'), msg='', nxt='';
+      if(pass){
+        lEl.style.color='#16a34a'; lEl.innerHTML=I.trophy+' &nbsp;Passed';
+        msg='You have earned the <strong>'+cls+'</strong> certification.';
+        if(next) msg+='<br><br><span style="color:#5189F3;font-weight:700">'+I.play+' '+next+' is now unlocked.</span>';
+        nxt='<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:2px;padding:11px 14px;color:#16a34a;display:flex;align-items:center;gap:8px">'+I.trophy+' Certificate has been issued and is on record.</div>';
+      } else if(att===1){
+        lEl.style.color='#D97706'; lEl.innerHTML=I.clock+' &nbsp;Not Passed — Attempt 1';
+        msg='You scored <strong>'+res.score+'%</strong>. You need <strong>'+pm+'%</strong> to pass.';
+        nxt='<div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:2px;padding:11px 14px;color:#D97706;line-height:1.6">'+
+          I.clock+' <strong>Attempt 2 will be available in 24 hours.</strong><br>'+
+          '<span style="font-size:11px;font-weight:600">Use this time to rewatch the class videos and review the topic.</span></div>';
+      } else {
+        lEl.style.color='#EF4444'; lEl.innerHTML=I.xmark+' &nbsp;Not Passed — Attempt 2';
+        msg='You scored <strong>'+res.score+'%</strong>. Both attempts have been used.';
+        nxt='<div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:2px;padding:11px 14px;color:#EF4444;line-height:1.6">'+
+          I.xmark+' <strong>The assessment is permanently locked for this class.</strong><br>'+
+          '<span style="font-size:11px;font-weight:600">You may continue watching the class videos. Contact your supervisor for further guidance.</span></div>';
+      }
+      document.getElementById('resultMsg').innerHTML=msg;
+      document.getElementById('resultNext').innerHTML=nxt;
+      document.getElementById('resultOverlay').classList.add('open');
+    }
+
+    function closeResult(){ document.getElementById('resultOverlay').classList.remove('open'); }
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape'){closeQuiz();closeResult();} });
+
+    /* ═══════════════════════════════════════════════
+       LEADERBOARD — reads shared state from admin
+    ═══════════════════════════════════════════════ */
+    var CURRENT_USER = 'Arjun Mehta';
+    var TOTAL_CLS    = 18;
+    var AV_COLORS    = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#EF4444','#0EA5E9','#D97706','#9333EA','#059669','#DC2626','#2563EB','#7C3AED','#0D9488','#EA580C','#6366F1','#DB2777','#65A30D','#0891B2'];
+
+    function loadSharedState() {
+      try {
+        var raw = localStorage.getItem('st_seatrace_shared');
+        if (raw) return JSON.parse(raw);
+      } catch(e) {}
+      return null;
+    }
+
+    function lbInits(name) {
+      return name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+    }
+
+    function avColor(name) {
+      var h = 0;
+      for (var i = 0; i < name.length; i++) h = ((h << 5) - h + name.charCodeAt(i)) | 0;
+      return AV_COLORS[Math.abs(h) % AV_COLORS.length];
+    }
+
+    function switchLeaderboard(btn) {
+      document.querySelectorAll('.sidebar-item').forEach(function(e){e.classList.remove('active');});
+      btn.classList.add('active');
+      document.getElementById('moduleView').style.display = 'none';
+      document.getElementById('lbView').style.display     = 'block';
+      renderLbView();
+    }
+
+    function switchModule(mod, btn) {
+      curMod = mod;
+      document.querySelectorAll('.sidebar-item').forEach(function(e){e.classList.remove('active');});
+      btn.classList.add('active');
+      document.getElementById('moduleView').style.display = 'block';
+      document.getElementById('lbView').style.display     = 'none';
+      document.getElementById('mainTitle').textContent    = mod;
+      renderModule();
+    }
+
+    function buildLbUsers(shared) {
+      if (shared && shared.users && shared.completions) {
+        // Use live data from admin
+        return shared.users.map(function(u) {
+          var certs = Object.keys(shared.completions).filter(function(k) {
+            return k.split(':')[0] === u.name && shared.completions[k].certEarned;
+          }).length;
+          return Object.assign({}, u, {
+            certsEarned:    certs,
+            completionPct:  Math.round(certs / TOTAL_CLS * 100),
+            skillPoints:    certs * 150 + (u.streak || 0) * 10
+          });
+        });
+      }
+      // Fallback: derive from INIT (demo data)
+      var FALLBACK = [
+        {name:'Arjun Mehta',    dept:'Management',      role:'Supervisor', streak:42, certsEarned:18, completionPct:100, skillPoints:2840},
+        {name:'Vijay Shankar',  dept:'Processing',      role:'Supervisor', streak:38, certsEarned:16, completionPct:89,  skillPoints:2720},
+        {name:'Suresh Patel',   dept:'Management',      role:'Supervisor', streak:35, certsEarned:13, completionPct:72,  skillPoints:2680},
+        {name:'Priya Nair',     dept:'Quality Control', role:'QC',         streak:28, certsEarned:13, completionPct:72,  skillPoints:2210},
+        {name:'Ravi Kumar',     dept:'Processing',      role:'Operator',   streak:21, certsEarned:10, completionPct:56,  skillPoints:1980},
+        {name:'Meena Reddy',    dept:'Quality Control', role:'QC',         streak:22, certsEarned:10, completionPct:56,  skillPoints:2050},
+        {name:'Arun Pillai',    dept:'Cold Store',      role:'Operator',   streak:18, certsEarned:9,  completionPct:50,  skillPoints:1840},
+        {name:'Sneha Thomas',   dept:'Processing',      role:'Trainee',    streak:14, certsEarned:7,  completionPct:39,  skillPoints:1560},
+        {name:'Kiran Babu',     dept:'Processing',      role:'Operator',   streak:10, certsEarned:6,  completionPct:33,  skillPoints:1390},
+        {name:'Deepa Varma',    dept:'Dispatch',        role:'Operator',   streak:11, certsEarned:5,  completionPct:28,  skillPoints:1250},
+        {name:'Divya Krishnan', dept:'Quality Control', role:'QC',         streak:7,  certsEarned:5,  completionPct:28,  skillPoints:1120},
+        {name:'Rahul Nambiar',  dept:'Processing',      role:'Trainee',    streak:6,  certsEarned:4,  completionPct:22,  skillPoints:920},
+        {name:'Mohan Das',      dept:'Cold Store',      role:'Operator',   streak:5,  certsEarned:4,  completionPct:22,  skillPoints:860},
+        {name:'Anitha Raj',     dept:'Dispatch',        role:'Trainee',    streak:3,  certsEarned:2,  completionPct:11,  skillPoints:540},
+        {name:'Sita Krishnan',  dept:'Cold Store',      role:'Trainee',    streak:4,  certsEarned:2,  completionPct:11,  skillPoints:610},
+        {name:'Babu George',    dept:'Dispatch',        role:'Operator',   streak:2,  certsEarned:1,  completionPct:6,   skillPoints:380},
+        {name:'Lakshmi Iyer',   dept:'Cold Store',      role:'Trainee',    streak:1,  certsEarned:1,  completionPct:6,   skillPoints:220},
+        {name:'Nisha Philip',   dept:'Management',      role:'Trainee',    streak:1,  certsEarned:0,  completionPct:0,   skillPoints:110},
+      ];
+      return FALLBACK;
+    }
+
+    function renderLbView() {
+      var shared  = loadSharedState();
+      var users   = buildLbUsers(shared);
+      var ranked  = users.slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.skillPoints - a.skillPoints; });
+
+      // Sync note
+      var note = document.getElementById('lbSyncNote');
+      if (shared && shared.syncedAt) {
+        var d = new Date(shared.syncedAt);
+        note.textContent = 'Live data from admin · Last updated ' + d.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'});
+      } else {
+        note.innerHTML = '<span style="color:#D97706">&#9888; Using demo data — open Admin to sync live results</span>';
+      }
+
+      // Hero stats
+      var myUser = ranked.find(function(u){return u.name===CURRENT_USER;}) || ranked[0];
+      var myRank = ranked.indexOf(myUser) + 1;
+      var totalCerts = ranked.reduce(function(s,u){return s+u.certsEarned;},0);
+      var avgCompl   = Math.round(ranked.reduce(function(s,u){return s+u.completionPct;},0)/ranked.length);
+      document.getElementById('lbHero').innerHTML =
+        heroCard('#EEF3FF','#5189F3',rankSVG,'#'+myRank+' Your Rank','of '+ranked.length+' learners') +
+        heroCard('#F0FDF4','#16a34a',certSVG,myUser.certsEarned+' Certs','you have earned') +
+        heroCard('#F5F3FF','#7C3AED',medalSVG,totalCerts+' Total','class certifications') +
+        heroCard('#FFFBEB','#D97706',chartSVG,avgCompl+'% Avg','team completion');
+
+      // Podium (top 3)
+      var tops = ranked.slice(0,3);
+      var podiumSlots = tops.length >= 3 ? [tops[1],tops[0],tops[2]] : [];
+      var podiumH = [70,100,56], podiumC = ['#94A3B8','#F59E0B','#F97316'], crowns = ['🥈','🥇','🥉'], rankNs = ['2','1','3'];
+      document.getElementById('lbPodium').innerHTML = podiumSlots.map(function(u,si){
+        var isMe = u.name === CURRENT_USER;
+        return '<div class="podium-slot">'+
+          '<div class="podium-crown">'+crowns[si]+'</div>'+
+          '<div class="podium-av'+(isMe?' me':'')+'" style="background:'+avColor(u.name)+'">'+lbInits(u.name)+'</div>'+
+          '<div class="podium-name" title="'+u.name+'">'+u.name.split(' ')[0]+(isMe?' (You)':'')+'</div>'+
+          '<div class="podium-cert">'+u.certsEarned+' certs</div>'+
+          '<div class="podium-block" style="background:'+podiumC[si]+';height:'+podiumH[si]+'px">'+
+            '<span class="podium-rank">'+rankNs[si]+'</span>'+
+          '</div>'+
+        '</div>';
+      }).join('');
+
+      renderLbTable(ranked);
+    }
+
+    function heroCard(bg,color,svgFn,val,lbl){
+      return '<div class="lb-stat-card">'+
+        '<div class="lb-stat-icon" style="background:'+bg+'">'+svgFn(color)+'</div>'+
+        '<div><div class="lb-stat-val" style="color:'+color+'">'+val+'</div><div class="lb-stat-lbl">'+lbl+'</div></div>'+
+      '</div>';
+    }
+    function rankSVG(c){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>'; }
+    function certSVG(c){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>'; }
+    function medalSVG(c){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H3.5A2.5 2.5 0 0 1 1 6.5v0A2.5 2.5 0 0 1 3.5 4H6"/><path d="M18 9h2.5A2.5 2.5 0 0 0 23 6.5v0A2.5 2.5 0 0 0 20.5 4H18"/><path d="M6 4h12v8a6 6 0 0 1-12 0V4z"/><path d="M9 22h6"/><path d="M12 18v4"/></svg>'; }
+    function chartSVG(c){ return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>'; }
+
+    function renderLbTable(rankedIn) {
+      var shared  = rankedIn ? null : loadSharedState();
+      var users   = rankedIn || buildLbUsers(shared).slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.skillPoints - a.skillPoints; });
+      var q       = (document.getElementById('lbSearch')?.value || '').toLowerCase();
+      var visible = q ? users.filter(function(u){ return u.name.toLowerCase().includes(q) || (u.dept||'').toLowerCase().includes(q); }) : users;
+
+      document.getElementById('lbBody').innerHTML = visible.map(function(u, i) {
+        var rank   = users.indexOf(u) + 1;
+        var isMe   = u.name === CURRENT_USER;
+        var rkCls  = rank===1?'top1':rank===2?'top2':rank===3?'top3':'';
+        var compColor = u.completionPct >= 80 ? '#16a34a' : u.completionPct >= 50 ? '#F59E0B' : '#5189F3';
+        return '<tr class="'+(isMe?'is-me':'')+'">'+
+          '<td><span class="lb-rank-num '+rkCls+'">#'+rank+'</span></td>'+
+          '<td><div class="lb-user-cell">'+
+            '<div class="lb-av'+(isMe?' me':'')+'" style="background:'+avColor(u.name)+'">'+lbInits(u.name)+'</div>'+
+            '<div>'+
+              '<div class="lb-user-name">'+u.name+(isMe?'<span class="lb-you-tag">YOU</span>':'')+'</div>'+
+              '<div class="lb-user-role">'+(u.role||u.dept||'')+'</div>'+
+            '</div>'+
+          '</div></td>'+
+          '<td style="font-size:12px;font-weight:700;color:#555">'+(u.dept||'—')+'</td>'+
+          '<td><div class="lb-bar-wrap">'+
+            '<div class="lb-bar-track"><div class="lb-bar-fill" style="width:'+u.completionPct+'%;background:'+compColor+'"></div></div>'+
+            '<span class="lb-bar-pct" style="color:'+compColor+'">'+u.completionPct+'%</span>'+
+          '</div></td>'+
+          '<td style="text-align:center"><span class="lb-cert-count">'+u.certsEarned+'</span><span class="lb-cert-total">/'+TOTAL_CLS+'</span></td>'+
+          '<td style="text-align:center;font-size:13px;font-weight:800;color:#F59E0B">'+(u.skillPoints||u.certsEarned*150).toLocaleString()+'</td>'+
+        '</tr>';
+      }).join('');
+    }
+
+    renderModule();
+  </script>
+</body>
+</html>

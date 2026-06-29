@@ -1,0 +1,1497 @@
+// Seatrace design tokens
+$brand-50: #5189F3;
+$brand-40: #70A0FB;
+$neutral-5:  #F8FAFC;
+$neutral-10: #EBF0F4;
+$neutral-20: #DFE2E6;
+$neutral-50: #A7AAAD;
+$neutral-80: #5E5E60;
+$neutral-100: #111111;
+$surface: #F9F9FA;
+$success-10: #E9FFEC;
+$success-60: #408F3D;
+$error-10:  #FFEBEE;
+$error-50:  #E82727;
+
+// ── Container ─────────────────────────────────────────
+.container {
+  height: 100%;
+  padding: 20px 32px 0;
+  display: flex;
+  flex-direction: column;
+  background: $surface;
+  font-family: 'Nunito', sans-serif;
+}
+
+// ── Breadcrumb ────────────────────────────────────────
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: $neutral-50;
+  margin-bottom: 18px;
+  flex-shrink: 0;
+  letter-spacing: -0.25px;
+}
+
+.breadcrumbLink {
+  color: $neutral-80;
+  cursor: pointer;
+  &:hover { color: $brand-50; }
+}
+
+.breadcrumbSep { font-size: 11px; }
+
+// ── Page header ───────────────────────────────────────
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.backBtn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid $neutral-20;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $neutral-80;
+  font-size: 15px;
+  transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+
+  &:hover { border-color: $brand-50; color: $brand-50; }
+}
+
+.pageTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: $neutral-100;
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+// ── Date range picker ─────────────────────────────────
+.datePicker {
+  height: 36px;
+  border-color: $neutral-20 !important;
+  border-radius: 0 !important;
+  min-width: 220px;
+
+  :global(.ant-picker-input) input {
+    font-size: 13px;
+    color: $neutral-80;
+  }
+
+  :global(.ant-picker-suffix) { color: $neutral-50; }
+  :global(.ant-picker-separator) { color: $neutral-50; }
+
+  &:hover,
+  &:global(.ant-picker-focused) {
+    border-color: $brand-50 !important;
+    box-shadow: 0 0 0 2px rgba(81, 137, 243, 0.12) !important;
+  }
+}
+
+// ── Harvest select ────────────────────────────────────
+.harvestSelect {
+  min-width: 140px;
+
+  :global(.ant-select-selector) {
+    border-radius: 0 !important;
+    border-color: $neutral-20 !important;
+    height: 36px !important;
+    align-items: center !important;
+    font-size: 13px !important;
+    color: $neutral-80 !important;
+  }
+
+  :global(.ant-select-arrow) { color: $neutral-50; }
+
+  &:global(.ant-select-focused) :global(.ant-select-selector) {
+    border-color: $brand-50 !important;
+    box-shadow: 0 0 0 2px rgba(81, 137, 243, 0.12) !important;
+  }
+
+  &:hover :global(.ant-select-selector) {
+    border-color: $brand-50 !important;
+  }
+}
+
+.selectChevron {
+  font-size: 14px;
+  color: $neutral-50;
+  line-height: 1;
+}
+
+// ── Download icon button ──────────────────────────────
+.iconBtn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid $neutral-20;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: $neutral-80;
+  font-size: 16px;
+  transition: border-color 0.2s, color 0.2s;
+
+  &:hover { border-color: $brand-50; color: $brand-50; }
+}
+
+// ── Card ──────────────────────────────────────────────
+.card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid $neutral-10;
+  overflow: hidden;
+}
+
+// ── Main tabs ─────────────────────────────────────────
+.mainTabs {
+  display: flex;
+  align-items: flex-end;
+  border-bottom: 1px solid $neutral-10;
+  padding: 0 24px;
+  flex-shrink: 0;
+}
+
+.mainTab {
+  padding: 14px 2px;
+  margin-right: 28px;
+  font-size: 14px;
+  font-weight: 500;
+  color: $neutral-50;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  letter-spacing: -0.25px;
+  font-family: 'Nunito', sans-serif;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover { color: $neutral-80; }
+}
+
+.mainTabActive {
+  color: $neutral-100;
+  border-bottom-color: $brand-50;
+}
+
+// ── Sub-tabs ──────────────────────────────────────────
+.subTabsWrapper {
+  border-bottom: 1px solid $neutral-10;
+  flex-shrink: 0;
+  overflow-x: auto;
+  margin-top: 12px;
+
+  &::-webkit-scrollbar { height: 3px; }
+  &::-webkit-scrollbar-track { background: $neutral-5; }
+  &::-webkit-scrollbar-thumb { background: $neutral-20; }
+}
+
+.subTabs {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 24px;
+  white-space: nowrap;
+}
+
+.subTab {
+  padding: 11px 2px;
+  margin-right: 32px;
+  font-size: 13px;
+  font-weight: 500;
+  color: $neutral-50;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: -0.25px;
+  font-family: 'Nunito', sans-serif;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover { color: $neutral-80; }
+}
+
+.subTabActive {
+  color: $brand-50;
+  border-bottom-color: $brand-50;
+}
+
+// ── Table wrapper ─────────────────────────────────────
+.tableWrapper {
+  flex: 1;
+  overflow: auto;
+  margin-top: 12px;
+
+  &::-webkit-scrollbar { width: 5px; height: 5px; }
+  &::-webkit-scrollbar-track { background: $neutral-5; }
+  &::-webkit-scrollbar-thumb { background: $neutral-20; border-radius: 3px; }
+}
+
+.table {
+  :global(.ant-table) {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+  }
+
+  :global(.ant-table-thead > tr > th) {
+    background: $neutral-5 !important;
+    font-weight: 600;
+    font-size: 13px;
+    color: $neutral-80;
+    border-top: 1px solid $neutral-10 !important;
+    border-bottom: 1px solid $neutral-10 !important;
+    padding: 11px 16px !important;
+    letter-spacing: -0.25px;
+    white-space: nowrap;
+    box-shadow: none !important;
+
+    &::before { display: none !important; }
+  }
+
+  :global(.ant-table table) {
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+  }
+
+  :global(.ant-table-tbody > tr > td) {
+    border-bottom: 1px solid $neutral-10 !important;
+    padding: 11px 16px !important;
+    color: $neutral-100;
+    font-size: 14px;
+    letter-spacing: -0.25px;
+    white-space: nowrap;
+  }
+
+  :global(.ant-table-tbody > tr:hover > td) {
+    background: $neutral-5 !important;
+  }
+
+  :global(.ant-checkbox-checked .ant-checkbox-inner) {
+    background-color: $brand-50 !important;
+    border-color: $brand-50 !important;
+  }
+
+  :global(.ant-table-column-sorter) { color: $neutral-20; }
+
+  :global(.ant-table-column-sorter-up.active),
+  :global(.ant-table-column-sorter-down.active) { color: $brand-50; }
+
+  :global(.ant-table-selection-column) {
+    padding-left: 16px !important;
+    padding-right: 8px !important;
+  }
+}
+
+// ── Sample number (muted link-style) ──────────────────
+.sampleNum {
+  color: $neutral-50;
+  font-size: 13px;
+  letter-spacing: -0.25px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+// ── Dash ──────────────────────────────────────────────
+.dash { color: $neutral-50; }
+
+// ── Numeric value cells ───────────────────────────────
+.valueCell {
+  display: inline-block;
+  padding: 3px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 56px;
+  text-align: center;
+  letter-spacing: -0.25px;
+}
+
+.valueCellPass { background: #E5F6E4; color: #2E7D32; }
+.valueCellFail { background: #FFEBEB; color: #C62828; }
+
+// ── Status badge ──────────────────────────────────────
+.statusBadge {
+  display: inline-block;
+  padding: 4px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 68px;
+  text-align: center;
+  letter-spacing: -0.25px;
+}
+
+.statusPass { background: $success-10; color: $success-60; }
+.statusFail { background: $error-10;   color: $error-50;   }
+
+// ── Action pills (Approved / Rejected) ────────────────
+.actionPill {
+  display: inline-block;
+  padding: 5px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.25px;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.actionApproved {
+  background: $success-10;
+  color: $success-60;
+  border: 1px solid darken(#E9FFEC, 8%);
+}
+
+.actionRejected {
+  background: $error-10;
+  color: $error-50;
+  border: 1px solid darken(#FFEBEE, 8%);
+}
+
+.actionSubmitted {
+  background: $neutral-10;
+  color: $neutral-80;
+  border: 1px solid $neutral-20;
+}
+
+// ── OI split-pane table ───────────────────────────────
+// Two side-by-side tables each with independent horizontal scroll.
+// Row heights are synced via useEffect so rows stay aligned.
+
+// Outer flex row — fills tableWrapper (which handles vertical scroll)
+.splitTableWrapper {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+// Left pane — details columns (#fafafa cell fill, hard right border)
+.detailsPane {
+  flex: 0 0 auto;
+  max-width: 48%;
+  min-width: 0;
+  overflow-x: auto;
+  border-right: 2px solid $neutral-10;
+
+  &::-webkit-scrollbar { height: 4px; }
+  &::-webkit-scrollbar-track { background: $neutral-5; }
+  &::-webkit-scrollbar-thumb { background: $neutral-20; border-radius: 2px; }
+}
+
+.detailsPaneFull {
+  flex: 1;
+  max-width: 100%;
+  border-right: none;
+}
+
+// Right pane — parameter columns
+.paramsPane {
+  flex: 1;
+  min-width: 0;
+  max-width: 52%;
+  overflow-x: auto;
+
+  &::-webkit-scrollbar { height: 4px; }
+  &::-webkit-scrollbar-track { background: $neutral-5; }
+  &::-webkit-scrollbar-thumb { background: $neutral-20; border-radius: 2px; }
+}
+
+.oiTable {
+  border-collapse: collapse;
+  min-width: max-content;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  width: 100%;
+}
+
+.oiTh {
+  background: #F8FAFF;
+  font-weight: 600;
+  font-size: 13px;
+  color: $neutral-80;
+  border-top: 1px solid $neutral-10;
+  border-bottom: 1px solid $neutral-10;
+  padding: 11px 16px;
+  letter-spacing: -0.25px;
+  white-space: nowrap;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.oiTd {
+  border-bottom: 1px solid $neutral-10;
+  padding: 11px 16px;
+  color: $neutral-100;
+  font-size: 14px;
+  letter-spacing: -0.25px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+// Details pane cells get #fafafa fill
+.oiTdDetail { background: #fafafa; }
+
+// Checkbox column — sticky-pinned to the left edge of the details pane
+.checkboxTh {
+  width: 48px;
+  padding-left: 16px;
+  padding-right: 8px;
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: #F8FAFF; // must be explicit for sticky to mask scrolled content
+}
+
+.checkboxTd {
+  width: 48px;
+  padding-left: 16px;
+  padding-right: 8px;
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: #fafafa; // matches oiTdDetail
+}
+
+// Status / Action columns — sticky-pinned to the right edge of the params pane.
+// `right` offset is set by JS in the height-sync useEffect (action = 0, status = action width).
+.stickyRight {
+  position: sticky;
+  z-index: 2;
+  background: #F8FAFF; // header background
+}
+
+.stickyRightTd {
+  position: sticky;
+  z-index: 1;
+  background: #fff; // body cell background
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: $brand-50;
+  display: block;
+}
+
+.viewBtn {
+  border: 1px solid $neutral-20;
+  background: #fff;
+  padding: 4px 16px;
+  font-size: 13px;
+  color: $neutral-80;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  letter-spacing: -0.25px;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:hover { border-color: $brand-50; color: $brand-50; }
+}
+
+.passText { color: $success-60; font-weight: 500; }
+.failText { color: $error-50;   font-weight: 500; }
+
+// ── Pre-Harvest ID verified badge ─────────────────────
+.preHarvestBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.verifiedIcon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.verifiedIconPass { background: #4CAF50; }
+.verifiedIconFail { background: $error-50; }
+
+// ── Footer ────────────────────────────────────────────
+.footerActions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 0 20px;
+  flex-shrink: 0;
+}
+
+.previewBtn {
+  height: 40px;
+  padding: 0 32px;
+  border-radius: 0 !important;
+  font-size: 14px;
+  font-weight: 600;
+  background: $brand-50 !important;
+  border-color: $brand-50 !important;
+  color: #fff !important;
+  letter-spacing: -0.25px;
+
+  &:hover {
+    background: $brand-40 !important;
+    border-color: $brand-40 !important;
+  }
+
+  &:active {
+    background: #326DDD !important;
+    border-color: #326DDD !important;
+  }
+}
+
+// ── Photo View Modal ─────────────────────────────────
+.photoOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.photoModal {
+  background: #fff;
+  width: 520px;
+  max-width: 94vw;
+  height: 560px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.22);
+  font-family: 'Nunito', sans-serif;
+  overflow: hidden;
+}
+
+// ── Header ─────────────────────────────────────────
+.photoModalHeader {
+  height: 58px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid $neutral-10;
+  gap: 12px;
+}
+
+.photoModalNavBtn {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border: 1px solid $neutral-20;
+  background: #fff;
+  font-size: 20px;
+  color: $neutral-80;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s;
+
+  &:last-child { margin-left: auto; }
+  &:hover { border-color: $brand-50; color: $brand-50; }
+}
+
+.photoModalTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: $neutral-100;
+  letter-spacing: -0.3px;
+}
+
+// ── Body — takes all remaining vertical space ───────
+.photoModalBody {
+  flex: 1 1 0;           // grow + shrink from 0 so height math is exact
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+// Bordered image box fills the body
+.photoModalImageBox {
+  flex: 1 1 0;
+  border: 1px solid $neutral-10;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.photoModalLogoRow {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1;
+}
+
+.photoModalLogoCircle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FF8C00 0%, #E82727 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.photoModalLogoName {
+  font-size: 13px;
+  font-weight: 700;
+  color: $neutral-100;
+  letter-spacing: 0.4px;
+  line-height: 1.3;
+}
+
+.photoModalLogoSub {
+  font-size: 10px;
+  color: $neutral-50;
+  line-height: 1.3;
+}
+
+.photoModalImgLabel {
+  font-size: 18px;
+  font-weight: 500;
+  color: $neutral-20;
+  letter-spacing: 3px;
+  user-select: none;
+}
+
+// ── Footer — fixed at bottom ────────────────────────
+.photoModalFooter {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+  border-top: 1px solid $neutral-10;
+  background: #fff;
+}
+
+.photoModalMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 13px;
+  color: $neutral-100;
+  line-height: 1.65;
+  min-width: 0;
+}
+
+.photoModalQR {
+  width: 88px;
+  height: 88px;
+  flex-shrink: 0;
+  display: block;
+}
+
+// ── Spec Range Modal ──────────────────────────────────
+.specModal {
+  background: #fff;
+  width: fit-content;
+  max-width: 96vw;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.22);
+  font-family: 'Nunito', sans-serif;
+  overflow: hidden;
+}
+
+.specModalBody {
+  padding: 20px;
+  background: #fff;
+}
+
+.specContainer {
+  background: #f0f0f0;
+  border-radius: 6px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.specSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 20px;
+
+  &:last-child { padding-bottom: 0; }
+}
+
+.specSectionTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: $neutral-100;
+  letter-spacing: -0.3px;
+}
+
+.specBoxRow {
+  display: flex;
+  gap: 10px;
+}
+
+.specBox {
+  width: 72px;
+  height: 52px;
+  background: #fff;
+  border: 1px solid $neutral-20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: $neutral-100;
+  letter-spacing: -0.3px;
+}
+
+.specBoxLast {
+  background: #d8d9dc;
+  border-color: #d0d1d4;
+  color: $neutral-80;
+}
+
+.specCheckRow {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.specCheckLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: $neutral-80;
+  cursor: default;
+  letter-spacing: -0.25px;
+  user-select: none;
+}
+
+.specCheckInput {
+  width: 18px;
+  height: 18px;
+  cursor: default;
+  accent-color: $brand-50;
+  flex-shrink: 0;
+}
+
+.specCheckDivider {
+  display: inline-block;
+  width: 1px;
+  height: 20px;
+  background: $neutral-50;
+  margin: 0 20px;
+}
+
+.specSectionDivider {
+  height: 1px;
+  background: $neutral-20;
+  margin: 20px 0;
+}
+
+// ══════════════════════════════════════════════════════════
+// DESKTOP / MOBILE LAYOUT SWITCH
+// ══════════════════════════════════════════════════════════
+.desktopView { display: block; }
+.mobileLayout { display: none; }
+
+// ══════════════════════════════════════════════════════════
+// MOBILE STYLES  (@media max-width: 768px)
+// ══════════════════════════════════════════════════════════
+@media (max-width: 768px) {
+
+  // Container: no desktop padding on mobile
+  .container {
+    padding: 0;
+    background: $surface;
+  }
+
+  // Hide desktop, show mobile
+  .desktopView { display: none !important; }
+
+  .mobileLayout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: $surface;
+    font-family: 'Nunito', sans-serif;
+  }
+
+  // ── Scrollable content body ─────────────────────────
+  .mobileContent {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 20px 8px;
+    &::-webkit-scrollbar { display: none; }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  // ── Breadcrumb ──────────────────────────────────────
+  .mobileBreadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: 12px;
+    color: $neutral-50;
+    letter-spacing: -0.25px;
+    flex-shrink: 0;
+  }
+  .mobileBcSep { color: $neutral-50; font-size: 11px; }
+  .mobileBcLink {
+    color: $neutral-80;
+    cursor: pointer;
+    &:hover { color: $brand-50; }
+  }
+
+  // ── Page header ─────────────────────────────────────
+  .mobilePageHeader {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .mobileBackBtn {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border: 1px solid $neutral-20;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $neutral-80;
+    font-size: 12px;
+    padding: 0;
+    transition: border-color 0.2s, color 0.2s;
+    &:hover { border-color: $brand-50; color: $brand-50; }
+  }
+  .mobileTitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: $neutral-100;
+    margin: 0;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+  }
+
+  // ── Controls bar ────────────────────────────────────
+  .mobileControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .mobileFilterBtn {
+    height: 36px;
+    padding: 0 14px;
+    border: 1px solid $neutral-20;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: $neutral-100;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: -0.25px;
+    transition: border-color 0.2s, color 0.2s;
+    &:hover { border-color: $brand-50; color: $brand-50; }
+  }
+  .mobileControlsBtns {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mobileIconBtn {
+    width: 36px;
+    height: 36px;
+    border: 1px solid $neutral-20;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $neutral-80;
+    font-size: 16px;
+    padding: 0;
+    transition: border-color 0.2s, color 0.2s;
+    &:hover { border-color: $brand-50; color: $brand-50; }
+  }
+
+  // ── Search bar ──────────────────────────────────────
+  .mobileSearchBar {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid $brand-50;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    color: $neutral-100;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(81, 137, 243, 0.12);
+    flex-shrink: 0;
+    &::placeholder { color: $neutral-50; }
+  }
+
+  // ── Pagination bar ──────────────────────────────────
+  .mobilePagBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid $neutral-10;
+    padding: 8px 12px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mobilePagInfo {
+    font-size: 12px;
+    color: $neutral-80;
+    white-space: nowrap;
+    letter-spacing: -0.25px;
+  }
+  .mobilePagControls {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .pagBtn {
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    border: 1px solid $neutral-20;
+    background: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    color: $neutral-100;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    &:hover:not(:disabled) { border-color: $brand-50; color: $brand-50; }
+    &:disabled { color: $neutral-20; cursor: default; border-color: $neutral-10; }
+  }
+  .pagBtnActive {
+    background: $brand-50;
+    color: #fff;
+    border-color: $brand-50;
+    font-weight: 700;
+    &:hover { background: $brand-40; border-color: $brand-40; color: #fff; }
+  }
+  .pagEllipsis {
+    font-size: 12px;
+    color: $neutral-50;
+    padding: 0 2px;
+    line-height: 28px;
+  }
+
+  // ── Main tabs — pill style ──────────────────────────
+  .mobileMainTabs {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .mobileMainTab {
+    flex: 1;
+    height: 44px;
+    border: 1.5px solid $neutral-20;
+    border-radius: 22px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: $neutral-80;
+    cursor: pointer;
+    letter-spacing: -0.25px;
+    transition: all 0.2s;
+    padding: 0 10px;
+    &:hover { border-color: $brand-50; color: $brand-50; }
+  }
+  .mobileMainTabActive {
+    background: $brand-50;
+    color: #fff;
+    border-color: $brand-50;
+    font-weight: 700;
+    &:hover { color: #fff; }
+  }
+
+  // ── Sub-tabs with arrows ────────────────────────────
+  .mobileSubTabsRow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .mobileSubTabArrow {
+    width: 30px;
+    height: 34px;
+    flex-shrink: 0;
+    border: 1.5px solid $neutral-20;
+    border-radius: 17px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $neutral-80;
+    font-size: 12px;
+    padding: 0;
+    transition: all 0.2s;
+    &:hover:not(:disabled) { border-color: $brand-50; color: $brand-50; }
+    &:disabled { color: $neutral-20; border-color: $neutral-10; cursor: default; }
+  }
+  .mobileSubTabsList {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    min-width: 0;
+    &::-webkit-scrollbar { display: none; }
+  }
+  .mobileSubTab {
+    flex-shrink: 0;
+    height: 34px;
+    border: 1.5px solid $neutral-20;
+    border-radius: 17px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 500;
+    color: $neutral-80;
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 0 14px;
+    transition: all 0.2s;
+    &:hover { border-color: $brand-50; color: $brand-50; }
+  }
+  .mobileSubTabActive {
+    background: $brand-50;
+    color: #fff;
+    border-color: $brand-50;
+    font-weight: 700;
+    &:hover { color: #fff; }
+  }
+
+  // ── Sample Info / Parameters toggles ───────────────
+  .mobileToggles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-shrink: 0;
+  }
+  .mobileToggleItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mobileToggleLabel {
+    font-size: 14px;
+    font-weight: 500;
+    color: $neutral-100;
+    letter-spacing: -0.25px;
+  }
+  .mobileToggle {
+    width: 48px;
+    height: 26px;
+    border-radius: 13px;
+    background: $neutral-20;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.25s;
+    padding: 0;
+    flex-shrink: 0;
+    &:focus-visible { outline: 2px solid $brand-50; outline-offset: 2px; }
+  }
+  .mobileToggleOn { background: $brand-50; }
+  .mobileToggleKnob {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.25s;
+    pointer-events: none;
+  }
+  .mobileToggleKnobOn { transform: translateX(22px); }
+
+  // ── Dropdowns row (Pre-Harvest + Sample ID) ─────────
+  .mobileSampleIdRow {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+  .mobileSampleIdWrap {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+  }
+  .mobileSampleIdSelect {
+    width: 100%;
+    height: 44px;
+    padding: 0 36px 0 14px;
+    border: 1px solid $neutral-20;
+    font-family: inherit;
+    font-size: 14px;
+    color: $neutral-50;
+    background: #fff;
+    appearance: none;
+    outline: none;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E5E60' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    transition: border-color 0.2s;
+    &:focus { border-color: $brand-50; box-shadow: 0 0 0 2px rgba(81,137,243,.12); }
+  }
+
+  // ── Table area ──────────────────────────────────────
+  .mobileTableArea {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    min-height: 160px;
+  }
+
+  // ── Table wrap — horizontally scrollable ────────────
+  .mobileTableWrap {
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid $neutral-10;
+    flex: 1;
+    &::-webkit-scrollbar { height: 4px; }
+    &::-webkit-scrollbar-track { background: $neutral-5; }
+    &::-webkit-scrollbar-thumb { background: $neutral-20; border-radius: 2px; }
+  }
+
+  // ── Custom mobile table ─────────────────────────────
+  .mobileTable {
+    border-collapse: collapse;
+    min-width: max-content;
+    width: 100%;
+    font-size: 14px;
+    font-family: 'Nunito', sans-serif;
+  }
+  .mobileTable thead tr {
+    background: #F4F7FF;
+    border-bottom: 1px solid $neutral-20;
+  }
+  .mobileTh {
+    padding: 11px 14px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 13px;
+    font-weight: 600;
+    color: $neutral-80;
+    letter-spacing: -0.25px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #F4F7FF;
+  }
+  .mobileCheckTh {
+    padding: 11px 10px;
+    width: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #F4F7FF;
+  }
+  .mobileTr {
+    border-bottom: 1px solid $neutral-10;
+    &:last-child { border-bottom: none; }
+    &:hover { background: #F8FAFF; }
+  }
+  .mobileTd {
+    padding: 11px 14px;
+    white-space: nowrap;
+    font-size: 14px;
+    color: $neutral-100;
+    letter-spacing: -0.25px;
+    vertical-align: middle;
+  }
+  .mobileCheckTd {
+    padding: 11px 10px;
+    vertical-align: middle;
+  }
+
+  // Sample number text color on mobile
+  .sampleNum { color: #121212 !important; font-weight: 600; }
+
+  // ── Sticky checkbox column ──────────────────────────
+  .mobileStickyCheckTh {
+    position: sticky;
+    left: 0;
+    z-index: 3;
+    background: #F4F7FF;
+  }
+  .mobileStickyCheckTd {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+  }
+
+  // ── Sticky Sample ID column (left: 40px = checkbox width) ──
+  .mobileStickyIdTh {
+    position: sticky;
+    left: 40px;
+    z-index: 3;
+    background: #F4F7FF;
+    border-right: 2px solid $neutral-20;
+    // Add subtle left shadow to signal scrollable content behind
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0; right: -6px; bottom: 0;
+      width: 6px;
+      background: linear-gradient(to right, rgba(0,0,0,0.06), transparent);
+      pointer-events: none;
+    }
+  }
+  .mobileStickyIdTd {
+    position: sticky;
+    left: 40px;
+    z-index: 1;
+    background: #fff;
+    border-right: 2px solid $neutral-20;
+  }
+
+  // Keep sticky cell backgrounds updated on row hover
+  .mobileTr:hover {
+    .mobileStickyCheckTd { background: #F8FAFF; }
+    .mobileStickyIdTd    { background: #F8FAFF; }
+  }
+
+  // ── Empty cell / empty state ────────────────────────
+  .mobileEmptyTd {
+    padding: 24px;
+    text-align: center;
+    font-size: 14px;
+    color: $neutral-50;
+  }
+  .mobileEmptyState {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: $neutral-50;
+    text-align: center;
+    padding: 32px 20px;
+    background: #fff;
+    border: 1px solid $neutral-10;
+    min-height: 120px;
+  }
+
+  // ── Fixed footer ────────────────────────────────────
+  .mobileFooter {
+    flex-shrink: 0;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: flex-end;
+    background: $surface;
+    border-top: 1px solid $neutral-10;
+  }
+  .mobileReviewedBtn {
+    height: 44px;
+    padding: 0 36px;
+    border: none;
+    background: $brand-50;
+    color: #fff;
+    font-family: inherit;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: -0.25px;
+    transition: background 0.2s;
+    &:hover { background: $brand-40; }
+    &:active { background: #326DDD; }
+  }
+
+  // ── Filter bottom sheet ─────────────────────────────
+  .mobileFilterOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: flex-end;
+  }
+  .mobileFilterPanel {
+    width: 100%;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    animation: mobileFilterSlideUp 0.25s ease;
+  }
+
+  @keyframes mobileFilterSlideUp {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
+  .mobileFilterHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid $neutral-10;
+    flex-shrink: 0;
+  }
+  .mobileFilterTitle {
+    font-size: 16px;
+    font-weight: 700;
+    color: $neutral-100;
+    letter-spacing: -0.25px;
+  }
+  .mobileFilterClose {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: $neutral-80;
+    font-size: 16px;
+    &:hover { color: $neutral-100; }
+  }
+  .mobileFilterBody {
+    padding: 20px;
+    flex: 1;
+  }
+  .mobileFilterGroup {
+    margin-bottom: 20px;
+    &:last-child { margin-bottom: 0; }
+  }
+  .mobileFilterGroupLabel {
+    font-size: 12px;
+    font-weight: 700;
+    color: $neutral-80;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .mobileFilterChips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .mobileFilterChip {
+    height: 34px;
+    padding: 0 16px;
+    border-radius: 17px;
+    border: 1.5px solid $neutral-20;
+    background: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    color: $neutral-80;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover { border-color: $brand-50; color: $brand-50; }
+  }
+  .mobileFilterChipActive {
+    background: $brand-50;
+    color: #fff;
+    border-color: $brand-50;
+  }
+  .mobileFilterFooter {
+    display: flex;
+    gap: 10px;
+    padding: 12px 20px 28px;
+    border-top: 1px solid $neutral-10;
+    flex-shrink: 0;
+  }
+  .mobileFilterReset {
+    flex: 1;
+    height: 44px;
+    border: 1.5px solid $neutral-20;
+    background: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: $neutral-80;
+    cursor: pointer;
+    letter-spacing: -0.25px;
+    transition: border-color 0.2s, color 0.2s;
+    &:hover { border-color: $neutral-50; color: $neutral-100; }
+  }
+  .mobileFilterApply {
+    flex: 2;
+    height: 44px;
+    border: none;
+    background: $brand-50;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    letter-spacing: -0.25px;
+    transition: background 0.2s;
+    &:hover { background: $brand-40; }
+  }
+
+} // end @media (max-width: 768px)

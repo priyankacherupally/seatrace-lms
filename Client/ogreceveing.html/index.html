@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organoleptic Inspection Form - Receiving</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --brand-50: #5189F3;
+      --brand-40: #70A0FB;
+      --neutral-5: #F8FAFC;
+      --neutral-10: #EBF0F4;
+      --neutral-20: #DFE2E6;
+      --neutral-50: #A7AAAD;
+      --neutral-80: #5E5E60;
+      --neutral-100: #111111;
+      --surface: #F0F2F5;
+      --error-50: #E82727;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+      background: var(--surface);
+      color: var(--neutral-100);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    /* ── Layout ── */
+    .layout { display: flex; flex-direction: column; height: 100vh; }
+
+    /* ── Navbar ── */
+    .navbar {
+      height: 52px;
+      background: #fff;
+      border-bottom: 1px solid var(--neutral-10);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px 0 16px;
+      flex-shrink: 0;
+    }
+
+    .navbar-logo {
+      display: flex; align-items: center; gap: 6px;
+      text-decoration: none;
+    }
+
+    .logo-svg { width: 36px; height: 36px; flex-shrink: 0; }
+
+    .logo-text {
+      font-weight: 800; font-size: 15px; letter-spacing: 0.8px;
+    }
+    .logo-sea { color: var(--brand-50); }
+    .logo-trace { color: var(--neutral-100); }
+
+    .navbar-actions { display: flex; align-items: center; gap: 6px; }
+
+    .nav-icon-btn {
+      width: 32px; height: 32px;
+      border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--neutral-80); font-size: 17px;
+      transition: color 0.15s;
+    }
+    .nav-icon-btn:hover { color: var(--brand-50); }
+
+    /* ── Body ── */
+    .body { display: flex; flex: 1; overflow: hidden; }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 52px;
+      background: #0B1929;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 6px 0 8px;
+      flex-shrink: 0;
+    }
+
+    .s-item {
+      width: 52px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: rgba(255,255,255,0.38); font-size: 15px;
+      transition: background 0.15s, color 0.15s;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .s-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+    .s-item.active {
+      color: #fff;
+    }
+    .s-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--brand-50);
+    }
+
+    .s-spacer { flex: 1; }
+
+    .s-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--brand-50);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: #fff;
+      cursor: pointer; margin-bottom: 8px;
+      flex-shrink: 0;
+    }
+
+    /* ── Content ── */
+    .content { flex: 1; overflow-y: auto; min-width: 0; padding-left: 4px; }
+
+    /* ── Page container ── */
+    .container {
+      height: 100%; padding: 16px 72px 0;
+      display: flex; flex-direction: column;
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 13px; color: var(--neutral-50);
+      margin-bottom: 14px; flex-shrink: 0; letter-spacing: -0.25px;
+    }
+    .bc-link { color: var(--neutral-80); cursor: pointer; }
+    .bc-link:hover { color: var(--brand-50); }
+    .bc-sep { color: var(--neutral-50); font-size: 11px; }
+
+    /* ── Page header ── */
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; flex-shrink: 0;
+    }
+    .header-left { display: flex; align-items: center; gap: 12px; }
+    .header-right { display: flex; align-items: center; gap: 10px; }
+
+    .back-btn {
+      width: 34px; height: 34px;
+      border: 1px solid var(--neutral-20); border-radius: 0;
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--neutral-80); font-size: 12px;
+      transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
+    }
+    .back-btn:hover { border-color: var(--brand-50); color: var(--brand-50); }
+
+    .page-title {
+      font-size: 18px; font-weight: 600;
+      color: var(--neutral-100); letter-spacing: -0.25px;
+    }
+
+    .hdr-select {
+      height: 36px; padding: 0 32px 0 12px;
+      border: 1px solid var(--neutral-20); border-radius: 0;
+      font-family: inherit; font-size: 14px; color: var(--neutral-100);
+      background: #fff; appearance: none; cursor: pointer; outline: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E5E60' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+      min-width: 140px;
+    }
+    .hdr-select:focus { border-color: var(--brand-50); box-shadow: 0 0 0 2px rgba(81,137,243,.12); }
+
+    .view-data-btn {
+      height: 36px; padding: 0 18px;
+      border: 1px solid var(--neutral-20); border-radius: 0;
+      font-family: inherit; font-size: 14px; font-weight: 500;
+      color: var(--neutral-100); background: #fff; cursor: pointer;
+      letter-spacing: -0.25px; transition: border-color 0.2s, color 0.2s;
+    }
+    .view-data-btn:hover { border-color: var(--brand-50); color: var(--brand-50); }
+
+    /* ── Form card ── */
+    .form-card {
+      flex: 1; min-height: 0; overflow-y: auto;
+      background: #fff; border: 1px solid var(--neutral-10);
+      padding: 24px 28px 24px;
+    }
+    .form-card::-webkit-scrollbar { width: 6px; }
+    .form-card::-webkit-scrollbar-track { background: #f1f3f5; }
+    .form-card::-webkit-scrollbar-thumb { background: var(--neutral-20); border-radius: 3px; }
+    .form-card::-webkit-scrollbar-thumb:hover { background: var(--neutral-50); }
+
+    /* ── Preview footer (outside scroll) ── */
+    .preview-footer {
+      flex-shrink: 0;
+      display: flex; justify-content: flex-end;
+      padding: 10px 0 16px;
+    }
+
+    /* ── Grids ── */
+    .top-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      column-gap: 28px; row-gap: 0; margin-bottom: 20px;
+    }
+    .spec-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      column-gap: 28px; row-gap: 20px; margin-bottom: 28px;
+    }
+    .bottom-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      column-gap: 28px; margin-bottom: 0;
+    }
+
+    /* ── Form groups ── */
+    .fg { margin-bottom: 16px; }
+    .fg:last-child { margin-bottom: 0; }
+
+    .lbl {
+      display: block; font-size: 14px; font-weight: 500;
+      color: var(--neutral-100); letter-spacing: -0.25px; margin-bottom: 6px;
+    }
+    .req { color: var(--error-50); margin-left: 2px; }
+
+    /* ── Inputs / Selects ── */
+    .inp, .sel {
+      width: 100%; height: 40px; padding: 0 12px;
+      border: 1px solid var(--neutral-20); border-radius: 0;
+      font-family: inherit; font-size: 14px; color: var(--neutral-100);
+      background: #fff; outline: none; letter-spacing: -0.25px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .inp::placeholder { color: var(--neutral-50); }
+    .inp-readonly {
+      background: var(--neutral-10); color: var(--neutral-80);
+      cursor: default; pointer-events: none;
+    }
+    .inp:hover, .inp:focus, .sel:hover, .sel:focus {
+      border-color: var(--brand-50);
+      box-shadow: 0 0 0 2px rgba(81,137,243,.12);
+    }
+    .sel {
+      appearance: none; cursor: pointer; padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235E5E60' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+    }
+
+    /* ── Result banner ── */
+    .result-banner {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 16px; margin-bottom: 28px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .result-banner.state-empty {
+      background: #F3F4F6; border: 1px solid var(--neutral-20);
+    }
+    .result-banner.state-passed {
+      background: #E9FFEC; border: 1px solid #ABDAA9;
+    }
+    .result-banner.state-failed {
+      background: #FFF1F1; border: 1px solid #F5AEAE;
+    }
+    .result-banner.state-loading {
+      background: #EFF4FF; border: 1px solid #B8CFFE;
+    }
+    .result-icon {
+      width: 18px; height: 18px; border-radius: 2px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 11px;
+    }
+    .state-empty   .result-icon { background: var(--neutral-20); color: #fff; }
+    .state-passed  .result-icon { background: #408F3D; color: #fff; }
+    .state-failed  .result-icon { background: #E82727; color: #fff; }
+    .state-loading .result-icon { background: var(--brand-50); color: #fff; }
+    .result-txt {
+      font-size: 14px; font-weight: 600; letter-spacing: -0.25px;
+    }
+    .state-empty   .result-txt { color: var(--neutral-50); }
+    .state-passed  .result-txt { color: #408F3D; }
+    .state-failed  .result-txt { color: #E82727; }
+    .state-loading .result-txt { color: var(--brand-50); }
+    .result-id-tag {
+      margin-left: auto; font-size: 12px; font-weight: 500;
+      color: var(--neutral-80); letter-spacing: -0.25px;
+    }
+
+    /* ── Spec field ── */
+    .spec-fh {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-bottom: 6px;
+    }
+    .spec-lbl {
+      font-size: 14px; font-weight: 500;
+      color: var(--neutral-100); letter-spacing: -0.25px;
+    }
+    .spec-cb {
+      width: 16px; height: 16px;
+      accent-color: var(--brand-50); cursor: pointer; flex-shrink: 0;
+    }
+    .spec-inp {
+      width: 100%; height: 40px; padding: 0 12px;
+      border: 1px solid var(--neutral-20); border-radius: 0;
+      font-family: inherit; font-size: 14px; color: var(--neutral-80);
+      background: #fff; outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .spec-inp:hover, .spec-inp:focus {
+      border-color: var(--brand-50);
+      box-shadow: 0 0 0 2px rgba(81,137,243,.12);
+    }
+    /* disabled spec input (e.g. Uniformity) */
+    .spec-inp:disabled {
+      background: #F3F4F6;
+      color: var(--neutral-50);
+      border-color: var(--neutral-20);
+      cursor: default;
+    }
+    .spec-inp:disabled:hover { border-color: var(--neutral-20); box-shadow: none; }
+
+    /* ── Total Defects row ── */
+    .defects-row {
+      display: flex; align-items: stretch; gap: 0;
+    }
+    .defects-inp {
+      flex: 1; border-right: none !important;
+    }
+    .defects-inp:hover, .defects-inp:focus {
+      border-color: var(--brand-50) !important;
+      box-shadow: 0 0 0 2px rgba(81,137,243,.12) !important;
+      z-index: 1; position: relative;
+    }
+    .defect-pct {
+      height: 40px; min-width: 56px;
+      display: flex; align-items: center; justify-content: center;
+      background: #F3F4F6; border: 1px solid var(--neutral-20);
+      font-size: 14px; font-weight: 500; color: var(--neutral-80);
+      letter-spacing: -0.25px; padding: 0 12px;
+      flex-shrink: 0;
+    }
+
+    /* ── Upload ── */
+    .upload-area {
+      border: 1.5px dashed var(--neutral-20);
+      background: #fff;
+      height: 40px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      transition: border-color 0.2s;
+    }
+    .upload-area:hover { border-color: var(--brand-50); }
+    .upload-icon { font-size: 16px; color: var(--brand-50); }
+    .upload-txt { font-size: 14px; font-weight: 500; color: var(--neutral-80); letter-spacing: -0.25px; }
+    .upload-hint { font-size: 11px; color: var(--neutral-50); letter-spacing: -0.25px; margin-top: 4px; }
+
+    /* ── Textarea ── */
+    .txt-area {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--neutral-20); border-radius: 0;
+      font-family: inherit; font-size: 14px; color: var(--neutral-100);
+      background: #fff; outline: none; resize: none; letter-spacing: -0.25px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .txt-area::placeholder { color: var(--neutral-50); }
+    .txt-area:hover, .txt-area:focus {
+      border-color: var(--brand-50);
+      box-shadow: 0 0 0 2px rgba(81,137,243,.12);
+    }
+
+    /* ── Preview button ── */
+    .preview-btn {
+      height: 40px; padding: 0 36px;
+      border: none; border-radius: 0;
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      background: var(--brand-50); color: #fff;
+      cursor: pointer; letter-spacing: -0.25px;
+      transition: background 0.2s;
+    }
+    .preview-btn:hover { background: var(--brand-40); }
+    .preview-btn:active { background: #326DDD; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <!-- SeaTrace circle logo -->
+      <svg class="logo-svg" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="16" stroke="#111111" stroke-width="1.8"/>
+        <ellipse cx="18" cy="18" rx="7" ry="11" stroke="#111111" stroke-width="1.6"/>
+        <path d="M7 18 Q12 13 18 18 Q24 23 29 18" stroke="#5189F3" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <path d="M7 18 Q12 23 18 18 Q24 13 29 18" stroke="#5189F3" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.45"/>
+      </svg>
+      <span class="logo-text"><span class="logo-sea">SEA</span><span class="logo-trace">TRACE</span></span>
+    </div>
+    <div class="navbar-actions">
+      <button class="nav-icon-btn" title="Home"><i class="fa-solid fa-house"></i></button>
+      <button class="nav-icon-btn" title="Sign out"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+    </div>
+  </nav>
+
+  <div class="body">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="s-item"><i class="fa-solid fa-house"></i></div>
+      <div class="s-item"><i class="fa-regular fa-clipboard"></i></div>
+      <div class="s-item"><i class="fa-solid fa-file-lines"></i></div>
+      <div class="s-item"><i class="fa-solid fa-file-alt"></i></div>
+      <div class="s-item"><i class="fa-solid fa-inbox"></i></div>
+      <div class="s-item"><i class="fa-solid fa-building-columns"></i></div>
+      <div class="s-item"><i class="fa-solid fa-user"></i></div>
+      <div class="s-item"><i class="fa-solid fa-user-plus"></i></div>
+      <div class="s-item"><i class="fa-solid fa-chart-bar"></i></div>
+      <div class="s-item active"><i class="fa-solid fa-file"></i></div>
+      <div class="s-spacer"></div>
+      <div class="s-avatar">D</div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content">
+      <div class="container">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+          <span class="bc-link">Home Screen</span>
+          <span class="bc-sep">&gt;</span>
+          <span class="bc-link">Quality Control</span>
+          <span class="bc-sep">&gt;</span>
+          <span>Organoleptic Inspection Form - Receiving</span>
+        </div>
+
+        <!-- Page header -->
+        <div class="page-header">
+          <div class="header-left">
+            <button class="back-btn" onclick="history.back()">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <h1 class="page-title">Organoleptic Inspection Form - Receiving</h1>
+          </div>
+          <div class="header-right">
+            <select class="hdr-select">
+              <option value="receiving" selected>Receiving</option>
+              <option value="beheading">Beheading</option>
+              <option value="grading">Grading</option>
+              <option value="processing">Processing</option>
+              <option value="iqf">IQF</option>
+              <option value="packing">Packing</option>
+            </select>
+            <button class="view-data-btn" onclick="window.location.href='viewdata.html'">View Data</button>
+          </div>
+        </div>
+
+        <!-- Scrollable form card -->
+        <div class="form-card">
+          <form onsubmit="return false">
+
+            <!-- Sample ID + Section + Batch Info + Batch Number + Count + Pre-Harvest ID -->
+            <div class="top-grid">
+              <div class="fg">
+                <label class="lbl">Sample ID</label>
+                <input type="text" class="inp inp-readonly" value="5421353" readonly>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Section<span class="req">*</span></label>
+                <select class="sel">
+                  <option value="" selected disabled>Eg: Select Section</option>
+                  <option>Receiving</option>
+                  <option>Beheading</option>
+                  <option>Grading</option>
+                  <option>Processing</option>
+                  <option>IQF</option>
+                  <option>Packing</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Batch Information</label>
+                <select class="sel">
+                  <option value="" selected disabled>Select Batch Info</option>
+                  <option>Batch Info 001</option>
+                  <option>Batch Info 002</option>
+                  <option>Batch Info 003</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Batch Number<span class="req">*</span></label>
+                <select class="sel">
+                  <option value="" selected disabled>Select Batch number</option>
+                  <option>Batch 001</option>
+                  <option>Batch 002</option>
+                  <option>Batch 003</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Count<span class="req">*</span></label>
+                <input type="text" class="inp" placeholder="Enter Count">
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Pre- Harvest ID Number<span class="req">*</span></label>
+                <input type="text" id="preHarvestInput" class="inp" placeholder="Eg: Ap0345135/001PH" autocomplete="off">
+              </div>
+            </div>
+
+            <!-- Dynamic result banner -->
+            <div id="resultBanner" class="result-banner state-empty">
+              <div class="result-icon"><i class="fa-solid fa-minus"></i></div>
+              <span class="result-txt">Enter Pre-Harvest ID to load result</span>
+              <span class="result-id-tag" id="resultIdTag"></span>
+            </div>
+
+            <!-- Spec fields -->
+            <div class="spec-grid">
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Drop Head (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="1/13 g">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Decomposition (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Dehydration (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Soft Shell (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Loose Shell (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Black Tail (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Black Tail (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Black Spots (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Pass/Fail (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Corrective Action (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Muddy Smell (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Broken (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Foreign Matter (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Pest Infestation (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">WSSV (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+              <div class="spec-field">
+                <div class="spec-fh"><span class="spec-lbl">Fungus/Parasites (Spec)</span><input type="checkbox" class="spec-cb"></div>
+                <input type="text" class="spec-inp" value="0">
+              </div>
+
+            </div>
+
+            <!-- Photo + Prod.Met.Spec + Supervisor + Remarks -->
+            <div class="bottom-grid">
+              <div class="fg">
+                <label class="lbl">Photo Capture<span class="req">*</span></label>
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                  <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                  <span class="upload-txt">Upload/Capture Photo</span>
+                  <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf" style="display:none">
+                </div>
+                <span class="upload-hint">JPEG, PNG, and PDF formats, upto 2MB</span>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Prod.Met.Spec.<span class="req">*</span></label>
+                <select class="sel">
+                  <option value="" selected disabled>Select Option</option>
+                  <option>Option 1</option>
+                  <option>Option 2</option>
+                  <option>Option 3</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Supervisor<span class="req">*</span></label>
+                <select class="sel">
+                  <option value="" selected disabled>Select Supervisor</option>
+                  <option>Supervisor A</option>
+                  <option>Supervisor B</option>
+                  <option>Supervisor C</option>
+                </select>
+              </div>
+
+              <div class="fg">
+                <label class="lbl">Remarks</label>
+                <input type="text" class="inp" placeholder="Write here...">
+              </div>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- Preview button — outside the scrollable card -->
+        <div class="preview-footer">
+          <button type="button" class="preview-btn">Preview</button>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+  // Total Defects % — calculated against sample weight (default 1000 gms)
+  function updateDefectPct() {
+    const val     = parseFloat(document.getElementById('totalDefectsInput').value) || 0;
+    const sample  = 1000; // gms baseline; replace with dynamic sample size if needed
+    const pct     = sample > 0 ? ((val / sample) * 100).toFixed(1) : 0;
+    document.getElementById('defectPct').textContent = pct + '%';
+  }
+
+  // Mock Pre-Harvest ID results from the receiving-stage tests
+  const PH_RESULTS = {
+    'AP0345135/001PH': { status: 'passed', label: 'Passed', tests: 'All 16 parameters within spec' },
+    'AP0345135/002PH': { status: 'failed', label: 'Failed', tests: 'Decomposition > spec limit' },
+    'AP0345136/001PH': { status: 'passed', label: 'Passed', tests: 'All parameters within spec' },
+    'AP0345136/002PH': { status: 'failed', label: 'Failed', tests: 'Black Tail & Soft Shell exceeded' },
+    'AP0345137/001PH': { status: 'passed', label: 'Passed', tests: 'All parameters within spec' },
+    'AP0345137/002PH': { status: 'failed', label: 'Failed', tests: 'WSSV detected' },
+    'AP0345138/001PH': { status: 'passed', label: 'Passed', tests: 'All parameters within spec' },
+  };
+
+  const input   = document.getElementById('preHarvestInput');
+  const banner  = document.getElementById('resultBanner');
+  const icon    = banner.querySelector('.result-icon i');
+  const txt     = banner.querySelector('.result-txt');
+  const idTag   = document.getElementById('resultIdTag');
+
+  let debounceTimer;
+
+  function setBanner(state, iconClass, message, tag) {
+    banner.className = 'result-banner state-' + state;
+    icon.className   = iconClass;
+    txt.textContent  = message;
+    idTag.textContent = tag || '';
+  }
+
+  input.addEventListener('input', function () {
+    const raw = this.value.trim();
+
+    clearTimeout(debounceTimer);
+
+    if (!raw) {
+      setBanner('empty', 'fa-solid fa-minus', 'Enter Pre-Harvest ID to load result', '');
+      return;
+    }
+
+    // Show loading while user is still typing
+    setBanner('loading', 'fa-solid fa-spinner fa-spin', 'Looking up ' + raw + '…', '');
+
+    debounceTimer = setTimeout(function () {
+      const key    = raw.toUpperCase();
+      const result = PH_RESULTS[key];
+
+      if (!result) {
+        setBanner('empty', 'fa-solid fa-circle-question', 'No receiving record found for this ID', raw);
+        return;
+      }
+
+      if (result.status === 'passed') {
+        setBanner('passed', 'fa-solid fa-check', result.label + ' — ' + result.tests, raw);
+      } else {
+        setBanner('failed', 'fa-solid fa-xmark', result.label + ' — ' + result.tests, raw);
+      }
+    }, 600);
+  });
+</script>
+</body>
+</html>

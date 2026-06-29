@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System — Docs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F8F9FC;
+      color: #1a1a2e;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    aside {
+      width: 220px;
+      flex-shrink: 0;
+      background: #fff;
+      border-right: 1px solid #E5E7EB;
+      padding: 32px 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar-logo {
+      font-family: 'Nunito', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #3366E8;
+      padding: 0 20px 24px;
+      border-bottom: 1px solid #F3F4F6;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-logo .dot {
+      width: 8px; height: 8px;
+      background: #3366E8;
+      border-radius: 50%;
+    }
+    .sidebar-section {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      padding: 8px 20px 6px;
+      margin-top: 8px;
+    }
+    aside a {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #4B5563;
+      text-decoration: none;
+      padding: 6px 20px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    aside a:hover { color: #3366E8; background: #EEF3FF; border-left-color: #3366E8; }
+    aside a.active { color: #3366E8; background: #EEF3FF; border-left-color: #3366E8; font-weight: 600; }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 56px 48px 96px;
+    }
+
+    /* ── MARKDOWN STYLES ── */
+    #content h1 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    #content > p:first-of-type {
+      color: #6B7280;
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+
+    #content h2 {
+      font-family: 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #111827;
+      margin: 56px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #E5E7EB;
+      scroll-margin-top: 32px;
+    }
+    #content h2:first-of-type { margin-top: 0; }
+
+    #content h3 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: #6B7280;
+      margin: 36px 0 14px;
+      scroll-margin-top: 32px;
+    }
+
+    #content h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #374151;
+      margin: 28px 0 10px;
+    }
+
+    #content p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #374151;
+      margin-bottom: 14px;
+    }
+
+    #content strong { font-weight: 600; color: #111827; }
+
+    #content hr {
+      border: none;
+      border-top: 1px solid #E5E7EB;
+      margin: 0;
+    }
+
+    #content ul {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+    #content li {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #374151;
+      margin-bottom: 6px;
+    }
+
+    /* ── TABLES ── */
+    #content table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-bottom: 28px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 0 0 1px #E5E7EB;
+    }
+    #content thead tr {
+      background: #F9FAFB;
+    }
+    #content th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      padding: 12px 16px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    #content td {
+      padding: 12px 16px;
+      color: #374151;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: top;
+    }
+    #content tr:last-child td { border-bottom: none; }
+    #content tbody tr:hover { background: #FAFBFF; }
+
+    /* highlight first column */
+    #content td:first-child {
+      font-weight: 600;
+      color: #111827;
+      white-space: nowrap;
+    }
+
+    /* token badge in first col */
+    #content td:first-child code {
+      font-family: 'Inter', monospace;
+      font-size: 11px;
+      background: #EEF3FF;
+      color: #3366E8;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* ── CHIP BADGES in td ── */
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: #F3F4F6;
+      color: #4B5563;
+      margin: 1px 2px;
+    }
+    .badge.blue { background: #EEF3FF; color: #3366E8; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<aside>
+  <div class="sidebar-logo"><span class="dot"></span> Design System</div>
+
+  <div class="sidebar-section">Contents</div>
+  <a href="#typography">Typography</a>
+  <a href="#headings" style="padding-left:32px; font-size:12px;">Headings</a>
+  <a href="#titles"   style="padding-left:32px; font-size:12px;">Titles</a>
+  <a href="#labels"   style="padding-left:32px; font-size:12px;">Labels</a>
+  <a href="#body"     style="padding-left:32px; font-size:12px;">Body</a>
+  <a href="#display--kpi" style="padding-left:32px; font-size:12px;">Display / KPI</a>
+
+  <div class="sidebar-section" style="margin-top:16px;">Components</div>
+  <a href="#buttons">Buttons</a>
+  <a href="#variants"      style="padding-left:32px; font-size:12px;">Variants</a>
+  <a href="#sizes"         style="padding-left:32px; font-size:12px;">Sizes</a>
+  <a href="#states"        style="padding-left:32px; font-size:12px;">States</a>
+  <a href="#button-matrix" style="padding-left:32px; font-size:12px;">Matrix</a>
+
+  <div class="sidebar-section" style="margin-top:16px;">Guidelines</div>
+  <a href="#usage-guidelines">Usage Guidelines</a>
+</aside>
+
+<main>
+  <div id="content"></div>
+</main>
+
+<script>
+  const md = `# Design System
+
+**Font Family:** Nunito
+
+---
+
+## Typography
+
+### Headings
+
+| Token | Size / Line Height | Weight | Letter Spacing |
+|---|---|---|---|
+| Headline Large | 32px / 44px | Semibold (600) | -0.25px |
+| Headline Medium | 28px / 38px | Semibold (600) | -0.25px |
+| Headline Small | 24px / 33px | Semibold (600) | -0.25px |
+
+### Titles
+
+| Token | Size / Line Height | Weight | Letter Spacing |
+|---|---|---|---|
+| Title Large | 24px / 33px | Regular (400) | -0.25px |
+| Title Medium | 20px / 27px | Medium (500) | -0.25px |
+| Title Small | 18px / 25px | Semibold (600) | -0.25px |
+
+### Labels
+
+| Token | Size / Line Height | Weight | Letter Spacing |
+|---|---|---|---|
+| Label Large | 14px / 19px | Medium (500) | -0.25px |
+| Label Medium | 12px / 16px | Medium (500) | -0.25px |
+| Label Small | 11px / 15px | Medium (500) | -0.25px |
+
+### Body
+
+| Token | Size / Line Height | Weight | Letter Spacing |
+|---|---|---|---|
+| Body Large | 16px / 22px | Regular (400) | -0.25px |
+| Body Medium | 14px / 19px | Regular (400) | -0.25px |
+| Body Small | 12px / 16px | Regular (400) | -0.25px |
+| Body Small Semibold | 12px / 16px | Semibold (600) | -0.25px |
+
+### Display / KPI
+
+| Token | Size |
+|---|---|
+| Welcome | 48px |
+| KPI 1 | 64px |
+| KPI 2 | 56px |
+
+---
+
+## Buttons
+
+### Variants
+
+| Variant | Description |
+|---|---|
+| Primary | Filled blue background, white label — highest emphasis |
+| Secondary | Outlined with blue border and label — medium emphasis |
+| Tertiary | No background or border, blue label only — lowest emphasis |
+
+### Sizes
+
+| Size | Usage |
+|---|---|
+| XS | Compact / inline actions |
+| S | Small controls |
+| M | Default button size |
+| L | Prominent call-to-action |
+
+### States
+
+| State | Description |
+|---|---|
+| Default | Resting appearance |
+| Hover | Slightly darker fill / border on mouse-over |
+| While Pressing | Darkest fill / border on active press |
+| Disable | Muted / low-opacity; non-interactive |
+
+### Button Matrix
+
+#### Primary
+
+| Size | Default | Hover | While Pressing | Disabled |
+|---|---|---|---|---|
+| XS | Blue fill, white label | Darker blue fill | Darkest blue fill | Muted blue, low opacity |
+| S | Blue fill, white label | Darker blue fill | Darkest blue fill | Muted blue, low opacity |
+| M | Blue fill, white label | Darker blue fill | Darkest blue fill | Muted blue, low opacity |
+| L | Blue fill, white label | Darker blue fill | Darkest blue fill | Muted blue, low opacity |
+
+#### Secondary
+
+| Size | Default | Hover | While Pressing | Disabled |
+|---|---|---|---|---|
+| XS | Blue outline + label | Blue outline (darker) | Blue outline (darkest) | Muted outline, low opacity |
+| S | Blue outline + label | Blue outline (darker) | Blue outline (darkest) | Muted outline, low opacity |
+| M | Blue outline + label | Blue outline (darker) | Blue outline (darkest) | Muted outline, low opacity |
+| L | Blue outline + label | Blue outline (darker) | Blue outline (darkest) | Muted outline, low opacity |
+
+#### Tertiary
+
+| Size | Default | Hover | While Pressing | Disabled |
+|---|---|---|---|---|
+| XS | Blue label only | Underline or bg tint | Darker label | Muted label, low opacity |
+| S | Blue label only | Underline or bg tint | Darker label | Muted label, low opacity |
+| M | Blue label only | Underline or bg tint | Darker label | Muted label, low opacity |
+| L | Blue label only | Underline or bg tint | Darker label | Muted label, low opacity |
+
+---
+
+## Usage Guidelines
+
+- Use **Primary** for the single most important action per screen (e.g. Save, Submit).
+- Use **Secondary** for supporting actions that need visibility (e.g. Cancel, Export).
+- Use **Tertiary** for low-emphasis or repeated actions (e.g. links, inline edits).
+- Never place two Primary buttons side-by-side at the same hierarchy level.
+- Disabled buttons must retain their shape and size — only opacity or color changes.
+`;
+
+  // Render markdown
+  document.getElementById('content').innerHTML = marked.parse(md);
+
+  // Add scroll IDs to headings
+  document.querySelectorAll('#content h2, #content h3, #content h4').forEach(h => {
+    const id = h.textContent.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    h.id = id;
+  });
+
+  // Active sidebar link on scroll
+  const headings = [...document.querySelectorAll('#content h2, #content h3')];
+  const sideLinks = [...document.querySelectorAll('aside a')];
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        sideLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  headings.forEach(h => observer.observe(h));
+
+  // Smooth scroll
+  sideLinks.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+</script>
+</body>
+</html>

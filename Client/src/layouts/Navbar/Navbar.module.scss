@@ -1,0 +1,68 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 52px;
+  background: #ffffff;
+  border-bottom: 1px solid #DFE2E6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.brandText {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.sea {
+  color: #5189F3;
+}
+
+.navIcons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.iconBtn {
+  width: 36px;
+  height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5E5E60;
+  font-size: 17px;
+  border-radius: 0;
+  transition: background 0.15s, color 0.15s;
+
+  &:hover {
+    background: #E4EEFF;
+    color: #5189F3;
+
+    svg path, svg circle {
+      stroke: #5189F3;
+    }
+  }
+}
+
+.iconBtnActive {
+  background: #E4EEFF;
+  color: #5189F3;
+}

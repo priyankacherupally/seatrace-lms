@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parameter Form – SeaTrace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --brand-50: #5189F3;
+      --brand-10: #E4EEFF;
+      --brand-05: #F8FAFF;
+      --brand-60: #3F78E2;
+      --brand-70: #326DDD;
+
+      --neutral-1:  #FFFFFF;
+      --neutral-05: #F8F8FC;
+      --neutral-10: #EBF0F4;
+      --neutral-20: #DFE2E6;
+      --neutral-30: #DADCDF;
+      --neutral-40: #BFC1C4;
+      --neutral-50: #A7AAAD;
+      --neutral-60: #969799;
+      --neutral-70: #828385;
+      --neutral-80: #5E5E60;
+      --neutral-90: #3B3B3C;
+      --neutral-100: #111111;
+
+      --surface: #F9F9FA;
+      --error: #E82727;
+      --success-10: #E9FFEC;
+      --success-60: #408F3D;
+
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 16px;
+
+      --duration-fast: 150ms;
+      --duration-normal: 250ms;
+      --ease-out: cubic-bezier(0,0,0.2,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      color: var(--neutral-100);
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Top Nav ── */
+    .topnav {
+      height: 56px;
+      background: var(--neutral-1);
+      border-bottom: 1px solid var(--neutral-20);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .topnav-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+    }
+
+    .logo-wordmark {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--brand-50);
+      letter-spacing: -0.25px;
+    }
+
+    .topnav-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .topnav-icon-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      color: var(--neutral-80);
+      transition: background var(--duration-fast) var(--ease-out);
+    }
+    .topnav-icon-btn:hover { background: var(--neutral-10); }
+
+    /* ── Layout ── */
+    .layout {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 64px;
+      background: var(--neutral-1);
+      border-right: 1px solid var(--neutral-20);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 0;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-item {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      color: var(--neutral-60);
+      transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+      position: relative;
+    }
+    .sidebar-item:hover {
+      background: var(--neutral-10);
+      color: var(--neutral-90);
+    }
+    .sidebar-item.active {
+      background: var(--brand-10);
+      color: var(--brand-50);
+    }
+    .sidebar-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: var(--brand-50);
+      border-radius: 0 2px 2px 0;
+    }
+
+    /* ── Main Content ── */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px 48px;
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--neutral-60);
+      margin-bottom: 16px;
+      letter-spacing: -0.25px;
+    }
+    .breadcrumb a {
+      color: var(--brand-50);
+      text-decoration: none;
+    }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb-sep { color: var(--neutral-50); }
+    .breadcrumb-current { color: var(--neutral-80); }
+
+    /* ── Page Header ── */
+    .page-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .page-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-back {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--neutral-20);
+      background: var(--neutral-1);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--neutral-80);
+      transition: background var(--duration-fast) var(--ease-out), border-color var(--duration-fast) var(--ease-out);
+      flex-shrink: 0;
+    }
+    .btn-back:hover {
+      background: var(--neutral-05);
+      border-color: var(--neutral-30);
+    }
+
+    .page-title {
+      font-size: 20px;
+      line-height: 27px;
+      font-weight: 500;
+      color: var(--neutral-100);
+      letter-spacing: -0.25px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* ── Toggle ── */
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toggle-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-60);
+      letter-spacing: -0.25px;
+    }
+    .toggle-label.active-label { color: var(--neutral-100); }
+
+    .toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: var(--neutral-40);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out);
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: var(--neutral-1);
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: transform var(--duration-fast) var(--ease-out);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-track {
+      background: var(--brand-50);
+    }
+    .toggle-switch input:checked + .toggle-track::after {
+      transform: translateX(20px);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: var(--radius-md);
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.25px;
+      cursor: pointer;
+      transition: background var(--duration-fast) var(--ease-out),
+                  border-color var(--duration-fast) var(--ease-out),
+                  color var(--duration-fast) var(--ease-out);
+      white-space: nowrap;
+      padding: 0 20px;
+      height: 40px;
+      border: 1px solid transparent;
+    }
+    .btn-primary {
+      background: var(--brand-50);
+      color: var(--neutral-1);
+      border-color: var(--brand-50);
+    }
+    .btn-primary:hover { background: var(--brand-60); border-color: var(--brand-60); }
+    .btn-primary:active { background: var(--brand-70); border-color: var(--brand-70); }
+
+    .btn-secondary {
+      background: var(--neutral-1);
+      color: var(--neutral-80);
+      border-color: var(--neutral-20);
+    }
+    .btn-secondary:hover {
+      background: var(--neutral-05);
+      border-color: var(--neutral-30);
+    }
+
+    /* ── Form Card ── */
+    .form-card {
+      background: var(--neutral-1);
+      border: 1px solid var(--neutral-20);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px 32px;
+      box-shadow: var(--shadow-sm);
+      max-width: 900px;
+    }
+
+    /* ── Form Grid ── */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 24px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-field.full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* ── Label ── */
+    .form-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-90);
+      letter-spacing: -0.25px;
+      line-height: 19px;
+    }
+    .form-label .required {
+      color: var(--error);
+      margin-left: 1px;
+    }
+
+    /* ── Inputs ── */
+    .form-input,
+    .form-select {
+      height: 40px;
+      border: 1px solid var(--neutral-20);
+      border-radius: var(--radius-md);
+      background: var(--neutral-1);
+      padding: 0 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--neutral-100);
+      letter-spacing: -0.25px;
+      outline: none;
+      transition: border-color var(--duration-fast) var(--ease-out),
+                  box-shadow var(--duration-fast) var(--ease-out);
+      width: 100%;
+      appearance: none;
+    }
+    .form-input::placeholder { color: var(--neutral-50); }
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--brand-50);
+      box-shadow: 0 0 0 3px rgba(81,137,243,0.12);
+    }
+    .form-input.disabled,
+    .form-input:disabled {
+      background: var(--neutral-10);
+      color: var(--neutral-60);
+      cursor: not-allowed;
+    }
+
+    /* ── Select wrapper ── */
+    .select-wrapper {
+      position: relative;
+    }
+    .select-wrapper .form-select {
+      padding-right: 36px;
+    }
+    .select-wrapper::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23828385' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      pointer-events: none;
+    }
+
+    /* ── Multi-select tags ── */
+    .multi-select-wrapper {
+      border: 1px solid var(--neutral-20);
+      border-radius: var(--radius-md);
+      background: var(--neutral-1);
+      min-height: 40px;
+      transition: border-color var(--duration-fast) var(--ease-out),
+                  box-shadow var(--duration-fast) var(--ease-out);
+    }
+    .multi-select-wrapper:focus-within {
+      border-color: var(--brand-50);
+      box-shadow: 0 0 0 3px rgba(81,137,243,0.12);
+    }
+
+    .multi-select-top {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      height: 40px;
+      position: relative;
+    }
+    .multi-select-top select {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      color: var(--neutral-50);
+      outline: none;
+      appearance: none;
+      cursor: pointer;
+      padding-right: 24px;
+    }
+    .multi-select-top::after {
+      content: '';
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Cpath stroke='%23828385' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-size: contain;
+      pointer-events: none;
+    }
+
+    .tags-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 12px;
+      border-top: 1px solid var(--neutral-10);
+    }
+    .tags-area:empty { display: none; }
+
+    /* ── Tag ── */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: var(--success-10);
+      color: var(--success-60);
+      border: 1px solid rgba(64,143,61,0.25);
+      border-radius: var(--radius-sm);
+      padding: 2px 8px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: -0.25px;
+      line-height: 16px;
+    }
+    .tag-close {
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1;
+      color: var(--success-60);
+      background: none;
+      border: none;
+      padding: 0;
+      margin-left: 2px;
+      transition: opacity var(--duration-fast);
+    }
+    .tag-close:hover { opacity: 0.7; }
+
+    /* ── Section divider ── */
+    .section-gap { grid-column: 1 / -1; height: 8px; }
+
+    /* ── Function Type block ── */
+    .function-type-block {
+      grid-column: 1 / -1;
+      border: 1px solid var(--neutral-20);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--neutral-20);
+    }
+    .tab-btn {
+      flex: 1;
+      height: 44px;
+      border: none;
+      background: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--neutral-70);
+      cursor: pointer;
+      position: relative;
+      transition: color var(--duration-fast) var(--ease-out);
+      letter-spacing: -0.25px;
+    }
+    .tab-btn:hover { color: var(--brand-60); }
+    .tab-btn.active {
+      color: var(--brand-50);
+    }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--brand-50);
+      border-radius: 2px 2px 0 0;
+    }
+
+    /* ── Tab content ── */
+    .tab-content {
+      padding: 16px;
+    }
+
+    .dropdown-option-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Checkbox ── */
+    .checkbox-wrapper {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .checkbox-wrapper input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--neutral-40);
+      border-radius: var(--radius-sm);
+      appearance: none;
+      cursor: pointer;
+      background: var(--neutral-1);
+      position: relative;
+      transition: background var(--duration-fast), border-color var(--duration-fast);
+      flex-shrink: 0;
+    }
+    .checkbox-wrapper input[type="checkbox"]:checked {
+      background: var(--brand-50);
+      border-color: var(--brand-50);
+    }
+    .checkbox-wrapper input[type="checkbox"]:checked::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 1.5px;
+      width: 5px;
+      height: 9px;
+      border: 2px solid var(--neutral-1);
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg);
+    }
+
+    .option-input {
+      flex: 1;
+      height: 36px;
+      border: 1px solid var(--neutral-20);
+      border-radius: var(--radius-md);
+      background: var(--neutral-1);
+      padding: 0 12px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      color: var(--neutral-100);
+      outline: none;
+      transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+    }
+    .option-input::placeholder { color: var(--neutral-50); }
+    .option-input:focus {
+      border-color: var(--brand-50);
+      box-shadow: 0 0 0 3px rgba(81,137,243,0.12);
+    }
+
+    .btn-add-option {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--brand-50);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      flex-shrink: 0;
+      transition: background var(--duration-fast);
+    }
+    .btn-add-option:hover { background: var(--brand-10); }
+
+    .type-note {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--neutral-80);
+      letter-spacing: -0.25px;
+      line-height: 16px;
+    }
+    .type-note strong { font-weight: 600; }
+
+    /* ── Form Actions ── */
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    /* ── Scrollbar ── */
+    .main::-webkit-scrollbar { width: 6px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: var(--neutral-30); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="topnav">
+    <div class="topnav-logo">
+      <!-- SeaTrace logo mark (simplified SVG) -->
+      <svg class="logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="18" cy="18" r="18" fill="#E4EEFF"/>
+        <path d="M10 22c2-4 4-7 8-7s6 3 8 7" stroke="#5189F3" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="18" cy="13" r="3.5" stroke="#5189F3" stroke-width="1.8"/>
+        <path d="M18 9.5V7M14.5 11 12.5 9.5M21.5 11l2-1.5" stroke="#5189F3" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-wordmark">SEATRACE</span>
+    </div>
+    <div class="topnav-actions">
+      <!-- Logout icon -->
+      <button class="topnav-icon-btn" title="Logout">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>
+        </svg>
+      </button>
+      <!-- Home icon -->
+      <button class="topnav-icon-btn" title="Home">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5ZM9 21V12h6v9"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Dashboard -->
+      <div class="sidebar-item" title="Dashboard">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <!-- List / Orders -->
+      <div class="sidebar-item" title="Orders">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+        </svg>
+      </div>
+      <!-- Forms (active) -->
+      <div class="sidebar-item active" title="Parameter Master">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2
+               M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2M9 5h6M12 12h4M8 12h.01M12 16h4M8 16h.01"/>
+        </svg>
+      </div>
+      <!-- Users -->
+      <div class="sidebar-item" title="Users">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z
+               M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <!-- Reports -->
+      <div class="sidebar-item" title="Reports">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z
+               M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+        </svg>
+      </div>
+      <!-- Settings at bottom -->
+      <div class="sidebar-item" title="Settings" style="margin-top:auto">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33
+               1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06
+               a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09
+               A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06
+               A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51
+               1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9
+               a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+        </svg>
+      </div>
+      <!-- Bottom icon -->
+      <div class="sidebar-item" title="More">
+        <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M3 9h18M9 21V9"/>
+        </svg>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb">
+        <a href="#">Home Screen</a>
+        <span class="breadcrumb-sep">›</span>
+        <span class="breadcrumb-current">Parameter Form</span>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="page-header">
+        <div class="page-title-group">
+          <button class="btn-back" title="Go back">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                d="M15 18l-6-6 6-6"/>
+            </svg>
+          </button>
+          <h1 class="page-title">Parameter Form</h1>
+        </div>
+
+        <div class="header-right">
+          <!-- Toggle -->
+          <div class="toggle-group">
+            <span class="toggle-label">Inactive</span>
+            <label class="toggle-switch">
+              <input type="checkbox" checked />
+              <span class="toggle-track"></span>
+            </label>
+            <span class="toggle-label active-label">Active</span>
+          </div>
+          <!-- View Data button -->
+          <button class="btn btn-secondary">View Data</button>
+        </div>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card">
+        <form>
+          <div class="form-grid">
+
+            <!-- Unique ID -->
+            <div class="form-field">
+              <label class="form-label">Unique ID</label>
+              <input class="form-input disabled" type="text" value="9724346233" disabled />
+            </div>
+
+            <!-- Parameter Name -->
+            <div class="form-field">
+              <label class="form-label">Parameter Name<span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="Eg: 3 Amino 2 oxazolidinone" />
+            </div>
+
+            <!-- Short Code -->
+            <div class="form-field">
+              <label class="form-label">Short Code<span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="Eg: AOZ" />
+            </div>
+
+            <!-- UOM -->
+            <div class="form-field">
+              <label class="form-label">Unit of Measurement (UOM)<span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select class="form-select">
+                  <option value="" disabled selected>Select UOM</option>
+                  <option>mg/kg</option>
+                  <option>ppm</option>
+                  <option>ppb</option>
+                  <option>%</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Testing Method -->
+            <div class="form-field">
+              <label class="form-label">Testing Method<span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="Eg: Antibiotic" />
+            </div>
+
+            <!-- Effective Date -->
+            <div class="form-field">
+              <label class="form-label">Effective Date<span class="required">*</span></label>
+              <input class="form-input" type="text" placeholder="Eg: 12/04/2026" />
+            </div>
+
+            <!-- Plant -->
+            <div class="form-field">
+              <label class="form-label">Plant<span class="required">*</span></label>
+              <div class="select-wrapper">
+                <select class="form-select">
+                  <option value="" disabled selected>Select Plant</option>
+                  <option>Plant A</option>
+                  <option>Plant B</option>
+                  <option>Plant C</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Section Applicable -->
+            <div class="form-field">
+              <label class="form-label">Section Applicable<span class="required">*</span></label>
+              <div class="multi-select-wrapper">
+                <div class="multi-select-top">
+                  <select>
+                    <option value="" disabled selected>Eg: Select Section</option>
+                    <option>Beheading</option>
+                    <option>Grading</option>
+                    <option>Peeling</option>
+                    <option>Packaging</option>
+                  </select>
+                </div>
+                <div class="tags-area" id="tags-area">
+                  <span class="tag">Beheading <button class="tag-close" type="button" onclick="removeTag(this)">×</button></span>
+                  <span class="tag">Grading <button class="tag-close" type="button" onclick="removeTag(this)">×</button></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Function Type -->
+            <div class="form-field full-width" style="margin-top:8px;">
+              <label class="form-label">Function Type<span class="required">*</span></label>
+              <div class="function-type-block" style="margin-top:4px;">
+
+                <!-- Tabs -->
+                <div class="tabs" role="tablist">
+                  <button type="button" class="tab-btn active" role="tab"
+                    onclick="switchTab(this, 'tab-dropdown')">Dropdown</button>
+                  <button type="button" class="tab-btn" role="tab"
+                    onclick="switchTab(this, 'tab-textfield')">Text Field</button>
+                </div>
+
+                <!-- Dropdown Tab -->
+                <div class="tab-content" id="tab-dropdown">
+                  <div id="options-list">
+                    <div class="dropdown-option-row">
+                      <div class="checkbox-wrapper">
+                        <input type="checkbox" />
+                      </div>
+                      <input class="option-input" type="text" placeholder="Write text here.." />
+                      <button type="button" class="btn-add-option" onclick="addOption()" title="Add option">
+                        <svg width="22" height="22" fill="none" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+                          <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            d="M12 8v8M8 12h8"/>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                  <p class="type-note"><strong>Note:</strong>  The parameter type is dropdown.</p>
+                </div>
+
+                <!-- Text Field Tab -->
+                <div class="tab-content" id="tab-textfield" style="display:none;">
+                  <input class="form-input" type="text" placeholder="Enter default text value.." />
+                  <p class="type-note" style="margin-top:8px;"><strong>Note:</strong>  The parameter type is text field.</p>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+
+        </form>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    function switchTab(btn, tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+      document.getElementById(tabId).style.display = 'block';
+    }
+
+    function addOption() {
+      const list = document.getElementById('options-list');
+      const row = document.createElement('div');
+      row.className = 'dropdown-option-row';
+      row.innerHTML = `
+        <div class="checkbox-wrapper"><input type="checkbox" /></div>
+        <input class="option-input" type="text" placeholder="Write text here.." />
+        <button type="button" class="btn-add-option" onclick="removeOption(this)" title="Remove option"
+          style="color: #E82727;">
+          <svg width="20" height="20" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+            <path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" d="M8 12h8"/>
+          </svg>
+        </button>`;
+      list.appendChild(row);
+    }
+
+    function removeOption(btn) {
+      btn.closest('.dropdown-option-row').remove();
+    }
+
+    function removeTag(btn) {
+      btn.closest('.tag').remove();
+      const area = document.getElementById('tags-area');
+      if (!area.children.length) area.style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>

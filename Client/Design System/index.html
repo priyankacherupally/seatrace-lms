@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue-50:  #EEF3FF;
+      --blue-100: #C7D7FD;
+      --blue-300: #7AA3F7;
+      --blue-400: #4F81F4;
+      --blue-500: #3366E8;
+      --blue-600: #2251CC;
+      --blue-700: #1A3FAA;
+      --gray-50:  #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-400: #9CA3AF;
+      --gray-600: #4B5563;
+      --gray-900: #111827;
+      --font: 'Nunito', sans-serif;
+      --radius-xs: 4px;
+      --radius-s:  6px;
+      --radius-m:  8px;
+      --radius-l:  10px;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--gray-50);
+      color: var(--gray-900);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 40px;
+      height: 56px;
+    }
+    nav .logo {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--blue-500);
+      margin-right: auto;
+    }
+    nav a {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-600);
+      padding: 6px 14px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    nav a:hover { background: var(--gray-100); color: var(--gray-900); }
+    nav a.active { background: var(--blue-50); color: var(--blue-500); }
+
+    /* ── LAYOUT ── */
+    main { max-width: 1100px; margin: 0 auto; padding: 48px 40px 96px; }
+
+    section { margin-bottom: 72px; }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--gray-900);
+    }
+    .section-header span {
+      font-size: 12px;
+      color: var(--gray-400);
+      font-weight: 500;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .type-group { margin-bottom: 40px; }
+    .type-group-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+
+    .type-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .type-row:last-child { border-bottom: none; }
+    .type-preview { flex: 1; }
+    .type-meta {
+      flex-shrink: 0;
+      width: 280px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+    .type-meta .tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+    .type-meta .tag.name { background: var(--blue-50); color: var(--blue-600); }
+
+    /* actual type styles */
+    .headline-large  { font-size: 32px; line-height: 44px; font-weight: 600; letter-spacing: -0.25px; }
+    .headline-medium { font-size: 28px; line-height: 38px; font-weight: 600; letter-spacing: -0.25px; }
+    .headline-small  { font-size: 24px; line-height: 33px; font-weight: 600; letter-spacing: -0.25px; }
+    .title-large     { font-size: 24px; line-height: 33px; font-weight: 400; letter-spacing: -0.25px; }
+    .title-medium    { font-size: 20px; line-height: 27px; font-weight: 500; letter-spacing: -0.25px; }
+    .title-small     { font-size: 18px; line-height: 25px; font-weight: 600; letter-spacing: -0.25px; }
+    .label-large     { font-size: 14px; line-height: 19px; font-weight: 500; letter-spacing: -0.25px; }
+    .label-medium    { font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: -0.25px; }
+    .label-small     { font-size: 11px; line-height: 15px; font-weight: 500; letter-spacing: -0.25px; }
+    .body-large      { font-size: 16px; line-height: 22px; font-weight: 400; letter-spacing: -0.25px; }
+    .body-medium     { font-size: 14px; line-height: 19px; font-weight: 400; letter-spacing: -0.25px; }
+    .body-small      { font-size: 12px; line-height: 16px; font-weight: 400; letter-spacing: -0.25px; }
+    .body-small-sb   { font-size: 12px; line-height: 16px; font-weight: 600; letter-spacing: -0.25px; }
+    .display-welcome { font-size: 48px; line-height: 1.2; font-weight: 600; }
+    .display-kpi1    { font-size: 64px; line-height: 1.1; font-weight: 700; }
+    .display-kpi2    { font-size: 56px; line-height: 1.1; font-weight: 700; }
+
+    /* ── BUTTONS ── */
+    .btn-section { display: flex; flex-direction: column; gap: 48px; }
+
+    .btn-variant-block {}
+    .btn-variant-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 20px;
+    }
+
+    .btn-states-header {
+      display: grid;
+      grid-template-columns: 60px repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+    .btn-states-header span {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      text-align: center;
+    }
+    .btn-states-header span:first-child { text-align: left; }
+
+    .btn-size-row {
+      display: grid;
+      grid-template-columns: 60px repeat(4, 1fr);
+      gap: 16px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .btn-size-row:last-child { border-bottom: none; }
+    .size-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-400);
+    }
+    .btn-cell {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Button base */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font);
+      font-weight: 500;
+      letter-spacing: -0.1px;
+      border: 1.5px solid transparent;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+    }
+    .btn svg { width: 1em; height: 1em; }
+
+    /* Sizes */
+    .btn-xs { font-size: 11px; padding: 3px 10px;  border-radius: var(--radius-xs); gap: 4px; }
+    .btn-s  { font-size: 12px; padding: 5px 12px;  border-radius: var(--radius-s);  }
+    .btn-m  { font-size: 14px; padding: 7px 16px;  border-radius: var(--radius-m);  }
+    .btn-l  { font-size: 16px; padding: 10px 22px; border-radius: var(--radius-l);  }
+
+    /* Primary */
+    .btn-primary          { background: var(--blue-500); border-color: var(--blue-500); color: #fff; }
+    .btn-primary.hover    { background: var(--blue-600); border-color: var(--blue-600); }
+    .btn-primary.pressing { background: var(--blue-700); border-color: var(--blue-700); }
+    .btn-primary.disabled { background: var(--blue-300); border-color: var(--blue-300); opacity: 0.55; cursor: not-allowed; }
+
+    /* Secondary */
+    .btn-secondary          { background: #fff; border-color: var(--blue-400); color: var(--blue-500); }
+    .btn-secondary.hover    { background: var(--blue-50);  border-color: var(--blue-500); }
+    .btn-secondary.pressing { background: var(--blue-100); border-color: var(--blue-600); color: var(--blue-600); }
+    .btn-secondary.disabled { background: #fff; border-color: var(--blue-200, #c7d7fd); color: var(--blue-300); opacity: 0.6; cursor: not-allowed; }
+
+    /* Tertiary */
+    .btn-tertiary          { background: transparent; border-color: transparent; color: var(--blue-500); }
+    .btn-tertiary.hover    { background: var(--blue-50); }
+    .btn-tertiary.pressing { background: var(--blue-100); color: var(--blue-600); }
+    .btn-tertiary.disabled { color: var(--blue-300); opacity: 0.6; cursor: not-allowed; }
+
+    /* Chevron icon */
+    .chevron {
+      display: inline-block;
+      width: 0.55em;
+      height: 0.55em;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(-45deg) translateY(1px);
+      flex-shrink: 0;
+    }
+
+    /* ── COLOR PALETTE ── */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 16px;
+    }
+    .swatch {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+    .swatch-color { height: 64px; }
+    .swatch-info {
+      padding: 8px 10px;
+      background: #fff;
+    }
+    .swatch-name  { font-size: 11px; font-weight: 600; color: var(--gray-900); }
+    .swatch-hex   { font-size: 10px; color: var(--gray-400); margin-top: 2px; font-family: monospace; }
+
+    /* ── DIVIDER ── */
+    hr { border: none; border-top: 1px solid var(--gray-200); margin: 32px 0; }
+
+    /* ── SPACING SCALE ── */
+    .spacing-grid { display: flex; flex-direction: column; gap: 12px; }
+    .spacing-row { display: flex; align-items: center; gap: 16px; }
+    .spacing-bar-wrap { flex: 1; height: 24px; display: flex; align-items: center; }
+    .spacing-bar { height: 16px; background: var(--blue-400); border-radius: 3px; }
+    .spacing-label { font-size: 12px; font-weight: 600; color: var(--gray-600); width: 36px; }
+    .spacing-value { font-size: 11px; color: var(--gray-400); font-family: monospace; width: 40px; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">Design System</span>
+  <a href="#typography" class="active">Typography</a>
+  <a href="#buttons">Buttons</a>
+  <a href="#colors">Colors</a>
+  <a href="#spacing">Spacing</a>
+</nav>
+
+<main>
+
+  <!-- ── TYPOGRAPHY ── -->
+  <section id="typography">
+    <div class="section-header">
+      <h2>Typography</h2>
+      <span>Font — Nunito</span>
+    </div>
+
+    <!-- Headings -->
+    <div class="type-group">
+      <div class="type-group-label">Headings</div>
+
+      <div class="type-row">
+        <div class="type-preview headline-large">Headline Large</div>
+        <div class="type-meta">
+          <span class="tag name">Headline / Large</span>
+          <span class="tag">32 / 44</span>
+          <span class="tag">Semibold</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview headline-medium">Headline Medium</div>
+        <div class="type-meta">
+          <span class="tag name">Headline / Medium</span>
+          <span class="tag">28 / 38</span>
+          <span class="tag">Semibold</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview headline-small">Headline Small</div>
+        <div class="type-meta">
+          <span class="tag name">Headline / Small</span>
+          <span class="tag">24 / 33</span>
+          <span class="tag">Semibold</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Titles -->
+    <div class="type-group">
+      <div class="type-group-label">Titles</div>
+
+      <div class="type-row">
+        <div class="type-preview title-large">Title Large</div>
+        <div class="type-meta">
+          <span class="tag name">Title / Large</span>
+          <span class="tag">24 / 33</span>
+          <span class="tag">Regular</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview title-medium">Title Medium</div>
+        <div class="type-meta">
+          <span class="tag name">Title / Medium</span>
+          <span class="tag">20 / 27</span>
+          <span class="tag">Medium</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview title-small">Title Small</div>
+        <div class="type-meta">
+          <span class="tag name">Title / Small</span>
+          <span class="tag">18 / 25</span>
+          <span class="tag">Semibold</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Labels -->
+    <div class="type-group">
+      <div class="type-group-label">Labels</div>
+
+      <div class="type-row">
+        <div class="type-preview label-large">Label Large</div>
+        <div class="type-meta">
+          <span class="tag name">Label / Large</span>
+          <span class="tag">14 / 19</span>
+          <span class="tag">Medium</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview label-medium">Label Medium</div>
+        <div class="type-meta">
+          <span class="tag name">Label / Medium</span>
+          <span class="tag">12 / 16</span>
+          <span class="tag">Medium</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview label-small">Label Small</div>
+        <div class="type-meta">
+          <span class="tag name">Label / Small</span>
+          <span class="tag">11 / 15</span>
+          <span class="tag">Medium</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="type-group">
+      <div class="type-group-label">Body</div>
+
+      <div class="type-row">
+        <div class="type-preview body-large">Body Large — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="tag name">Body / Large</span>
+          <span class="tag">16 / 22</span>
+          <span class="tag">Regular</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview body-medium">Body Medium — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="tag name">Body / Medium</span>
+          <span class="tag">14 / 19</span>
+          <span class="tag">Regular</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview body-small">Body Small — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="tag name">Body / Small</span>
+          <span class="tag">12 / 16</span>
+          <span class="tag">Regular</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview body-small-sb">Body Small Semibold — The quick brown fox jumps over the lazy dog.</div>
+        <div class="type-meta">
+          <span class="tag name">Body / Small SB</span>
+          <span class="tag">12 / 16</span>
+          <span class="tag">Semibold</span>
+          <span class="tag">−0.25px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Display / KPI -->
+    <div class="type-group">
+      <div class="type-group-label">Display &amp; KPI</div>
+
+      <div class="type-row">
+        <div class="type-preview display-welcome">Welcome Plant Manager!</div>
+        <div class="type-meta">
+          <span class="tag name">Display / Welcome</span>
+          <span class="tag">48px</span>
+          <span class="tag">Semibold</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview display-kpi1">98.4%</div>
+        <div class="type-meta">
+          <span class="tag name">KPI / Size 1</span>
+          <span class="tag">64px</span>
+          <span class="tag">Bold</span>
+        </div>
+      </div>
+
+      <div class="type-row">
+        <div class="type-preview display-kpi2">1,240</div>
+        <div class="type-meta">
+          <span class="tag name">KPI / Size 2</span>
+          <span class="tag">56px</span>
+          <span class="tag">Bold</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BUTTONS ── -->
+  <section id="buttons">
+    <div class="section-header">
+      <h2>Buttons</h2>
+      <span>3 variants · 4 sizes · 4 states</span>
+    </div>
+
+    <div class="btn-section">
+
+      <!-- State column headers (shared) -->
+      <div style="display:flex; flex-direction:column; gap:48px;">
+
+        <!-- PRIMARY -->
+        <div class="btn-variant-block">
+          <div class="btn-variant-label">Primary</div>
+          <div class="btn-states-header">
+            <span></span>
+            <span>Default</span>
+            <span>Hover</span>
+            <span>While Pressing</span>
+            <span>Disabled</span>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">XS</span>
+            <div class="btn-cell"><button class="btn btn-xs btn-primary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-primary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-primary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-primary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">S</span>
+            <div class="btn-cell"><button class="btn btn-s btn-primary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-primary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-primary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-primary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">M</span>
+            <div class="btn-cell"><button class="btn btn-m btn-primary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-primary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-primary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-primary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">L</span>
+            <div class="btn-cell"><button class="btn btn-l btn-primary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-primary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-primary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-primary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+        </div>
+
+        <!-- SECONDARY -->
+        <div class="btn-variant-block">
+          <div class="btn-variant-label">Secondary</div>
+          <div class="btn-states-header">
+            <span></span>
+            <span>Default</span>
+            <span>Hover</span>
+            <span>While Pressing</span>
+            <span>Disabled</span>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">XS</span>
+            <div class="btn-cell"><button class="btn btn-xs btn-secondary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-secondary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-secondary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-secondary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">S</span>
+            <div class="btn-cell"><button class="btn btn-s btn-secondary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-secondary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-secondary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-secondary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">M</span>
+            <div class="btn-cell"><button class="btn btn-m btn-secondary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-secondary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-secondary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-secondary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">L</span>
+            <div class="btn-cell"><button class="btn btn-l btn-secondary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-secondary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-secondary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-secondary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+        </div>
+
+        <!-- TERTIARY -->
+        <div class="btn-variant-block">
+          <div class="btn-variant-label">Tertiary</div>
+          <div class="btn-states-header">
+            <span></span>
+            <span>Default</span>
+            <span>Hover</span>
+            <span>While Pressing</span>
+            <span>Disabled</span>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">XS</span>
+            <div class="btn-cell"><button class="btn btn-xs btn-tertiary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-tertiary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-tertiary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-xs btn-tertiary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">S</span>
+            <div class="btn-cell"><button class="btn btn-s btn-tertiary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-tertiary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-tertiary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-s btn-tertiary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">M</span>
+            <div class="btn-cell"><button class="btn btn-m btn-tertiary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-tertiary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-tertiary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-m btn-tertiary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+
+          <div class="btn-size-row">
+            <span class="size-label">L</span>
+            <div class="btn-cell"><button class="btn btn-l btn-tertiary"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-tertiary hover"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-tertiary pressing"><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+            <div class="btn-cell"><button class="btn btn-l btn-tertiary disabled" disabled><span class="chevron"></span> Button Label <span class="chevron"></span></button></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COLORS ── -->
+  <section id="colors">
+    <div class="section-header">
+      <h2>Colors</h2>
+      <span>Blue scale + Neutrals</span>
+    </div>
+
+    <div class="type-group-label" style="margin-bottom:16px;">Blue</div>
+    <div class="palette-grid" style="margin-bottom:32px;">
+      <div class="swatch"><div class="swatch-color" style="background:#EEF3FF;"></div><div class="swatch-info"><div class="swatch-name">Blue 50</div><div class="swatch-hex">#EEF3FF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#C7D7FD;"></div><div class="swatch-info"><div class="swatch-name">Blue 100</div><div class="swatch-hex">#C7D7FD</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#7AA3F7;"></div><div class="swatch-info"><div class="swatch-name">Blue 300</div><div class="swatch-hex">#7AA3F7</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#4F81F4;"></div><div class="swatch-info"><div class="swatch-name">Blue 400</div><div class="swatch-hex">#4F81F4</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#3366E8;"></div><div class="swatch-info"><div class="swatch-name">Blue 500</div><div class="swatch-hex">#3366E8</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#2251CC;"></div><div class="swatch-info"><div class="swatch-name">Blue 600</div><div class="swatch-hex">#2251CC</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1A3FAA;"></div><div class="swatch-info"><div class="swatch-name">Blue 700</div><div class="swatch-hex">#1A3FAA</div></div></div>
+    </div>
+
+    <div class="type-group-label" style="margin-bottom:16px;">Neutrals</div>
+    <div class="palette-grid">
+      <div class="swatch"><div class="swatch-color" style="background:#F9FAFB;border-bottom:1px solid #E5E7EB;"></div><div class="swatch-info"><div class="swatch-name">Gray 50</div><div class="swatch-hex">#F9FAFB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F3F4F6;"></div><div class="swatch-info"><div class="swatch-name">Gray 100</div><div class="swatch-hex">#F3F4F6</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E5E7EB;"></div><div class="swatch-info"><div class="swatch-name">Gray 200</div><div class="swatch-hex">#E5E7EB</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#9CA3AF;"></div><div class="swatch-info"><div class="swatch-name">Gray 400</div><div class="swatch-hex">#9CA3AF</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#4B5563;"></div><div class="swatch-info"><div class="swatch-name">Gray 600</div><div class="swatch-hex">#4B5563</div></div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#111827;"></div><div class="swatch-info"><div class="swatch-name">Gray 900</div><div class="swatch-hex">#111827</div></div></div>
+    </div>
+  </section>
+
+  <!-- ── SPACING ── -->
+  <section id="spacing">
+    <div class="section-header">
+      <h2>Spacing Scale</h2>
+      <span>Base 4px</span>
+    </div>
+
+    <div class="spacing-grid">
+      <div class="spacing-row"><span class="spacing-label">1</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:4px;"></div></div><span class="spacing-value">4px</span></div>
+      <div class="spacing-row"><span class="spacing-label">2</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:8px;"></div></div><span class="spacing-value">8px</span></div>
+      <div class="spacing-row"><span class="spacing-label">3</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:12px;"></div></div><span class="spacing-value">12px</span></div>
+      <div class="spacing-row"><span class="spacing-label">4</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:16px;"></div></div><span class="spacing-value">16px</span></div>
+      <div class="spacing-row"><span class="spacing-label">5</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:20px;"></div></div><span class="spacing-value">20px</span></div>
+      <div class="spacing-row"><span class="spacing-label">6</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:24px;"></div></div><span class="spacing-value">24px</span></div>
+      <div class="spacing-row"><span class="spacing-label">8</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:32px;"></div></div><span class="spacing-value">32px</span></div>
+      <div class="spacing-row"><span class="spacing-label">10</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:40px;"></div></div><span class="spacing-value">40px</span></div>
+      <div class="spacing-row"><span class="spacing-label">12</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:48px;"></div></div><span class="spacing-value">48px</span></div>
+      <div class="spacing-row"><span class="spacing-label">16</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:64px;"></div></div><span class="spacing-value">64px</span></div>
+      <div class="spacing-row"><span class="spacing-label">20</span><div class="spacing-bar-wrap"><div class="spacing-bar" style="width:80px;"></div></div><span class="spacing-value">80px</span></div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Smooth scroll + active nav highlight
+  const links = document.querySelectorAll('nav a');
+  links.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+  }));
+
+  const sections = document.querySelectorAll('main section');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
