@@ -235,9 +235,9 @@
     .cp-inp:focus,.cp-sel:focus{border-color:#5189F3}
     .cp-sel{appearance:none;-webkit-appearance:none;padding-right:34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;cursor:pointer}
 
-    .lb-view-tabs{display:flex;gap:3px;margin-bottom:20px;background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:4px;width:fit-content}
-    .lb-view-tab{padding:6px 18px;border:none;background:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#888;cursor:pointer;border-radius:1px;transition:all 0.14s;white-space:nowrap}
-    .lb-view-tab.active{background:#5189F3;color:#fff}
+    .lb-view-tabs{display:flex;gap:0;margin-bottom:20px;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;width:fit-content}
+    .lb-view-tab{padding:7px 18px;border:none;background:transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;border-radius:6px;transition:all 0.14s;white-space:nowrap}
+    .lb-view-tab.active{background:#5189F3;color:#fff;box-shadow:0 2px 6px rgba(81,137,243,0.28)}
     .lb-view-tab:hover:not(.active){background:#EEF3FF;color:#5189F3}
     .lb-stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
     .lb-stat-card{background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:14px 16px;display:flex;align-items:center;gap:12px}
@@ -570,19 +570,67 @@
     .qalts-note { font-size: 11px; color: #9BAFDE; font-family: 'Nunito', sans-serif; line-height: 1.45; flex-shrink: 0; }
     .q-alts-list { display: flex; flex-direction: column; gap: 7px; flex-shrink: 0; }
     .q-alt-item {
-      display: flex; align-items: flex-start; gap: 8px;
-      padding: 8px 10px; border-radius: 6px;
-      background: #fff; border: 1px solid #D8E3FB;
-      font-size: 12px; line-height: 1.45;
+      display: flex; align-items: stretch;
+      border-radius: 6px; overflow: hidden;
+      background: #fff;
+      border: 1px solid #D8E3FB;
+      border-left: 3px solid #5189F3;
+      font-size: 12px; line-height: 1.5;
+      transition: box-shadow 0.15s;
     }
-    .q-alt-num { font-size: 11px; font-weight: 800; color: #5189F3; flex-shrink: 0; padding-top: 1px; min-width: 14px; }
-    .q-alt-text { flex: 1; font-weight: 600; color: #1a3d8f; font-family: 'Nunito', sans-serif; }
-    .q-alt-remove {
-      background: none; border: none; cursor: pointer; color: #C7D7FD;
-      font-size: 13px; padding: 0; line-height: 1; flex-shrink: 0;
-      transition: color 0.12s;
+    .q-alt-item:hover { box-shadow: 0 2px 8px rgba(81,137,243,0.10); }
+    .q-alt-item-body { flex: 1; padding: 10px; min-width: 0; }
+    .q-alt-item-row { display: flex; align-items: flex-start; gap: 8px; }
+    .q-alt-num {
+      font-size: 10px; font-weight: 800; color: #fff;
+      background: #5189F3; border-radius: 50%;
+      width: 18px; height: 18px; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; margin-top: 1px;
     }
-    .q-alt-remove:hover { color: #EF4444; }
+    .q-alt-text { flex: 1; font-weight: 600; color: #1a3d8f; font-family: 'Nunito', sans-serif; line-height: 1.5; }
+    .q-alt-icon-group {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 4px; width: 34px; flex-shrink: 0;
+      border-left: 1px solid #DDE8FC; background: #F2F6FF;
+    }
+    .q-alt-icon-btn {
+      width: 26px; height: 26px; border: none; background: none; cursor: pointer;
+      border-radius: 5px; display: flex; align-items: center; justify-content: center;
+      color: #5189F3; transition: background 0.12s, color 0.12s;
+    }
+    .q-alt-icon-btn:hover { background: #5189F3; color: #fff; }
+    .q-alt-icon-btn.remove { color: #E57373; }
+    .q-alt-icon-btn.remove:hover { background: #EF4444; color: #fff; }
+    .q-alt-edited-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 9px; font-weight: 800; color: #16a34a;
+      background: #F0FDF4; border: 1px solid #bbf7d0;
+      padding: 1px 6px; border-radius: 20px; margin-top: 5px; margin-left: 26px;
+    }
+    /* Edit mode */
+    .q-alt-edit-area {
+      width: 100%; border: 1.5px solid #5189F3; border-radius: 6px;
+      padding: 8px 10px; font-size: 12px; font-family: 'Nunito', sans-serif;
+      font-weight: 600; color: #1a3d8f; line-height: 1.5; resize: none;
+      min-height: 64px; outline: none; box-sizing: border-box; background: #fff;
+    }
+    .q-alt-edit-actions { display: flex; gap: 6px; margin-top: 8px; }
+    .q-alt-save-btn {
+      flex: 1; padding: 6px 0; background: #5189F3; color: #fff; border: none;
+      border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: 'Nunito', sans-serif; transition: background 0.13s;
+    }
+    .q-alt-save-btn:hover { background: #3b6fd4; }
+    .q-alt-cancel-btn {
+      padding: 6px 14px; background: #F0F0F0; color: #555; border: none;
+      border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;
+      font-family: 'Nunito', sans-serif; transition: background 0.13s;
+    }
+    .q-alt-cancel-btn:hover { background: #E5E5E5; }
+    .q-alt-editing-label {
+      font-size: 10px; font-weight: 800; color: #5189F3;
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+    }
     .qalts-empty { font-size: 12px; color: #bbb; font-family: 'Nunito', sans-serif; text-align: center; padding: 16px 0; line-height: 1.5; }
 
     .qc-actions {
@@ -1520,8 +1568,8 @@
     .hub-glossary-def { color:#555; line-height:1.45; }
 
     /* ── Hub tab toggle ── */
-    .hub-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:none;background:none;border-radius:6px;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap}
-    .hub-tab-active{background:#fff;color:#5189F3;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+    .hub-tab-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 18px;border:none;background:transparent;border-radius:6px;font-size:13px;font-weight:700;color:#6B7280;cursor:pointer;font-family:inherit;transition:all .13s;white-space:nowrap}
+    .hub-tab-active{background:#5189F3;color:#fff;box-shadow:0 2px 6px rgba(81,137,243,0.28)}
 
     /* ── Hub Admin View ── */
     .had-card{background:#fff;border:1.5px solid #E8EBF0;border-radius:10px;margin-bottom:14px;overflow:hidden}
@@ -1632,6 +1680,32 @@
     .hub-quiz-info-icon { width:38px; height:38px; background:#EDE9FE; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
     .hub-quiz-info-body { flex:1; }
     .hub-quiz-info-name { font-size:13px; font-weight:700; color:#111; margin-bottom:5px; }
+    /* Certification renewal card */
+    .cert-status-card { display:flex; align-items:center; gap:12px; border-radius:8px; padding:13px 16px; margin-top:8px; }
+    .cert-status-card.cs-lifetime { background:#F0F9FF; border:1.5px solid #BAE6FD; }
+    .cert-status-card.cs-active   { background:#F0FDF4; border:1.5px solid #86EFAC; }
+    .cert-status-card.cs-expiring { background:#FFFBEB; border:1.5px solid #FCD34D; }
+    .cert-status-card.cs-expired  { background:#FEF2F2; border:1.5px solid #FECACA; }
+    .cert-status-icon { width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .cs-lifetime .cert-status-icon { background:#E0F2FE; }
+    .cs-active   .cert-status-icon { background:#DCFCE7; }
+    .cs-expiring .cert-status-icon { background:#FEF3C7; }
+    .cs-expired  .cert-status-icon { background:#FEE2E2; }
+    .cert-status-body { flex:1; min-width:0; }
+    .cert-status-title { font-size:12px; font-weight:800; margin-bottom:2px; }
+    .cs-lifetime .cert-status-title { color:#0369A1; }
+    .cs-active   .cert-status-title { color:#166534; }
+    .cs-expiring .cert-status-title { color:#92400E; }
+    .cs-expired  .cert-status-title { color:#991B1B; }
+    .cert-status-sub { font-size:11px; line-height:1.5; }
+    .cs-lifetime .cert-status-sub { color:#0C4A6E; }
+    .cs-active   .cert-status-sub { color:#15803D; }
+    .cs-expiring .cert-status-sub { color:#78350F; }
+    .cs-expired  .cert-status-sub { color:#B91C1C; }
+    .cert-renew-btn { flex-shrink:0; font-family:'Nunito',sans-serif; font-size:11px; font-weight:800; padding:7px 14px; border-radius:6px; border:none; cursor:pointer; white-space:nowrap; transition:opacity 0.15s; }
+    .cert-renew-btn:hover { opacity:0.85; }
+    .cs-expiring .cert-renew-btn { background:#F59E0B; color:#fff; }
+    .cs-expired  .cert-renew-btn { background:#EF4444; color:#fff; }
     /* Attempt history rows */
     .hub-att-history { margin-top:8px; display:flex; flex-direction:column; gap:6px; }
     .hub-att-row { display:flex; align-items:center; gap:12px; padding:10px 16px; border-radius:8px; border:1.5px solid #E5E7EB; background:#FAFAFA; }
@@ -1967,6 +2041,15 @@
               <label>Att 2 Qs <span style="font-weight:400;color:#bbb">(optional)</span></label>
               <input type="number" id="qPerAttempt2" min="1" placeholder="Same as Att 1" style="height:36px;padding:0 12px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;background:#fff;width:100%;box-sizing:border-box;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" />
             </div>
+            <div class="qc-field" style="flex:0 0 148px">
+              <label>Certificate Validity</label>
+              <select id="qCertValidity" style="height:36px;padding:0 10px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;background:#fff;width:100%;box-sizing:border-box;cursor:pointer" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'">
+                <option value="lifetime">Lifetime</option>
+                <option value="1y">1 Year</option>
+                <option value="3y">3 Years</option>
+                <option value="6y">6 Years</option>
+              </select>
+            </div>
           </div>
 
           <div class="qc-row" style="margin-bottom:8px">
@@ -1986,10 +2069,10 @@
             </div>
             <div class="qc-field">
               <label style="display:flex;align-items:center;gap:6px">
-                Short Ans per Attempt <span style="font-weight:400;color:#bbb">(optional)</span>
-                <span id="qmixAvailShort" style="font-size:10px;color:#aaa;font-weight:600;margin-left:auto"></span>
+                Multi-Select per Attempt <span style="font-weight:400;color:#bbb">(optional)</span>
+                <span id="qmixAvailMs" style="font-size:10px;color:#aaa;font-weight:600;margin-left:auto"></span>
               </label>
-              <input type="number" id="qmixShort" min="0" placeholder="0" oninput="_updateQMixAvail()" style="height:36px;padding:0 12px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;background:#fff;width:100%;box-sizing:border-box;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" />
+              <input type="number" id="qmixMs" min="0" placeholder="0" oninput="_updateQMixAvail()" style="height:36px;padding:0 12px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;background:#fff;width:100%;box-sizing:border-box;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" />
             </div>
           </div>
 
@@ -2177,20 +2260,18 @@
       <div id="section-hub" class="section">
 
         <!-- Hub Header -->
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:16px">
-          <div>
+        <div style="display:flex;align-items:center;width:100%;margin-bottom:20px;gap:16px">
+          <div style="flex:1">
             <h1 style="font-size:20px;font-weight:800;color:#111;margin-bottom:4px">Knowledge Hub</h1>
             <p style="font-size:13px;color:#888;margin:0" id="hubSubtitle">Manage modules, classes, content and quizzes</p>
           </div>
           <!-- Admin / User tab toggle -->
-          <div style="display:flex;align-items:center;gap:0;background:#F3F4F6;border-radius:8px;padding:3px;flex-shrink:0">
+          <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0;margin-left:auto">
             <button id="hubTabAdmin" onclick="_switchHubTab('admin')" class="hub-tab-btn hub-tab-active">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
               Admin View
             </button>
             <button id="hubTabUser" onclick="_switchHubTab('user')" class="hub-tab-btn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-              User View
+              User Preview
             </button>
           </div>
         </div>
@@ -2228,68 +2309,161 @@
 
       <!-- ── Quick Guides section ─────────────────────────────── -->
       <div id="section-quickguides" class="section">
-        <div class="page-header">
-          <h1>Quick Guides</h1>
-          <p>Prepare field-by-field guides employees can reference while filling production forms</p>
+        <div style="display:flex;align-items:center;width:100%;margin-bottom:22px;gap:16px">
+          <div style="flex:1">
+            <h1 style="font-size:20px;font-weight:800;color:#111;margin:0 0 4px">Quick Guides</h1>
+            <p style="font-size:13px;color:#888;margin:0">Upload 2–5 min demos (video, voiceover &amp; document) per form — accessed via the help icon in the platform</p>
+          </div>
+          <div class="lb-view-tabs" style="margin:0;flex-shrink:0;margin-left:auto">
+            <button class="lb-view-tab active" id="qgTabAdmin" onclick="qgSwitchView('admin')">Admin View</button>
+            <button class="lb-view-tab" id="qgTabUser" onclick="qgSwitchView('user')">User Preview</button>
+          </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
+        <!-- ── ADMIN VIEW ── -->
+        <div id="qgAdminView">
+          <div style="display:grid;grid-template-columns:230px 1fr;gap:16px;align-items:start">
 
-          <!-- ── Editor ── -->
-          <div style="background:#fff;border:1px solid #DFE2E6;border-radius:2px;padding:20px 24px">
-            <div class="quiz-creator-title">Create / Edit Guide</div>
+            <!-- Left: Form list -->
+            <div style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow:hidden;flex-shrink:0">
+              <div style="padding:11px 14px 10px;border-bottom:1px solid #F0F0F0">
+                <span style="font-size:11px;font-weight:800;color:#888;text-transform:uppercase;letter-spacing:0.07em">Forms / Modules</span>
+              </div>
+              <div id="qgFormList" style="max-height:520px;overflow-y:auto"></div>
+            </div>
 
-            <div class="qc-field">
-              <label>Module</label>
-              <select id="qgModuleSelect" onchange="loadGuideForEdit()">
-                <option value="">Select module…</option>
-                <option>Beheading</option>
-                <option>Grading</option>
-                <option>Peeling &amp; Cutting</option>
-                <option>Soaking</option>
-                <option>Nobashi</option>
-                <option>IQF</option>
-                <option>Leftover</option>
-                <option>Cold Store - Inward</option>
-                <option>Cold Store - Outward</option>
+            <!-- Right: Content editor -->
+            <div id="qgContentPanel">
+              <div id="qgNoFormSelected" style="background:#fff;border:1px solid #DFE2E6;border-radius:4px;padding:64px 20px;text-align:center">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#DFE2E6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 12px;display:block"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                <div style="font-size:14px;font-weight:700;color:#bbb;margin-bottom:4px">Select a form</div>
+                <div style="font-size:12px;color:#ccc">Choose a form on the left to manage its quick demo assets</div>
+              </div>
+              <div id="qgFormEditor" style="display:none">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+                  <div style="width:42px;height:42px;border-radius:6px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                  </div>
+                  <div>
+                    <div id="qgEditorTitle" style="font-size:17px;font-weight:900;color:#111"></div>
+                    <div style="font-size:12px;color:#888;margin-top:1px">Upload video, voiceover and document — one per language</div>
+                  </div>
+                </div>
+                <!-- 3 asset cards -->
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+
+                  <!-- VIDEO -->
+                  <div style="background:#fff;border:1px solid #DFE2E6;border-radius:6px;overflow:hidden">
+                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <div style="width:32px;height:32px;border-radius:4px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                        </div>
+                        <div>
+                          <div style="font-size:13px;font-weight:800;color:#111">Video</div>
+                          <div style="font-size:10px;color:#aaa;font-weight:600">2–5 min demo</div>
+                        </div>
+                      </div>
+                      <button onclick="qgOpenUploadModal('video')" style="padding:4px 11px;background:#5189F3;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
+                    </div>
+                    <div id="qgVideoItems" style="padding:8px;min-height:56px"></div>
+                  </div>
+
+                  <!-- VOICEOVER -->
+                  <div style="background:#fff;border:1px solid #DFE2E6;border-radius:6px;overflow:hidden">
+                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <div style="width:32px;height:32px;border-radius:4px;background:#F0FDF4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                        </div>
+                        <div>
+                          <div style="font-size:13px;font-weight:800;color:#111">Voiceover</div>
+                          <div style="font-size:10px;color:#aaa;font-weight:600">Audio narration</div>
+                        </div>
+                      </div>
+                      <button onclick="qgOpenUploadModal('voiceover')" style="padding:4px 11px;background:#16a34a;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
+                    </div>
+                    <div id="qgVoiceoverItems" style="padding:8px;min-height:56px"></div>
+                  </div>
+
+                  <!-- DOCUMENT -->
+                  <div style="background:#fff;border:1px solid #DFE2E6;border-radius:6px;overflow:hidden">
+                    <div style="padding:13px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
+                      <div style="display:flex;align-items:center;gap:9px">
+                        <div style="width:32px;height:32px;border-radius:4px;background:#FFF7ED;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        </div>
+                        <div>
+                          <div style="font-size:13px;font-weight:800;color:#111">Document</div>
+                          <div style="font-size:10px;color:#aaa;font-weight:600">Reference guide / PDF</div>
+                        </div>
+                      </div>
+                      <button onclick="qgOpenUploadModal('document')" style="padding:4px 11px;background:#ea580c;color:#fff;border:none;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif">+ Add</button>
+                    </div>
+                    <div id="qgDocumentItems" style="padding:8px;min-height:56px"></div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── USER PREVIEW ── -->
+        <div id="qgUserView" style="display:none">
+          <div style="background:#EEF3FF;border:1px solid #c7d7fd;border-radius:4px;padding:10px 16px;margin-bottom:20px;display:flex;align-items:center;gap:8px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span style="font-size:12px;font-weight:700;color:#374151">User preview — when the help icon is tapped on any form in the platform, users see that form's guide in their preferred language</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap">
+            <span style="font-size:12px;font-weight:800;color:#555">Language:</span>
+            <div id="qgLangPills" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+          </div>
+          <div id="qgUserCards" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px"></div>
+          <div id="qgUserEmpty" style="display:none;text-align:center;padding:48px 20px;color:#bbb;font-size:13px;font-weight:600;background:#fff;border:1px solid #DFE2E6;border-radius:4px">No demos uploaded yet — switch to Admin View to add quick guides.</div>
+        </div>
+
+      </div>
+
+      <!-- ── Quick Guide Upload Modal ── -->
+      <div id="qgUploadModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;align-items:center;justify-content:center;padding:20px;box-sizing:border-box">
+        <div style="background:#fff;border-radius:8px;width:100%;max-width:460px;box-shadow:0 24px 64px rgba(0,0,0,0.2);overflow:hidden;font-family:'Nunito',sans-serif">
+          <div style="padding:16px 20px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
+            <div id="qgModalTitle" style="font-size:15px;font-weight:800;color:#111"></div>
+            <button onclick="qgCloseModal()" style="width:28px;height:28px;border:none;background:#F5F5F5;border-radius:50%;cursor:pointer;font-size:16px;color:#555;display:flex;align-items:center;justify-content:center">×</button>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-size:12px;font-weight:700;color:#555">Language</label>
+              <select id="qgModalLang" style="height:36px;padding:0 10px;border:1px solid #DFE2E6;border-radius:4px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;background:#fff">
+                <option value="en">🇬🇧 English</option>
+                <option value="hi">🇮🇳 Hindi</option>
+                <option value="te">🇮🇳 Telugu</option>
+                <option value="ta">🇮🇳 Tamil</option>
+                <option value="kn">🇮🇳 Kannada</option>
               </select>
             </div>
-
-            <div class="qc-field">
-              <label>Intro Tips <span style="font-weight:400;color:#bbb">Short overview employees read first</span></label>
-              <textarea id="qgIntroText" rows="4"
-                placeholder="e.g. Fill this form at the end of each beheading batch. Use the tray barcode for Batch ID. Ask your supervisor to sign off."
-                style="width:100%;border:1px solid #DFE2E6;border-radius:2px;padding:10px 12px;font-size:13px;color:#111;font-family:'Nunito',sans-serif;resize:vertical;outline:none;line-height:1.55;transition:border-color 0.15s;box-sizing:border-box"
-                onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'"></textarea>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-size:12px;font-weight:700;color:#555">Title</label>
+              <input id="qgModalTitle2" type="text" placeholder="e.g. Beheading Quick Demo – English" style="height:36px;padding:0 10px;border:1px solid #DFE2E6;border-radius:4px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;box-sizing:border-box;width:100%" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'">
             </div>
-
-            <div class="qc-divider"></div>
-
-            <div class="qc-questions-header">
-              <span>Field Hints</span>
-              <button class="btn-add-question" onclick="addGuideField('','')">+ Add Field</button>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-size:12px;font-weight:700;color:#555">File</label>
+              <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1.5px dashed #DFE2E6;border-radius:4px;cursor:pointer;transition:border-color 0.15s" onmouseover="this.style.borderColor='#5189F3'" onmouseout="this.style.borderColor='#DFE2E6'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>
+                <span id="qgModalFileLabel" style="font-size:12px;font-weight:600;color:#888">Click to choose file</span>
+                <input id="qgModalFile" type="file" style="display:none" onchange="document.getElementById('qgModalFileLabel').textContent=this.files[0]?this.files[0].name:'Click to choose file'">
+              </label>
             </div>
-            <div style="font-size:11px;color:#aaa;margin:0 0 10px">Map each form field name to a plain-English tip for the employee</div>
-            <div id="qgFieldsContainer" style="display:flex;flex-direction:column;gap:6px"></div>
-            <div id="qgFieldsEmpty" style="font-size:12px;color:#bbb;text-align:center;padding:14px 0">No fields yet — click "+ Add Field" to start</div>
-
-            <div class="qc-actions">
-              <span></span>
-              <button class="btn-primary" onclick="saveQuickGuide()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                Save Guide
-              </button>
+            <div id="qgModalDurationRow" style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-size:12px;font-weight:700;color:#555">Duration <span style="font-weight:400;color:#bbb">(optional, e.g. 3:45)</span></label>
+              <input id="qgModalDuration" type="text" placeholder="3:45" style="height:36px;padding:0 10px;border:1px solid #DFE2E6;border-radius:4px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;box-sizing:border-box;width:100%" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'">
             </div>
           </div>
-
-          <!-- ── Saved list ── -->
-          <div>
-            <div class="quiz-creator-title" style="margin-bottom:14px">Saved Guides</div>
-            <div class="table-card">
-              <div id="qgSavedList"></div>
-            </div>
+          <div style="padding:14px 20px;border-top:1px solid #F0F0F0;display:flex;gap:10px;justify-content:flex-end">
+            <button onclick="qgCloseModal()" style="padding:8px 18px;background:#F0F0F0;color:#555;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer">Cancel</button>
+            <button onclick="qgSaveAsset()" style="padding:8px 20px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer">Save</button>
           </div>
-
         </div>
       </div>
 
@@ -2305,7 +2479,7 @@
       if (id === 'hub') renderHub();
       if (id === 'quiz') _populateQuizModuleDropdown();
       if (id === 'upload') _videoShowNativePanel();
-      if (id === 'quickguides') renderQuickGuidesList();
+      if (id === 'quickguides') qgInit();
     }
 
     /* ══════════════════════════════════════
@@ -4822,7 +4996,8 @@
       document.getElementById('qPerAttempt2').value = '';
       document.getElementById('qmixMcq').value = '';
       document.getElementById('qmixTf').value = '';
-      document.getElementById('qmixShort').value = '';
+      document.getElementById('qmixMs').value = '';
+      document.getElementById('qCertValidity').value = 'lifetime';
       document.getElementById('qSaveBtn').textContent = 'Save Quiz';
       qCards = [{ id: qCardId++, type: 'mcq' }];
       renderQuestions();
@@ -4848,9 +5023,10 @@
       document.getElementById('qPassMark').value = q.passMark || 70;
       document.getElementById('qPerAttempt1').value = q.questionsPerAttempt1 || '';
       document.getElementById('qPerAttempt2').value = q.questionsPerAttempt2 || '';
-      document.getElementById('qmixMcq').value   = (q.typeMix && q.typeMix.mcq)   ? q.typeMix.mcq   : '';
-      document.getElementById('qmixTf').value    = (q.typeMix && q.typeMix.tf)    ? q.typeMix.tf    : '';
-      document.getElementById('qmixShort').value = (q.typeMix && q.typeMix.short) ? q.typeMix.short : '';
+      document.getElementById('qmixMcq').value = (q.typeMix && q.typeMix.mcq) ? q.typeMix.mcq : '';
+      document.getElementById('qmixTf').value  = (q.typeMix && q.typeMix.tf)  ? q.typeMix.tf  : '';
+      document.getElementById('qmixMs').value  = (q.typeMix && q.typeMix.ms)  ? q.typeMix.ms  : '';
+      document.getElementById('qCertValidity').value = q.certValidity || 'lifetime';
 
       // Rebuild question cards from saved data
       qCards = q.questions.map(qu => ({ id: qCardId++, type: qu.type, _saved: qu }));
@@ -4871,6 +5047,15 @@
         } else if (qu.type === 'tf' && qu.correct) {
           const tfRadio = document.querySelector(`input[name="tf-${cardId}"][value="${qu.correct}"]`);
           if (tfRadio) tfRadio.checked = true;
+        } else if (qu.type === 'ms' && qu.options) {
+          qu.options.forEach((o, oi) => {
+            const optEl = document.getElementById(`qmsopt-${cardId}-${oi}`);
+            if (optEl) optEl.value = o;
+          });
+          (qu.correct || []).forEach(ci => {
+            const cb = document.querySelector(`input[name="ms-correct-${cardId}"][value="${ci}"]`);
+            if (cb) cb.checked = true;
+          });
         }
       });
 
@@ -4934,6 +5119,15 @@
         } else if (q.type === 'tf') {
           var tr = document.querySelector('input[name="tf-' + q.id + '"]:checked');
           q._tfCorrect = tr ? tr.value : null;
+        } else if (q.type === 'ms') {
+          q._msOptions = [0,1,2,3].map(function(li) {
+            var el = document.getElementById('qmsopt-' + q.id + '-' + li);
+            return el ? el.value : '';
+          });
+          q._msCorrect = [0,1,2,3].filter(function(li) {
+            var cb = document.querySelector('input[name="ms-correct-' + q.id + '"][value="' + li + '"]');
+            return cb && cb.checked;
+          });
         }
       });
     }
@@ -4955,6 +5149,19 @@
         } else if (q.type === 'tf' && q._tfCorrect) {
           var tr = document.querySelector('input[name="tf-' + q.id + '"][value="' + q._tfCorrect + '"]');
           if (tr) tr.checked = true;
+        } else if (q.type === 'ms') {
+          if (q._msOptions) {
+            q._msOptions.forEach(function(val, li) {
+              var el = document.getElementById('qmsopt-' + q.id + '-' + li);
+              if (el) el.value = val;
+            });
+          }
+          if (q._msCorrect) {
+            q._msCorrect.forEach(function(li) {
+              var cb = document.querySelector('input[name="ms-correct-' + q.id + '"][value="' + li + '"]');
+              if (cb) cb.checked = true;
+            });
+          }
         }
         // Restore alternatives panel if it had selections
         if (q._alternatives && q._alternatives.length) {
@@ -4989,7 +5196,7 @@
       btn.classList.add('active');
       document.getElementById('qopts-'  + id).style.display = type === 'mcq'   ? 'block' : 'none';
       document.getElementById('qtf-'    + id).style.display = type === 'tf'    ? 'flex'  : 'none';
-      document.getElementById('qshort-' + id).style.display = type === 'short' ? 'block' : 'none';
+      document.getElementById('qms-'    + id).style.display = type === 'ms'    ? 'block' : 'none';
     }
 
     function _buildQCard(q, num) {
@@ -5000,7 +5207,7 @@
             <div class="q-type-tabs">
               <button class="q-type-tab ${q.type==='mcq'   ? 'active':''}" onclick="setQType(${q.id},'mcq',this)">MCQ</button>
               <button class="q-type-tab ${q.type==='tf'    ? 'active':''}" onclick="setQType(${q.id},'tf',this)">True / False</button>
-              <button class="q-type-tab ${q.type==='short' ? 'active':''}" onclick="setQType(${q.id},'short',this)">Short Answer</button>
+              <button class="q-type-tab ${q.type==='ms'    ? 'active':''}" onclick="setQType(${q.id},'ms',this)">Multiple Select</button>
             </div>
             <button class="q-remove-btn" onclick="removeQuestion(${q.id})" title="Remove">✕</button>
           </div>
@@ -5024,8 +5231,13 @@
                 <label><input type="radio" name="tf-${q.id}" value="true" /> True</label>
                 <label><input type="radio" name="tf-${q.id}" value="false" /> False</label>
               </div>
-              <div id="qshort-${q.id}" style="display:${q.type==='short'?'block':'none'}">
-                <div class="q-short-note">User will type a free-form answer. No predefined options needed.</div>
+              <div id="qms-${q.id}" style="display:${q.type==='ms'?'block':'none'}">
+                ${['A','B','C','D'].map((l,li) => `
+                  <div class="q-option-row">
+                    <input type="checkbox" name="ms-correct-${q.id}" value="${li}" />
+                    <input type="text" class="q-opt-input" id="qmsopt-${q.id}-${li}" placeholder="Option ${l}" />
+                  </div>`).join('')}
+                <div class="q-option-hint">Check all boxes that are correct answers.</div>
               </div>
             </div>
             <div class="q-suggest-panel" id="qsugg-${q.id}" style="display:none"></div>
@@ -5040,6 +5252,8 @@
 
     var _qSuggCache   = {}; // qId → [suggestion strings]
     var _qSuggChecked = {}; // qId → Set of checked indices
+    var _qSuggEdits   = {}; // qId → { suggIdx: editedText }
+    var _qAltEditMode = {}; // qId → suggIdx currently being edited (null = none)
 
     function _qSuggCloseHtml(qId) {
       return '<button class="qsugg-close" onclick="document.getElementById(\'qsugg-' + qId + '\').style.display=\'none\';document.getElementById(\'qsbtn-' + qId + '\').classList.remove(\'active\')" title="Close">✕</button>';
@@ -5092,8 +5306,9 @@
         if (prev !== text || !_qSuggCache[qId]) {
           _qSuggCache[qId]         = _generateQSuggestions(text);
           _qSuggCache[qId + '_src'] = text;
-          _qSuggChecked[qId]       = new Set(); // reset checked on new question
-          // clear alts panel too
+          _qSuggChecked[qId] = new Set(); // reset checked on new question
+          _qSuggEdits[qId]   = {};
+          _qAltEditMode[qId] = null;
           var alts = document.getElementById('qalts-' + qId);
           if (alts) { alts.style.display = 'none'; alts.innerHTML = ''; }
         }
@@ -5137,13 +5352,18 @@
     function _qUpdateAltsPanel(qId) {
       var checked     = _qSuggChecked[qId] || new Set();
       var suggestions = _qSuggCache[qId]   || [];
+      var edits       = _qSuggEdits[qId]   || {};
+      var editMode    = _qAltEditMode[qId];
       var panel       = document.getElementById('qalts-' + qId);
       if (!panel) return;
 
-      // Save alternatives into the card data immediately
       var sorted = Array.from(checked).sort(function(a,b){ return a - b; });
+
+      // Save alternatives (using edited text where available) into card data
       var card = qCards.find(function(q){ return q.id === qId; });
-      if (card) card._alternatives = sorted.map(function(i){ return suggestions[i]; });
+      if (card) card._alternatives = sorted.map(function(i){
+        return (edits[i] !== undefined) ? edits[i] : suggestions[i];
+      });
 
       if (!checked.size) {
         panel.style.display = 'none';
@@ -5154,11 +5374,36 @@
       panel.style.display = 'flex';
 
       var itemsHtml = sorted.map(function(i, num) {
-        var safe = (suggestions[i] || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        var displayText = (edits[i] !== undefined) ? edits[i] : (suggestions[i] || '');
+        var safe = displayText.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        var isEditing = editMode === i;
+
+        if (isEditing) {
+          return '<div class="q-alt-item" style="display:block;padding:10px 12px">' +
+            '<div class="q-alt-editing-label">Editing alternative ' + (num + 1) + '</div>' +
+            '<textarea class="q-alt-edit-area" id="qaltEdit-' + qId + '-' + i + '">' + safe + '</textarea>' +
+            '<div class="q-alt-edit-actions">' +
+              '<button class="q-alt-save-btn" onclick="_qSaveAltEdit(' + qId + ',' + i + ')">Save</button>' +
+              '<button class="q-alt-cancel-btn" onclick="_qCancelAltEdit(' + qId + ')">Cancel</button>' +
+            '</div>' +
+          '</div>';
+        }
+
+        var pencilSvg = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+        var trashSvg  = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
+
         return '<div class="q-alt-item">' +
-          '<span class="q-alt-num">' + (num + 1) + '.</span>' +
-          '<span class="q-alt-text">' + safe + '</span>' +
-          '<button class="q-alt-remove" onclick="_qRemoveAlt(' + qId + ',' + i + ')" title="Remove">✕</button>' +
+          '<div class="q-alt-item-body">' +
+            '<div class="q-alt-item-row">' +
+              '<span class="q-alt-num">' + (num + 1) + '</span>' +
+              '<span class="q-alt-text">' + safe + '</span>' +
+            '</div>' +
+            (edits[i] !== undefined ? '<div class="q-alt-edited-badge">✓ edited</div>' : '') +
+          '</div>' +
+          '<div class="q-alt-icon-group">' +
+            '<button class="q-alt-icon-btn" onclick="_qEditAlt(' + qId + ',' + i + ')" title="Edit">' + pencilSvg + '</button>' +
+            '<button class="q-alt-icon-btn remove" onclick="_qRemoveAlt(' + qId + ',' + i + ')" title="Remove">' + trashSvg + '</button>' +
+          '</div>' +
         '</div>';
       }).join('');
 
@@ -5171,11 +5416,41 @@
         '<div class="q-alts-list">' + itemsHtml + '</div>';
     }
 
+    function _qEditAlt(qId, suggIdx) {
+      _qAltEditMode[qId] = suggIdx;
+      _qUpdateAltsPanel(qId);
+      // Focus the textarea after render
+      var ta = document.getElementById('qaltEdit-' + qId + '-' + suggIdx);
+      if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+    }
+
+    function _qSaveAltEdit(qId, suggIdx) {
+      var ta = document.getElementById('qaltEdit-' + qId + '-' + suggIdx);
+      var newText = ta ? ta.value.trim() : '';
+      if (!newText) { if (ta) ta.focus(); return; }
+      if (!_qSuggEdits[qId]) _qSuggEdits[qId] = {};
+      _qSuggEdits[qId][suggIdx] = newText;
+      _qAltEditMode[qId] = null;
+      _qUpdateAltsPanel(qId);
+      // Also update the text in the suggestions panel if visible
+      var citem = document.getElementById('qsugg-citem-' + qId + '-' + suggIdx);
+      if (citem) {
+        var span = citem.querySelector('.qsugg-ctext');
+        if (span) span.textContent = newText;
+      }
+    }
+
+    function _qCancelAltEdit(qId) {
+      _qAltEditMode[qId] = null;
+      _qUpdateAltsPanel(qId);
+    }
+
     function _qRemoveAlt(qId, suggIdx) {
       var checked = _qSuggChecked[qId];
       if (!checked) return;
       checked.delete(suggIdx);
-      // Uncheck in the suggestions panel
+      if (_qSuggEdits[qId]) delete _qSuggEdits[qId][suggIdx];
+      if (_qAltEditMode[qId] === suggIdx) _qAltEditMode[qId] = null;
       var item = document.getElementById('qsugg-citem-' + qId + '-' + suggIdx);
       if (item) item.classList.remove('checked');
       _qUpdateAltsPanel(qId);
@@ -5280,9 +5555,9 @@
     }
 
     function _updateQMixAvail() {
-      var counts = { mcq: 0, tf: 0, short: 0 };
+      var counts = { mcq: 0, tf: 0, ms: 0 };
       qCards.forEach(function(q) { if (q.type in counts) counts[q.type]++; });
-      var pairs = [['mcq','Mcq'],['tf','Tf'],['short','Short']];
+      var pairs = [['mcq','Mcq'],['tf','Tf'],['ms','Ms']];
       pairs.forEach(function(pair) {
         var t = pair[0], sfx = pair[1];
         var avEl = document.getElementById('qmixAvail' + sfx);
@@ -5307,10 +5582,11 @@
       const questionsPerAttempt1 = (!isNaN(qpa1Raw) && qpa1Raw > 0) ? qpa1Raw : null;
       const questionsPerAttempt2 = (!isNaN(qpa2Raw) && qpa2Raw > 0) ? qpa2Raw : null;
 
-      const mixMcq   = parseInt(document.getElementById('qmixMcq').value)   || 0;
-      const mixTf    = parseInt(document.getElementById('qmixTf').value)    || 0;
-      const mixShort = parseInt(document.getElementById('qmixShort').value) || 0;
-      const typeMix  = (mixMcq || mixTf || mixShort) ? { mcq: mixMcq, tf: mixTf, short: mixShort } : null;
+      const mixMcq = parseInt(document.getElementById('qmixMcq').value) || 0;
+      const mixTf  = parseInt(document.getElementById('qmixTf').value)  || 0;
+      const mixMs  = parseInt(document.getElementById('qmixMs').value)  || 0;
+      const typeMix = (mixMcq || mixTf || mixMs) ? { mcq: mixMcq, tf: mixTf, ms: mixMs } : null;
+      const certValidity = document.getElementById('qCertValidity').value || 'lifetime';
 
       if (!mod || !cls) { alert('Please select Module and Class.'); return; }
       if (!title)        { alert('Please enter a quiz title.'); return; }
@@ -5336,6 +5612,13 @@
           const r = document.querySelector(`input[name="tf-${q.id}"]:checked`);
           if (!r) { alert(`${num}: Please select True or False as the correct answer.`); return; }
           obj.correct = r.value;
+        } else if (q.type === 'ms') {
+          obj.options = [0,1,2,3].map(li => (document.getElementById(`qmsopt-${q.id}-${li}`)?.value || '').trim());
+          const emptyMsOpt = obj.options.findIndex(o => !o);
+          if (emptyMsOpt !== -1) { alert(`${num}: Please fill in all four answer options.`); return; }
+          const checked = [0,1,2,3].filter(li => document.querySelector(`input[name="ms-correct-${q.id}"][value="${li}"]`)?.checked);
+          if (checked.length < 1) { alert(`${num}: Please check at least one correct answer.`); return; }
+          obj.correct = checked;
         }
         questions.push(obj);
       }
@@ -5344,10 +5627,10 @@
 
       // Validate typeMix against actual question counts
       if (typeMix) {
-        const availCounts = { mcq: 0, tf: 0, short: 0 };
+        const availCounts = { mcq: 0, tf: 0, ms: 0 };
         questions.forEach(q => { if (q.type in availCounts) availCounts[q.type]++; });
-        const typeLabels = { mcq: 'Multiple Choice', tf: 'True/False', short: 'Short Answer' };
-        for (const t of ['mcq', 'tf', 'short']) {
+        const typeLabels = { mcq: 'Multiple Choice', tf: 'True/False', ms: 'Multiple Select' };
+        for (const t of ['mcq', 'tf', 'ms']) {
           if (typeMix[t] > availCounts[t]) {
             alert(`Question Mix: You requested ${typeMix[t]} ${typeLabels[t]} question(s), but only ${availCounts[t]} are available. Please adjust the mix or add more questions.`);
             return;
@@ -5359,9 +5642,12 @@
       const dateStr = d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
       if (editingQuizId !== null) {
         const idx = quizzes.findIndex(q => q.id === editingQuizId);
-        if (idx !== -1) quizzes[idx] = { ...quizzes[idx], title, module: mod, cls, passMark, questionsPerAttempt1, questionsPerAttempt2, typeMix, questions };
+        if (idx !== -1) {
+          const prevVersion = quizzes[idx].version || 1;
+          quizzes[idx] = { ...quizzes[idx], title, module: mod, cls, passMark, questionsPerAttempt1, questionsPerAttempt2, typeMix, questions, certValidity, version: prevVersion + 1, updatedAt: dateStr };
+        }
       } else {
-        quizzes.unshift({ id: Date.now(), title, module: mod, cls, passMark, questionsPerAttempt1, questionsPerAttempt2, typeMix, questions, created: dateStr });
+        quizzes.unshift({ id: Date.now(), title, module: mod, cls, passMark, questionsPerAttempt1, questionsPerAttempt2, typeMix, questions, certValidity, version: 1, created: dateStr });
       }
       _persistQuizzes();
       renderQuizList();
@@ -5470,7 +5756,7 @@
                         '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px">' +
                           '<div>' +
                             '<span class="q-expand-qnum">Q' + (qi+1) + '</span>' +
-                            '<span class="q-expand-type">' + (qu.type==='mcq'?'MCQ':qu.type==='tf'?'True/False':'Short Answer') + '</span>' +
+                            '<span class="q-expand-type">' + (qu.type==='mcq'?'MCQ':qu.type==='tf'?'True/False':'Multi-Select') + '</span>' +
                           '</div>' +
                           '<button class="qle-edit-btn" onclick="editQuizAtQuestion(' + q.id + ',' + qi + ')" title="Edit this question">Edit</button>' +
                         '</div>' +
@@ -5554,11 +5840,11 @@
       });
 
       // Type-mix selection: pick a fixed number from each question type pool
-      if (quiz.typeMix && (quiz.typeMix.mcq || quiz.typeMix.tf || quiz.typeMix.short)) {
-        var byType = { mcq: [], tf: [], short: [] };
+      if (quiz.typeMix && (quiz.typeMix.mcq || quiz.typeMix.tf || quiz.typeMix.ms)) {
+        var byType = { mcq: [], tf: [], ms: [] };
         quiz.questions.forEach(function(q, i) { if (q.type in byType) byType[q.type].push(i); });
         var selected = [];
-        ['mcq', 'tf', 'short'].forEach(function(t) {
+        ['mcq', 'tf', 'ms'].forEach(function(t) {
           var needed = quiz.typeMix[t] || 0;
           if (!needed) return;
           var pool = byType[t];
@@ -5731,11 +6017,11 @@
         ? '<span style="color:#F59E0B;font-weight:800"> · Supervised 3rd attempt</span>' : '';
 
       var typeMixNote = '';
-      if (quiz.typeMix && (quiz.typeMix.mcq || quiz.typeMix.tf || quiz.typeMix.short)) {
+      if (quiz.typeMix && (quiz.typeMix.mcq || quiz.typeMix.tf || quiz.typeMix.ms)) {
         var mixParts = [];
-        if (quiz.typeMix.mcq)   mixParts.push(quiz.typeMix.mcq   + ' MCQ');
-        if (quiz.typeMix.tf)    mixParts.push(quiz.typeMix.tf    + ' T/F');
-        if (quiz.typeMix.short) mixParts.push(quiz.typeMix.short + ' Short');
+        if (quiz.typeMix.mcq) mixParts.push(quiz.typeMix.mcq + ' MCQ');
+        if (quiz.typeMix.tf)  mixParts.push(quiz.typeMix.tf  + ' T/F');
+        if (quiz.typeMix.ms)  mixParts.push(quiz.typeMix.ms  + ' Multi-Select');
         typeMixNote = '&nbsp;·&nbsp;<span style="color:#5189F3;font-weight:700">' + mixParts.join(' · ') + '</span>';
       }
 
@@ -8218,10 +8504,32 @@
             '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
               '<span class="hub-quiz-passmark">Pass: ' + (quiz.passMark||70) + '%</span>' +
               '<span class="hub-quiz-meta">' + quizQStr + '</span>' +
+              '<span style="font-size:10px;font-weight:800;color:' + (_isStalePass ? '#D97706' : '#6B7280') + ';background:' + (_isStalePass ? '#FEF3C7' : '#F3F4F6') + ';border-radius:4px;padding:2px 7px">v' + _curVer + '</span>' +
             '</div>' +
           '</div>' +
           headerBtn +
         '</div>';
+
+        /* ── Quiz version / stale-pass detection ── */
+        var _curVer = quiz.version || 1;
+        var _passedVer = null;
+        if (_sqR.att1 && _sqR.att1.pass) _passedVer = _sqR.att1.quizVersion || 1;
+        else if (_sqR.att2 && _sqR.att2.pass) _passedVer = _sqR.att2.quizVersion || 1;
+        else if (_sqR.att3 && _sqR.att3.pass) _passedVer = _sqR.att3.quizVersion || 1;
+        var _isStalePass = _passedVer !== null && _passedVer < _curVer;
+
+        var _upgradePassedVer = _passedVer;
+
+        function _upgradeRequiredBanner() {
+          return '<div style="background:#FFF7ED;border:1.5px solid #FED7AA;border-radius:8px;padding:14px 16px;display:flex;align-items:flex-start;gap:12px;margin-top:2px">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="flex-shrink:0;margin-top:1px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+            '<div style="flex:1">' +
+              '<div style="font-size:13px;font-weight:800;color:#92400E;margin-bottom:3px">Quiz Updated — Upgrade Required</div>' +
+              '<div style="font-size:12px;color:#78350F;line-height:1.55">The quiz questions have been updated since you last passed (v' + _passedVer + ' → v' + _curVer + '). You need to retake the updated quiz to stay current on the platform.</div>' +
+            '</div>' +
+            '<button onclick="_upgradeQuiz(' + quiz.id + ',' + _upgradePassedVer + ')" style="flex-shrink:0;font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:800;padding:8px 14px;border-radius:6px;border:none;background:#F59E0B;color:#fff;cursor:pointer;white-space:nowrap">Upgrade Now</button>' +
+          '</div>';
+        }
 
         /* Video gate under the header when no attempt yet */
         var preQuizGate = (!hasAtt1 && !_vidGatePassed) ? _vidGateLock(1) : '';
@@ -8232,7 +8540,7 @@
           attHistory += _attRow(1, _sqR.att1, '');
 
           if (_sqR.att1.pass) {
-            attHistory += _buildHubNextClassBanner(mod, cls, classes, ci);
+            attHistory += _isStalePass ? _upgradeRequiredBanner() : _buildHubNextClassBanner(mod, cls, classes, ci);
 
           } else {
             /* ── Failed att1: att2 needs 2-day cooldown + video re-watch ── */
@@ -8240,14 +8548,14 @@
               attHistory += _attRow(2, _sqR.att2, '');
 
               if (_sqR.att2.pass) {
-                attHistory += _buildHubNextClassBanner(mod, cls, classes, ci);
+                attHistory += _isStalePass ? _upgradeRequiredBanner() : _buildHubNextClassBanner(mod, cls, classes, ci);
 
               } else {
                 /* ── Failed att2: att3 needs 1-week cooldown + video re-watch ── */
                 if (_hasAtt3) {
                   attHistory += _attRow(3, _sqR.att3, '');
                   if (_sqR.att3.pass) {
-                    attHistory += _buildHubNextClassBanner(mod, cls, classes, ci);
+                    attHistory += _isStalePass ? _upgradeRequiredBanner() : _buildHubNextClassBanner(mod, cls, classes, ci);
                   } else {
                     attHistory +=
                       '<div class="hub-att3-banner" style="background:#FEF2F2;border-color:#FECACA">' +
@@ -8338,7 +8646,8 @@
           }
         }
 
-        quizHtml = infoRow + preQuizGate + (attHistory ? '<div class="hub-att-history">' + attHistory + '</div>' : '');
+        var certCard = _buildCertStatusCard(quiz, _sqR);
+        quizHtml = infoRow + preQuizGate + (attHistory ? '<div class="hub-att-history">' + attHistory + '</div>' : '') + certCard;
       }
 
       /* Certification (last class of module) */
@@ -8504,123 +8813,225 @@
       }, 60);
     }
 
-    function _getQuickGuides() {
-      try { return JSON.parse(localStorage.getItem('seatrace_quick_guides') || '{}'); }
+    /* ══════════════════════════════════════
+       QUICK GUIDES — DEMO UPLOADS
+    ══════════════════════════════════════ */
+
+    var QG_FORMS = [
+      'Beheading', 'Grading', 'Peeling & Cutting', 'Soaking',
+      'Nobashi', 'IQF', 'Cold Store – Inward', 'Cold Store – Outward',
+      'Weighing & Packing', 'Organoleptic', 'Parameter Master'
+    ];
+    var QG_LANGS = [
+      { code: 'en', label: 'English', flag: '🇬🇧' },
+      { code: 'hi', label: 'Hindi',   flag: '🇮🇳' },
+      { code: 'te', label: 'Telugu',  flag: '🇮🇳' },
+      { code: 'ta', label: 'Tamil',   flag: '🇮🇳' },
+      { code: 'kn', label: 'Kannada', flag: '🇮🇳' },
+    ];
+    var _qgSelectedForm = null;
+    var _qgSelectedLang = 'en';
+    var _qgUploadType   = null;
+
+    function _qgGetData() {
+      try { return JSON.parse(localStorage.getItem('seatrace_qg_demos') || '{}'); }
       catch(e) { return {}; }
     }
-    function _saveQuickGuides(data) {
-      localStorage.setItem('seatrace_quick_guides', JSON.stringify(data));
+    function _qgSaveData(d) { localStorage.setItem('seatrace_qg_demos', JSON.stringify(d)); }
+
+    function qgInit() {
+      _qgSelectedForm = null;
+      document.getElementById('qgNoFormSelected').style.display = '';
+      document.getElementById('qgFormEditor').style.display = 'none';
+      qgRenderFormList();
     }
 
-    function addGuideField(name, hint) {
-      var c = document.getElementById('qgFieldsContainer');
-      var e = document.getElementById('qgFieldsEmpty');
-      if (e) e.style.display = 'none';
-      var row = document.createElement('div');
-      row.style.cssText = 'display:flex;gap:6px;align-items:center';
-      var inp = 'height:36px;border:1px solid #DFE2E6;border-radius:2px;padding:0 10px;font-size:12px;font-family:\'Nunito\',sans-serif;color:#111;outline:none;background:#fff;transition:border-color 0.15s;box-sizing:border-box';
-      row.innerHTML =
-        '<input value="' + (name||'').replace(/"/g,'&quot;') + '" placeholder="Field name" ' +
-          'style="' + inp + ';width:130px;flex-shrink:0;font-weight:700" ' +
-          'onfocus="this.style.borderColor=\'#5189F3\'" onblur="this.style.borderColor=\'#DFE2E6\'">' +
-        '<input value="' + (hint||'').replace(/"/g,'&quot;') + '" placeholder="What to enter / tip for employee" ' +
-          'style="' + inp + ';flex:1" ' +
-          'onfocus="this.style.borderColor=\'#5189F3\'" onblur="this.style.borderColor=\'#DFE2E6\'">' +
-        '<button onclick="var p=this.parentNode;p.parentNode.removeChild(p);_qgCheckEmpty()" ' +
-          'class="action-btn" title="Remove" style="color:#EF4444;background:#FEE2E2;width:28px;height:28px;font-size:16px;border-radius:2px">&times;</button>';
-      c.appendChild(row);
+    function qgSwitchView(v) {
+      document.getElementById('qgTabAdmin').classList.toggle('active', v === 'admin');
+      document.getElementById('qgTabUser').classList.toggle('active', v === 'user');
+      document.getElementById('qgAdminView').style.display = v === 'admin' ? '' : 'none';
+      document.getElementById('qgUserView').style.display  = v === 'user'  ? '' : 'none';
+      if (v === 'user') qgRenderUserView();
     }
 
-    function _qgCheckEmpty() {
-      var c = document.getElementById('qgFieldsContainer');
-      var e = document.getElementById('qgFieldsEmpty');
-      if (e) e.style.display = c.children.length === 0 ? '' : 'none';
+    function qgRenderFormList() {
+      var data = _qgGetData();
+      var list = document.getElementById('qgFormList');
+      list.innerHTML = QG_FORMS.map(function(f) {
+        var d = data[f] || {};
+        var isActive = f === _qgSelectedForm;
+        var chips = '';
+        if (d.video && d.video.length)         chips += '<span style="font-size:9px;font-weight:800;background:#EEF3FF;color:#5189F3;padding:1px 5px;border-radius:2px">VID</span> ';
+        if (d.voiceover && d.voiceover.length) chips += '<span style="font-size:9px;font-weight:800;background:#F0FDF4;color:#16a34a;padding:1px 5px;border-radius:2px">VO</span> ';
+        if (d.document && d.document.length)   chips += '<span style="font-size:9px;font-weight:800;background:#FFF7ED;color:#ea580c;padding:1px 5px;border-radius:2px">DOC</span>';
+        return '<button onclick="qgSelectForm(\'' + f.replace(/'/g, "\\'") + '\')" style="' +
+          'display:block;width:100%;text-align:left;padding:10px 14px;border:none;border-left:3px solid ' +
+          (isActive ? '#5189F3' : 'transparent') + ';background:' + (isActive ? '#EEF3FF' : 'none') + ';' +
+          'cursor:pointer;font-family:\'Nunito\',sans-serif;transition:background 0.1s">' +
+          '<div style="font-size:13px;font-weight:' + (isActive ? '800' : '600') + ';color:' + (isActive ? '#5189F3' : '#333') + '">' + f + '</div>' +
+          (chips ? '<div style="margin-top:4px;display:flex;gap:3px;flex-wrap:wrap">' + chips + '</div>' : '') +
+        '</button>';
+      }).join('');
     }
 
-    function loadGuideForEdit() {
-      var mod = document.getElementById('qgModuleSelect').value;
-      if (!mod) return;
-      var guide = (_getQuickGuides()[mod]) || { intro:'', fields:[] };
-      document.getElementById('qgIntroText').value = guide.intro || '';
-      var c = document.getElementById('qgFieldsContainer');
-      c.innerHTML = '';
-      _qgCheckEmpty();
-      (guide.fields || []).forEach(function(f) { addGuideField(f.name, f.hint); });
+    function qgSelectForm(name) {
+      _qgSelectedForm = name;
+      qgRenderFormList();
+      document.getElementById('qgNoFormSelected').style.display = 'none';
+      document.getElementById('qgFormEditor').style.display = '';
+      document.getElementById('qgEditorTitle').textContent = name;
+      qgRenderAssets();
     }
 
-    function saveQuickGuide() {
-      var mod = document.getElementById('qgModuleSelect').value;
-      if (!mod) { alert('Please select a module first.'); return; }
-      var intro = document.getElementById('qgIntroText').value.trim();
-      var rows = document.getElementById('qgFieldsContainer').children;
-      var fields = [];
-      for (var i = 0; i < rows.length; i++) {
-        var inputs = rows[i].querySelectorAll('input');
-        var name = (inputs[0] ? inputs[0].value : '').trim();
-        var hint = (inputs[1] ? inputs[1].value : '').trim();
-        if (name) fields.push({ name:name, hint:hint });
-      }
-      var guides = _getQuickGuides();
-      guides[mod] = { intro:intro, fields:fields };
-      _saveQuickGuides(guides);
-      renderQuickGuidesList();
-      /* reset form to blank state */
-      document.getElementById('qgModuleSelect').value = '';
-      document.getElementById('qgIntroText').value = '';
-      document.getElementById('qgFieldsContainer').innerHTML = '';
-      _qgCheckEmpty();
-      /* show brief success feedback */
-      var btn = document.querySelector('#section-quickguides .btn-primary');
-      if (btn) {
-        var origHtml = btn.innerHTML;
-        btn.innerHTML = '&#10003; Saved';
-        btn.style.background = '#16a34a';
-        setTimeout(function() { btn.innerHTML = origHtml; btn.style.background = ''; }, 1800);
-      }
-    }
-
-    function renderQuickGuidesList() {
-      var list = document.getElementById('qgSavedList');
-      if (!list) return;
-      var guides = _getQuickGuides();
-      var keys = Object.keys(guides).filter(function(k) {
-        var g = guides[k];
-        return g && (g.intro || (g.fields && g.fields.length));
+    function qgRenderAssets() {
+      if (!_qgSelectedForm) return;
+      var data = _qgGetData();
+      var d = data[_qgSelectedForm] || {};
+      ['video', 'voiceover', 'document'].forEach(function(type) {
+        var key = type.charAt(0).toUpperCase() + type.slice(1);
+        var container = document.getElementById('qg' + key + 'Items');
+        var items = d[type] || [];
+        if (!items.length) {
+          container.innerHTML = '<div style="text-align:center;padding:18px 8px;color:#ccc;font-size:11px;font-weight:600">No ' + type + 's added yet</div>';
+          return;
+        }
+        container.innerHTML = items.map(function(item, i) {
+          var langObj = QG_LANGS.find(function(l) { return l.code === item.lang; }) || { flag: '🌐', label: item.lang };
+          return '<div style="display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:4px;border:1px solid #F0F0F0;margin-bottom:5px;background:#FAFBFF">' +
+            '<span style="font-size:13px;flex-shrink:0">' + langObj.flag + '</span>' +
+            '<div style="flex:1;min-width:0">' +
+              '<div style="font-size:12px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + item.title + '</div>' +
+              '<div style="font-size:10px;color:#aaa;font-weight:600">' + langObj.label + (item.duration ? ' · ' + item.duration : '') + '</div>' +
+            '</div>' +
+            '<button onclick="qgDeleteAsset(\'' + type + '\',' + i + ')" style="width:22px;height:22px;border:none;background:#FEE2E2;color:#EF4444;border-radius:3px;cursor:pointer;font-size:14px;font-weight:700;line-height:1;flex-shrink:0">×</button>' +
+          '</div>';
+        }).join('');
       });
-      if (!keys.length) {
-        list.innerHTML = '<div style="padding:32px 20px;text-align:center;color:#aaa;font-size:13px">' +
-          'No guides saved yet.<br><span style="font-size:12px">Select a module on the left and save a guide.</span></div>';
+    }
+
+    function qgDeleteAsset(type, idx) {
+      if (!_qgSelectedForm) return;
+      var data = _qgGetData();
+      if (!data[_qgSelectedForm]) return;
+      (data[_qgSelectedForm][type] || []).splice(idx, 1);
+      _qgSaveData(data);
+      qgRenderAssets();
+      qgRenderFormList();
+    }
+
+    function qgOpenUploadModal(type) {
+      if (!_qgSelectedForm) return;
+      _qgUploadType = type;
+      var labels = { video: 'Video', voiceover: 'Voiceover', document: 'Document' };
+      document.getElementById('qgModalTitle').textContent = 'Add ' + labels[type] + ' — ' + _qgSelectedForm;
+      document.getElementById('qgModalDurationRow').style.display = (type === 'document') ? 'none' : '';
+      document.getElementById('qgModalLang').value = 'en';
+      document.getElementById('qgModalTitle2').value = '';
+      document.getElementById('qgModalFile').value = '';
+      document.getElementById('qgModalDuration').value = '';
+      document.getElementById('qgModalFileLabel').textContent = 'Click to choose file';
+      document.getElementById('qgUploadModal').style.display = 'flex';
+    }
+
+    function qgCloseModal() {
+      document.getElementById('qgUploadModal').style.display = 'none';
+    }
+
+    function qgSaveAsset() {
+      var lang     = document.getElementById('qgModalLang').value;
+      var title    = document.getElementById('qgModalTitle2').value.trim();
+      var fileLabel = document.getElementById('qgModalFileLabel').textContent;
+      var dur      = document.getElementById('qgModalDuration').value.trim();
+      if (!title) { alert('Please enter a title.'); return; }
+      var data = _qgGetData();
+      if (!data[_qgSelectedForm]) data[_qgSelectedForm] = {};
+      if (!data[_qgSelectedForm][_qgUploadType]) data[_qgSelectedForm][_qgUploadType] = [];
+      data[_qgSelectedForm][_qgUploadType].push({ lang: lang, title: title, file: fileLabel !== 'Click to choose file' ? fileLabel : title, duration: dur });
+      _qgSaveData(data);
+      qgCloseModal();
+      qgRenderAssets();
+      qgRenderFormList();
+    }
+
+    function qgRenderUserView() {
+      var data = _qgGetData();
+      var lang = _qgSelectedLang;
+
+      /* Language pills */
+      document.getElementById('qgLangPills').innerHTML = QG_LANGS.map(function(l) {
+        var active = l.code === lang;
+        return '<button onclick="qgSetLang(\'' + l.code + '\')" style="' +
+          'display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;' +
+          'border:1.5px solid ' + (active ? '#5189F3' : '#DFE2E6') + ';' +
+          'background:' + (active ? '#EEF3FF' : '#fff') + ';' +
+          'font-family:\'Nunito\',sans-serif;font-size:13px;font-weight:700;' +
+          'color:' + (active ? '#5189F3' : '#555') + ';cursor:pointer">' +
+          l.flag + ' ' + l.label + '</button>';
+      }).join('');
+
+      /* Form cards */
+      var formsWithData = QG_FORMS.filter(function(f) {
+        var d = data[f] || {};
+        return (d.video && d.video.length) || (d.voiceover && d.voiceover.length) || (d.document && d.document.length);
+      });
+      var cards = document.getElementById('qgUserCards');
+      var empty = document.getElementById('qgUserEmpty');
+      if (!formsWithData.length) {
+        cards.style.display = 'none'; empty.style.display = '';
         return;
       }
-      list.innerHTML = '<table style="width:100%;border-collapse:collapse">' +
-        '<thead><tr style="background:#F8FAFF">' +
-          '<th style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.06em;padding:10px 16px;text-align:left;border-bottom:1px solid #DFE2E6">Module</th>' +
-          '<th style="font-size:11px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.06em;padding:10px 16px;text-align:left;border-bottom:1px solid #DFE2E6">Contents</th>' +
-          '<th style="width:60px;border-bottom:1px solid #DFE2E6"></th>' +
-        '</tr></thead><tbody>' +
-        keys.map(function(k) {
-          var g = guides[k];
-          var fCount = g.fields ? g.fields.length : 0;
-          var parts = [];
-          if (g.intro) parts.push('Intro');
-          parts.push(fCount + ' field' + (fCount !== 1 ? 's' : ''));
-          return '<tr style="cursor:pointer;transition:background 0.1s" ' +
-            'onmouseover="this.style.background=\'#FAFBFF\'" onmouseout="this.style.background=\'\'" ' +
-            'onclick="qgEditGuide(\'' + k.replace(/'/g,"\\'") + '\')">' +
-            '<td style="padding:12px 16px;font-size:13px;font-weight:700;color:#111;border-bottom:1px solid #F5F5F5">' + k + '</td>' +
-            '<td style="padding:12px 16px;font-size:12px;color:#888;border-bottom:1px solid #F5F5F5">' + parts.join(' · ') + '</td>' +
-            '<td style="padding:12px 16px;border-bottom:1px solid #F5F5F5;text-align:center">' +
-              '<span style="font-size:11px;font-weight:700;color:#5189F3;background:#EEF3FF;padding:3px 9px;border-radius:2px;white-space:nowrap">Edit</span>' +
-            '</td>' +
-          '</tr>';
-        }).join('') +
-        '</tbody></table>';
+      cards.style.display = 'grid'; empty.style.display = 'none';
+      var langLabel = (QG_LANGS.find(function(l) { return l.code === lang; }) || { label: lang }).label;
+
+      cards.innerHTML = formsWithData.map(function(f) {
+        var d = data[f] || {};
+        var vid = (d.video || []).find(function(v) { return v.lang === lang; }) || (d.video || [])[0] || null;
+        var voc = (d.voiceover || []).find(function(v) { return v.lang === lang; }) || (d.voiceover || [])[0] || null;
+        var doc = (d.document || []).find(function(v) { return v.lang === lang; }) || (d.document || [])[0] || null;
+
+        function mediaRow(item, type) {
+          if (!item) return '';
+          var isLangMatch = item.lang === lang;
+          var langObj = QG_LANGS.find(function(l) { return l.code === item.lang; }) || { flag: '🌐', label: item.lang };
+          var colors = { video: { bg: '#EEF3FF', fg: '#5189F3', btnBg: '#EEF3FF' }, voiceover: { bg: '#F0FDF4', fg: '#16a34a', btnBg: '#F0FDF4' }, document: { bg: '#FFF7ED', fg: '#ea580c', btnBg: '#FFF7ED' } };
+          var c = colors[type];
+          var icons = {
+            video: '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>',
+            voiceover: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+            document: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'
+          };
+          var btnLabel = type === 'document' ? 'Open' : '▶ Play';
+          return '<div style="border:1px solid #E5E7EB;border-radius:6px;padding:9px 12px;display:flex;align-items:center;gap:9px">' +
+            '<div style="width:34px;height:34px;border-radius:4px;background:' + c.bg + ';display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="' + c.fg + '" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">' + icons[type] + '</svg>' +
+            '</div>' +
+            '<div style="flex:1;min-width:0">' +
+              '<div style="font-size:12px;font-weight:700;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + item.title + '</div>' +
+              '<div style="font-size:10px;color:#aaa;font-weight:600;margin-top:1px">' + (isLangMatch ? '' : langObj.flag + ' ') + langObj.label + (item.duration ? ' · ' + item.duration : '') + '</div>' +
+            '</div>' +
+            '<button style="padding:4px 10px;background:' + c.bg + ';color:' + c.fg + ';border:none;border-radius:4px;font-size:11px;font-weight:700;cursor:pointer;font-family:\'Nunito\',sans-serif;white-space:nowrap">' + btnLabel + '</button>' +
+          '</div>';
+        }
+
+        return '<div style="background:#fff;border:1px solid #DFE2E6;border-radius:8px;overflow:hidden">' +
+          '<div style="background:#F8FAFF;padding:12px 15px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;gap:9px">' +
+            '<div style="width:32px;height:32px;border-radius:5px;background:#EEF3FF;display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+              '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' +
+            '</div>' +
+            '<div style="font-size:13px;font-weight:800;color:#111">' + f + '</div>' +
+          '</div>' +
+          '<div style="padding:12px 14px;display:flex;flex-direction:column;gap:8px">' +
+            mediaRow(vid, 'video') +
+            mediaRow(voc, 'voiceover') +
+            mediaRow(doc, 'document') +
+          '</div>' +
+        '</div>';
+      }).join('');
     }
 
-    function qgEditGuide(mod) {
-      document.getElementById('qgModuleSelect').value = mod;
-      loadGuideForEdit();
-      document.getElementById('section-quickguides').scrollTop = 0;
+    function qgSetLang(lang) {
+      _qgSelectedLang = lang;
+      qgRenderUserView();
     }
 
     /* ═══════════════════════════════════════════════
@@ -8634,6 +9045,94 @@
     var _sqTimerInterval  = null;
     var _sqTimeLeft       = 3600;
     var _sqViewMode       = false;
+    var _sqIsRenewal      = false;
+
+    function _startCertRenewal(quizId) {
+      var quiz = quizzes.find(function(q) { return q.id === quizId; });
+      if (!quiz || !quiz.questions || quiz.questions.length === 0) { alert('Quiz not found.'); return; }
+      _closeHubQuizModal();
+      _sqQuiz       = quiz;
+      _sqIdx        = 0;
+      _sqAns        = {};
+      _sqAttempt    = 1;
+      _sqPassedAtt1 = false;
+      _sqIsRenewal  = true;
+      document.getElementById('sqOverlay').classList.add('open');
+      document.getElementById('sqCloseFootBtn').style.display = 'none';
+      _sqRender();
+      _sqStartTimer();
+    }
+
+    function _buildCertStatusCard(quiz, rData) {
+      if (!quiz || !rData.certIssuedAt) return '';
+      var validity = quiz.certValidity || 'lifetime';
+      var issuedAt = rData.certIssuedAt;
+      var fmtDate  = function(ts) { return new Date(ts).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }); };
+
+      if (validity === 'lifetime') {
+        return '<div class="cert-status-card cs-lifetime">' +
+          '<div class="cert-status-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>' +
+          '<div class="cert-status-body">' +
+            '<div class="cert-status-title">Certified — Lifetime</div>' +
+            '<div class="cert-status-sub">Issued ' + fmtDate(issuedAt) + ' · No renewal required</div>' +
+          '</div>' +
+        '</div>';
+      }
+
+      var msMap    = { '1y': 365, '3y': 1095, '6y': 2190 };
+      var days     = msMap[validity] || 365;
+      var expiresAt = issuedAt + days * 86400000;
+      var now      = Date.now();
+      var daysLeft = Math.floor((expiresAt - now) / 86400000);
+      var lblMap   = { '1y': '1 yr', '3y': '3 yr', '6y': '6 yr' };
+
+      var renewals = (rData.renewalHistory || []).filter(function(r){ return r.pass; });
+      var renewalNote = renewals.length > 0
+        ? ' · Renewed ' + renewals.length + 'x'
+        : '';
+
+      if (daysLeft > 90) {
+        return '<div class="cert-status-card cs-active">' +
+          '<div class="cert-status-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>' +
+          '<div class="cert-status-body">' +
+            '<div class="cert-status-title">Certified — Active <span style="font-size:10px;font-weight:700;background:#DCFCE7;color:#166534;border-radius:4px;padding:1px 7px;margin-left:4px">' + lblMap[validity] + '</span></div>' +
+            '<div class="cert-status-sub">Valid until ' + fmtDate(expiresAt) + ' · ' + daysLeft + ' days remaining' + renewalNote + '</div>' +
+          '</div>' +
+        '</div>';
+      }
+
+      if (daysLeft > 0) {
+        return '<div class="cert-status-card cs-expiring">' +
+          '<div class="cert-status-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>' +
+          '<div class="cert-status-body">' +
+            '<div class="cert-status-title">Certificate expiring in ' + daysLeft + ' day' + (daysLeft !== 1 ? 's' : '') + '</div>' +
+            '<div class="cert-status-sub">Expires ' + fmtDate(expiresAt) + ' · Issued ' + fmtDate(issuedAt) + renewalNote + '</div>' +
+          '</div>' +
+          '<button class="cert-renew-btn" onclick="_startCertRenewal(' + quiz.id + ')">Renew Now</button>' +
+        '</div>';
+      }
+
+      var daysAgo = Math.abs(daysLeft);
+      return '<div class="cert-status-card cs-expired">' +
+        '<div class="cert-status-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>' +
+        '<div class="cert-status-body">' +
+          '<div class="cert-status-title">Certificate expired ' + daysAgo + ' day' + (daysAgo !== 1 ? 's' : '') + ' ago</div>' +
+          '<div class="cert-status-sub">Expired ' + fmtDate(expiresAt) + ' · Retake to stay current on the platform' + renewalNote + '</div>' +
+        '</div>' +
+        '<button class="cert-renew-btn" onclick="_startCertRenewal(' + quiz.id + ')">Renew Now</button>' +
+      '</div>';
+    }
+
+    function _upgradeQuiz(qid, passedVer) {
+      var k = 'sq_results_' + qid;
+      var existing = {};
+      try { existing = JSON.parse(localStorage.getItem(k) || '{}'); } catch(e) {}
+      if (passedVer) localStorage.setItem(k + '_archived_v' + passedVer, JSON.stringify(existing));
+      localStorage.removeItem(k);
+      // Re-render hub for the quiz's module/class
+      var q = quizzes.find(function(x) { return x.id === qid; });
+      if (q) renderHub(q.module);
+    }
 
     function _startQuizTake(quizId) {
       var quiz = quizzes.find(function(q) { return q.id === quizId; });
@@ -8647,6 +9146,7 @@
       _sqAns        = {};
       _sqAttempt    = 1;
       _sqPassedAtt1 = false;
+      _sqIsRenewal  = false;
       document.getElementById('sqOverlay').classList.add('open');
       document.getElementById('sqCloseFootBtn').style.display = 'none';
       _sqRender();
@@ -8664,7 +9164,7 @@
       document.getElementById('sqFrac').textContent  = Object.keys(_sqAns).length + ' answered';
       document.getElementById('sqBar').style.width   = pct + '%';
 
-      var typeTag = q.type === 'tf' ? 'True / False' : q.type === 'short' ? 'Short Answer' : 'Multiple Choice';
+      var typeTag = q.type === 'tf' ? 'True / False' : q.type === 'ms' ? 'Multiple Select' : 'Multiple Choice';
       var displayText = (_sqAttempt >= 2 && q.alternatives && q.alternatives.length > 0) ? q.alternatives[0] : q.text;
       var html = '<div class="sq-q-type-tag">' + typeTag + '</div>' +
         '<div class="sq-q-text">' + _escHtml(displayText) + '</div>';
@@ -8689,18 +9189,19 @@
           '<div class="sq-tf-btn sq-tf-false' + falseS + '" onclick="_sqPickTF(' + _sqIdx + ',\'false\')">' +
             '<span class="sq-tf-icon">✗</span>False</div>' +
         '</div>';
-      } else if (q.type === 'short') {
-        var shortAns = (_sqAns[_sqIdx] !== undefined && _sqAns[_sqIdx] !== null) ? String(_sqAns[_sqIdx]) : '';
-        html += '<textarea id="sqShortAns" rows="4"' +
-          ' oninput="_sqPickShort(' + _sqIdx + ',this.value)"' +
-          ' placeholder="Type your answer here…"' +
-          ' style="width:100%;padding:14px 16px;border:2px solid #E5E7EB;border-radius:10px;' +
-          'font-family:\'Nunito\',sans-serif;font-size:14px;font-weight:500;color:#333;' +
-          'resize:vertical;min-height:120px;outline:none;box-sizing:border-box;' +
-          'transition:border-color .13s;line-height:1.6"' +
-          ' onfocus="this.style.borderColor=\'#5189F3\'" onblur="this.style.borderColor=\'#E5E7EB\'">' +
-          _escHtml(shortAns) + '</textarea>' +
-          '<div style="font-size:11px;color:#aaa;font-weight:600;margin-top:8px">Write your answer in full sentences. Full credit is given for any completed response.</div>';
+      } else if (q.type === 'ms' && q.options) {
+        var msAns = Array.isArray(_sqAns[_sqIdx]) ? _sqAns[_sqIdx] : [];
+        html += '<div style="font-size:11px;color:#5189F3;font-weight:700;margin-bottom:10px;background:#EEF3FF;padding:5px 10px;border-radius:4px;display:inline-block">Choose all that apply</div>';
+        html += '<div class="sq-options">';
+        ['A','B','C','D'].forEach(function(letter, i) {
+          if (q.options[i] === undefined) return;
+          var sel = msAns.indexOf(i) !== -1 ? ' selected' : '';
+          html += '<div class="sq-option' + sel + '" onclick="_sqPickMs(' + _sqIdx + ',' + i + ')">' +
+            '<span class="sq-opt-letter" style="border-radius:4px">' + letter + '</span>' +
+            '<span class="sq-opt-text">' + _escHtml(q.options[i]) + '</span>' +
+          '</div>';
+        });
+        html += '</div>';
       }
       document.getElementById('sqBody').innerHTML = html;
 
@@ -8713,6 +9214,13 @@
 
     function _sqPickMcq(qi, oi) { _sqAns[qi] = oi; _sqRender(); }
     function _sqPickTF(qi, val) { _sqAns[qi] = val; _sqRender(); }
+    function _sqPickMs(qi, oi) {
+      var cur = Array.isArray(_sqAns[qi]) ? _sqAns[qi].slice() : [];
+      var idx = cur.indexOf(oi);
+      if (idx === -1) cur.push(oi); else cur.splice(idx, 1);
+      _sqAns[qi] = cur;
+      _sqRender();
+    }
     function _sqPickShort(qi, val) { _sqAns[qi] = val; } // no re-render — preserves typing focus
 
     function _sqSaveShortIfActive() {
@@ -8730,8 +9238,8 @@
       var total = _sqQuiz.questions.length;
       var unanswered = [];
       _sqQuiz.questions.forEach(function(q, i) {
-        if (q.type === 'short') {
-          if (!_sqAns[i] || !String(_sqAns[i]).trim()) unanswered.push(i + 1);
+        if (q.type === 'ms') {
+          if (!Array.isArray(_sqAns[i]) || _sqAns[i].length === 0) unanswered.push(i + 1);
         } else {
           if (_sqAns[i] === undefined || _sqAns[i] === null) unanswered.push(i + 1);
         }
@@ -8743,9 +9251,10 @@
       var score = 0;
       _sqQuiz.questions.forEach(function(q, i) {
         var ans = _sqAns[i];
-        if (q.type === 'mcq'   && ans === q.correct)                    score++;
-        if (q.type === 'tf'    && String(ans) === String(q.correct))     score++;
-        if (q.type === 'short' && ans && String(ans).trim())             score++; // full credit for any written response
+        if (q.type === 'mcq' && ans === q.correct) score++;
+        if (q.type === 'tf'  && String(ans) === String(q.correct)) score++;
+        if (q.type === 'ms'  && Array.isArray(ans) && Array.isArray(q.correct) &&
+            ans.slice().sort().join(',') === q.correct.slice().sort().join(',')) score++;
       });
       var pct  = Math.round(score / total * 100);
       var pass = pct >= (_sqQuiz.passMark || 70);
@@ -8765,7 +9274,15 @@
           var _rKey  = 'sq_results_' + _sqQuiz.id;
           var _rData = JSON.parse(localStorage.getItem(_rKey) || '{}');
           var _rDate = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-          _rData['att' + att] = { score: score, total: total, pct: pct, pass: pass, date: _rDate, ts: new Date().getTime() };
+          var _nowTs = new Date().getTime();
+          if (_sqIsRenewal) {
+            _rData.renewalHistory = _rData.renewalHistory || [];
+            _rData.renewalHistory.push({ score: score, total: total, pct: pct, pass: pass, date: _rDate, ts: _nowTs, quizVersion: _sqQuiz.version || 1 });
+            if (pass) _rData.certIssuedAt = _nowTs;
+          } else {
+            _rData['att' + att] = { score: score, total: total, pct: pct, pass: pass, date: _rDate, ts: _nowTs, quizVersion: _sqQuiz.version || 1 };
+            if (pass && !_rData.certIssuedAt) _rData.certIssuedAt = _nowTs;
+          }
           localStorage.setItem(_rKey, JSON.stringify(_rData));
         } catch(e) {}
 
@@ -8789,7 +9306,9 @@
       // Status message
       var msg = '';
       if (pass) {
-        msg = 'Congratulations! You\'ve passed. You can now move to the next class.';
+        msg = _sqIsRenewal
+          ? 'Certificate renewed! Your certification is now current and valid for another ' + ({ '1y':'year', '3y':'3 years', '6y':'6 years', 'lifetime':'lifetime' }[_sqQuiz.certValidity || 'lifetime']) + '.'
+          : 'Congratulations! You\'ve passed. You can now move to the next class.';
       } else {
         if (att === 1) {
           msg = 'Re-watch the class video (90%+) and return after 2 days to unlock Attempt 2.';
@@ -8813,8 +9332,8 @@
               '<text x="50" y="59" text-anchor="middle" font-size="9" fill="#aaa" font-family="Nunito,sans-serif" font-weight="700">SCORE</text>' +
             '</svg>' +
           '</div>' +
-          '<div style="display:inline-block;background:' + (pass?'#F0FDF4':'#FEF2F2') + ';border-radius:999px;padding:3px 14px;font-size:10px;font-weight:800;color:' + color + ';letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase">Attempt ' + att + (att < 3 ? ' of 3' : ' — Supervised') + '</div>' +
-          '<div class="sq-result-verdict" style="color:' + color + '">' + (pass ? '🎉 PASSED' : 'FAILED') + '</div>' +
+          '<div style="display:inline-block;background:' + (pass?'#F0FDF4':'#FEF2F2') + ';border-radius:999px;padding:3px 14px;font-size:10px;font-weight:800;color:' + color + ';letter-spacing:.06em;margin-bottom:8px;text-transform:uppercase">' + (_sqIsRenewal ? 'Certificate Renewal' : 'Attempt ' + att + (att < 3 ? ' of 3' : ' — Supervised')) + '</div>' +
+          '<div class="sq-result-verdict" style="color:' + color + '">' + (pass ? (_sqIsRenewal ? '🏆 RENEWED' : '🎉 PASSED') : 'FAILED') + '</div>' +
           '<div class="sq-result-fraction">' + score + ' correct out of ' + total + ' questions</div>' +
           '<div class="sq-result-passmark">Pass mark: ' + pm + '%</div>' +
           '<div class="sq-result-msg ' + (pass ? 'pass' : (nextClassEligible ? 'pass' : 'fail')) + '">' + msg + '</div>' +
@@ -8999,13 +9518,16 @@
     }
 
     /* ── Timer ── */
+    var SQ_TIME_LIMIT = 600; /* 10 minutes */
+
     function _sqStartTimer() {
       _sqStopTimer();
-      _sqTimeLeft = 3600;
+      _sqTimeLeft = SQ_TIME_LIMIT;
       _sqUpdateTimer();
       _sqTimerInterval = setInterval(function() {
         _sqTimeLeft--;
         _sqUpdateTimer();
+        if (_sqTimeLeft === 60) _sqFlashWarning('1 minute remaining');
         if (_sqTimeLeft <= 0) { _sqStopTimer(); _sqAutoSubmit(); }
       }, 1000);
     }
@@ -9017,13 +9539,22 @@
     function _sqUpdateTimer() {
       var el = document.getElementById('sqTimer');
       if (!el) return;
-      var h = Math.floor(_sqTimeLeft / 3600);
-      var m = Math.floor((_sqTimeLeft % 3600) / 60);
+      var m = Math.floor(_sqTimeLeft / 60);
       var s = _sqTimeLeft % 60;
-      el.textContent = (h > 0 ? h + ':' : '') +
-        (h > 0 ? (m<10?'0':'')+m : m) + ':' + (s<10?'0':'')+s;
+      el.textContent = m + ':' + (s < 10 ? '0' : '') + s;
       el.className = 'sq-timer' +
-        (_sqTimeLeft <= 60 ? ' danger' : _sqTimeLeft <= 300 ? ' warn' : '');
+        (_sqTimeLeft <= 30 ? ' danger' : _sqTimeLeft <= 120 ? ' warn' : '');
+    }
+
+    function _sqFlashWarning(msg) {
+      var el = document.getElementById('sqBody');
+      if (!el) return;
+      var toast = document.createElement('div');
+      toast.style.cssText = 'position:absolute;top:14px;left:50%;transform:translateX(-50%);background:#FEF3C7;border:1.5px solid #FDE68A;border-radius:8px;padding:8px 18px;font-size:12px;font-weight:800;color:#92400E;white-space:nowrap;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.1)';
+      toast.textContent = '⏰ ' + msg;
+      el.parentNode.style.position = 'relative';
+      el.parentNode.appendChild(toast);
+      setTimeout(function() { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
     }
 
     function _sqAutoSubmit() {
@@ -9035,6 +9566,8 @@
         if (ans === undefined || ans === null) return;
         if (q.type === 'mcq' && ans === q.correct) score++;
         if (q.type === 'tf'  && String(ans) === String(q.correct)) score++;
+        if (q.type === 'ms'  && Array.isArray(ans) && Array.isArray(q.correct) &&
+            ans.slice().sort().join(',') === q.correct.slice().sort().join(',')) score++;
       });
       var pct  = Math.round(score / total * 100);
       var pass = pct >= (_sqQuiz.passMark || 70);
@@ -9097,7 +9630,7 @@
             <div class="sq-title" id="sqTitle"></div>
             <div class="sq-meta"  id="sqMeta"></div>
           </div>
-          <span class="sq-timer" id="sqTimer">01:00:00</span>
+          <span class="sq-timer" id="sqTimer">10:00</span>
         </div>
         <div class="sq-prog-row">
           <span class="sq-prog-label" id="sqProg">Question 1 of 5</span>
