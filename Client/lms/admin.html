@@ -13,7 +13,7 @@
     .navbar {
       display: flex; align-items: center; justify-content: space-between;
       padding: 0 24px; height: 52px; background: #fff;
-      border-bottom: 1px solid #DFE2E6; flex-shrink: 0; z-index: 100;
+      border-bottom: 1px solid #DFE2E6; flex-shrink: 0; z-index: 100; position: relative;
     }
     .brand { display: flex; align-items: center; gap: 10px; cursor: pointer; }
     .nav-right { display: flex; align-items: center; gap: 12px; }
@@ -1743,6 +1743,51 @@
     .hub-detail-nav { display:flex; align-items:center; justify-content:space-between; margin-top:28px; padding-top:18px; border-top:1px solid #F0F0F0; }
     .hub-detail-nav-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 16px; background:#fff; border:1.5px solid #DFE2E6; border-radius:6px; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; color:#555; cursor:pointer; transition:border-color .13s,color .13s; }
     .hub-detail-nav-btn:hover { border-color:#5189F3; color:#5189F3; }
+    /* ── Testing Tools Panel ── */
+    .dev-panel { margin-top:24px; border:1.5px dashed #FCD34D; border-radius:10px; background:#FFFBEB; overflow:hidden; }
+    .dev-panel-hdr { display:flex; align-items:center; gap:10px; padding:10px 16px; cursor:pointer; user-select:none; }
+    .dev-panel-hdr:hover { background:#FEF3C7; }
+    .dev-panel-title { font-size:12px; font-weight:800; color:#92400E; flex:1; }
+    .dev-panel-note { font-size:10px; font-weight:600; color:#B45309; background:#FEF3C7; border-radius:4px; padding:2px 8px; }
+    .dev-panel-body { padding:14px 16px 16px; border-top:1px dashed #FDE68A; display:flex; flex-direction:column; gap:14px; }
+    .dev-panel.collapsed .dev-panel-body { display:none; }
+    .dev-group-label { font-size:10px; font-weight:800; color:#B45309; text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    .dev-btn-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .dev-btn { font-family:'Nunito',sans-serif; font-size:11px; font-weight:700; padding:5px 12px; border-radius:6px; border:1.5px solid #FDE68A; background:#fff; color:#92400E; cursor:pointer; transition:background .12s; white-space:nowrap; }
+    .dev-btn:hover { background:#FEF3C7; }
+    .dev-btn.dev-pass { border-color:#86EFAC; color:#166534; }
+    .dev-btn.dev-pass:hover { background:#F0FDF4; }
+    .dev-btn.dev-fail { border-color:#FECACA; color:#991B1B; }
+    .dev-btn.dev-fail:hover { background:#FEF2F2; }
+    .dev-btn.dev-reset { border-color:#DDD6FE; color:#5B21B6; }
+    .dev-btn.dev-reset:hover { background:#F5F3FF; }
+    .dev-btn.dev-warp { border-color:#FCD34D; color:#92400E; background:#fff; }
+    .dev-btn.dev-warp:hover { background:#FFFBEB; }
+    .dev-btn.dev-warp-reset { border-color:#BAE6FD; color:#0369A1; }
+    .dev-btn.dev-warp-reset:hover { background:#F0F9FF; }
+    .dev-state-bar { font-size:11px; font-weight:700; color:#78350F; background:#FEF3C7; border-radius:6px; padding:7px 12px; line-height:1.5; }
+
+    /* ── Notifications ── */
+    .notif-item { display:flex; align-items:flex-start; gap:10px; padding:11px 16px; border-bottom:1px solid #F3F4F6; cursor:pointer; transition:background .12s; }
+    .notif-item:hover { background:#F9FAFB; }
+    .notif-item.unread { background:#F0F5FF; }
+    .notif-item.unread:hover { background:#E8EFFE; }
+    .notif-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+    .notif-dot.red { background:#DC2626; }
+    .notif-dot.amber { background:#F59E0B; }
+    .notif-dot.read { background:#D1D5DB; }
+    .notif-title { font-size:12px; font-weight:800; color:#111; margin-bottom:2px; }
+    .notif-sub { font-size:11px; color:#888; line-height:1.4; }
+    .notif-time { font-size:10px; color:#C0C0C0; margin-top:3px; }
+    .notif-empty { padding:24px 16px; text-align:center; font-size:12px; color:#ccc; }
+
+    /* ── Toast ── */
+    #toastStack { position:fixed; bottom:70px; right:20px; display:flex; flex-direction:column; gap:8px; z-index:9998; pointer-events:none; }
+    .toast { display:flex; align-items:flex-start; gap:10px; background:#1E293B; color:#F1F5F9; font-family:'Nunito',sans-serif; font-size:12px; font-weight:700; padding:12px 16px; border-radius:10px; box-shadow:0 4px 18px rgba(0,0,0,.28); min-width:240px; max-width:320px; pointer-events:all; animation:toastIn .22s ease; }
+    .toast.toast-red   { border-left:4px solid #DC2626; }
+    .toast.toast-amber { border-left:4px solid #F59E0B; }
+    .toast.toast-green { border-left:4px solid #22C55E; }
+    @keyframes toastIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
   </style>
 </head>
 <body>
@@ -1761,7 +1806,23 @@
             <circle cx="12" cy="7" r="4"/>
           </svg>
         </button>
-        <button class="icon-btn" title="Exit">
+        <!-- Notification Bell -->
+        <button class="icon-btn" id="notifBellBtn" title="Notifications" onclick="_toggleNotifPanel()" style="position:relative">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span id="notifBellBadge" style="display:none;position:absolute;top:4px;right:4px;width:8px;height:8px;background:#DC2626;border-radius:50%;border:1.5px solid #fff"></span>
+        </button>
+        <!-- Notification Panel -->
+        <div id="notifPanel" style="display:none;position:absolute;top:52px;right:16px;width:340px;background:#fff;border:1px solid #E5E7EB;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:9990;overflow:hidden;font-family:'Nunito',sans-serif">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid #F3F4F6">
+            <span style="font-size:14px;font-weight:800;color:#111">Notifications</span>
+            <button onclick="_markAllNotifsRead()" style="font-size:11px;font-weight:700;color:#5189F3;background:none;border:none;cursor:pointer;font-family:inherit">Mark all read</button>
+          </div>
+          <div id="notifList" style="max-height:340px;overflow-y:auto"></div>
+        </div>
+        <button class="icon-btn" title="Logout" onclick="_adminLogout()">
           <svg viewBox="0 0 18 18" fill="none">
             <path d="M7 3H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
             <path d="M12 6l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1841,39 +1902,40 @@
             <h1>Leaderboard</h1>
             <p>Rankings by completion and certifications across all employees.</p>
           </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;margin-left:auto">
-            <button class="vview-btn" id="lbDashBtn" onclick="_openLbDashboard()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-              Dashboard
-            </button>
-            <div style="width:1px;height:22px;background:#DFE2E6;margin:0 2px"></div>
-            <div style="position:relative">
-            <button class="lb-month-chip" id="lbMonthBtn" onclick="toggleMonthPicker()" style="cursor:pointer;border:none;background:#fff">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-              </svg>
-              <span id="lbCurrentMonth">June 2026</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;margin-left:2px">
-                <polyline points="6 9 12 15 18 9"/>
-              </svg>
-            </button>
-            <div id="lbMonthPicker" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:100;min-width:200px;overflow:hidden">
-              <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
-              <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
+          <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:auto">
+            <!-- View tabs -->
+            <div class="lb-view-tabs" id="lbViewTabs" style="margin:0">
+              <button class="lb-view-tab active" id="lbTabLeaderboard" onclick="_switchLbMain('leaderboard',this)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Leaderboard
+              </button>
+              <button class="lb-view-tab" id="lbTabDashboard" onclick="_switchLbMain('dashboard',this)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                User Journey
+              </button>
             </div>
-          </div>
+            <div style="width:1px;height:22px;background:#DFE2E6;flex-shrink:0"></div>
+            <!-- Month filter -->
+            <div style="position:relative">
+              <button class="lb-month-chip" id="lbMonthBtn" onclick="toggleMonthPicker()" style="cursor:pointer;border:none;background:#fff">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                <span id="lbCurrentMonth">June 2026</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;margin-left:2px">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div id="lbMonthPicker" style="display:none;position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid #DFE2E6;border-radius:4px;box-shadow:0 4px 16px rgba(0,0,0,0.1);z-index:100;min-width:200px;overflow:hidden">
+                <div style="padding:10px 14px 6px;font-size:10px;font-weight:800;color:#aaa;text-transform:uppercase;letter-spacing:0.07em">Select Month</div>
+                <div id="lbMonthList" style="max-height:260px;overflow-y:auto"></div>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- ══ Inline Platform Dashboard ══ -->
         <div id="lbDashPanel" style="display:none"></div>
-
-        <!-- View tabs -->
-        <div class="lb-view-tabs">
-          <button class="lb-view-tab active" onclick="switchLbView('overall',this)">Overall</button>
-          <button class="lb-view-tab" onclick="switchLbView('department',this)">Department</button>
-          <button class="lb-view-tab" onclick="switchLbView('team',this)">Team</button>
-        </div>
 
         <!-- Stats row -->
         <div class="lb-stats-grid" id="lbStatsGrid"></div>
@@ -1887,14 +1949,6 @@
               </svg>
               <input type="text" id="lbSearch" placeholder="Search users…" oninput="renderLbTable()" />
             </div>
-            <select class="lb-select" id="lbDeptFilter" onchange="renderLbTable()">
-              <option value="">All Departments</option>
-              <option>Processing</option>
-              <option>Quality Control</option>
-              <option>Cold Store</option>
-              <option>Dispatch</option>
-              <option>Management</option>
-            </select>
             <select class="lb-select" id="lbSortBy" onchange="renderLbTable()">
               <option value="completionPct">Sort: Completion %</option>
               <option value="certsEarned">Sort: Certifications</option>
@@ -1916,15 +1970,6 @@
           </div>
         </div>
 
-        <!-- Department view -->
-        <div id="lbDeptView" style="display:none">
-          <div class="lb-group-grid" id="lbDeptGrid"></div>
-        </div>
-
-        <!-- Team view -->
-        <div id="lbTeamView" style="display:none">
-          <div class="lb-group-grid" id="lbTeamGrid"></div>
-        </div>
 
       </div>
 
@@ -2044,10 +2089,8 @@
             <div class="qc-field" style="flex:0 0 148px">
               <label>Certificate Validity</label>
               <select id="qCertValidity" style="height:36px;padding:0 10px;border:1px solid #DFE2E6;border-radius:2px;font-family:'Nunito',sans-serif;font-size:13px;color:#111;outline:none;background:#fff;width:100%;box-sizing:border-box;cursor:pointer" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'">
-                <option value="lifetime">Lifetime</option>
-                <option value="1y">1 Year</option>
-                <option value="3y">3 Years</option>
-                <option value="6y">6 Years</option>
+                <option value="3m">3 Months</option>
+                <option value="6m">6 Months</option>
               </select>
             </div>
           </div>
@@ -2138,6 +2181,21 @@
           <div id="schedRequestsBody"></div>
         </div>
 
+        <!-- Reset Requests panel -->
+        <div class="table-card" id="resetRequestsCard" style="margin-top:20px">
+          <div class="table-toolbar" style="border-bottom:none">
+            <div style="display:flex;align-items:center;gap:10px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+              <span style="font-weight:800;font-size:14px;color:#111">Admin Requests</span>
+              <span id="resetPendingBadge" style="display:none;background:#DC2626;color:#fff;font-size:10px;font-weight:800;padding:1px 7px;border-radius:10px">0</span>
+            </div>
+            <span style="font-size:12px;color:#aaa">Employees who exhausted all 3 attempts and are requesting a reset</span>
+          </div>
+          <div id="resetRequestsBody"></div>
+        </div>
+
       </div>
 
       <!-- Certifications -->
@@ -2183,7 +2241,7 @@
           </div>
           <button class="cp-add-btn" onclick="openIssueCertModal()" style="flex-shrink:0">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            New Certification
+            Create Certificate
           </button>
         </div>
         <div class="clscert-stat-strip" id="clscertStatStrip"></div>
@@ -2204,7 +2262,7 @@
         <div class="issue-cert-modal">
           <div class="issue-cert-hdr">
             <div>
-              <div class="issue-cert-title">Create Certification</div>
+              <div class="issue-cert-title">Create Certificate</div>
               <div class="issue-cert-sub">Define a new class-level certification type</div>
             </div>
             <button class="issue-cert-close" onclick="closeIssueCertModal()">&#x2715;</button>
@@ -2212,7 +2270,7 @@
           <div class="issue-cert-body">
             <div class="qc-field">
               <label>Certification Title</label>
-              <input type="text" id="icCertTitle" placeholder="e.g. SeatTrace Certified Beheading Specialist"
+              <input type="text" id="icCertTitle" placeholder="e.g. SeaTrace Certified Beheading Specialist"
                 style="height:36px;padding:0 12px;border:1.5px solid #DFE2E6;border-radius:6px;font-size:13px;width:100%;box-sizing:border-box;font-family:'Nunito',sans-serif;outline:none;transition:border-color .13s"
                 onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#DFE2E6'" />
             </div>
@@ -2248,7 +2306,7 @@
             <div id="icSuccess" style="display:none;color:#16a34a;font-size:12px;font-weight:600;margin-bottom:14px;padding:10px 12px;background:#F0FDF4;border-radius:6px;border:1px solid #BBF7D0"></div>
             <div style="display:flex;justify-content:flex-end;gap:10px">
               <button class="cert-auth-edit-btn" onclick="closeIssueCertModal()">Cancel</button>
-              <button class="cp-add-btn" onclick="submitIssueCert()">Create Certification</button>
+              <button class="cp-add-btn" onclick="submitIssueCert()">Create Certificate</button>
             </div>
           </div>
         </div>
@@ -2265,8 +2323,13 @@
             <h1 style="font-size:20px;font-weight:800;color:#111;margin-bottom:4px">Knowledge Hub</h1>
             <p style="font-size:13px;color:#888;margin:0" id="hubSubtitle">Manage modules, classes, content and quizzes</p>
           </div>
+          <!-- Search — shown only in User Preview tab -->
+          <div id="hubSearchWrap" style="display:none;position:relative;width:220px;flex-shrink:0">
+            <svg style="position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="hubSearch" type="text" placeholder="Search classes…" oninput="filterHub(this.value)" style="height:36px;width:100%;box-sizing:border-box;padding:0 14px 0 34px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111;background:#fff;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E4E7EC'">
+          </div>
           <!-- Admin / User tab toggle -->
-          <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0;margin-left:auto">
+          <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0">
             <button id="hubTabAdmin" onclick="_switchHubTab('admin')" class="hub-tab-btn hub-tab-active">
               Admin View
             </button>
@@ -2292,13 +2355,6 @@
 
         <!-- ══ USER VIEW ══ -->
         <div id="hubUserView" style="display:none">
-          <!-- Search bar -->
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
-            <div style="position:relative;flex:1;max-width:300px">
-              <svg style="position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input id="hubSearch" type="text" placeholder="Search classes…" oninput="filterHub(this.value)" style="height:38px;width:100%;padding:0 14px 0 34px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111;background:#fff;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E4E7EC'">
-            </div>
-          </div>
           <!-- Stats bar -->
           <div class="hub-stats" id="hubStats"></div>
           <!-- Module accordion -->
@@ -2471,6 +2527,19 @@
   </div>
 
   <script>
+    /* ── Auth guard: redirect to login if not authenticated as admin ── */
+    (function() {
+      if (sessionStorage.getItem('seatrace_role') !== 'admin') {
+        window.location.replace('index.html');
+      }
+    })();
+
+    function _adminLogout() {
+      sessionStorage.removeItem('seatrace_role');
+      window.location.href = 'index.html';
+    }
+  </script>
+  <script>
     function switchTab(id, btn) {
       document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -2480,6 +2549,8 @@
       if (id === 'quiz') _populateQuizModuleDropdown();
       if (id === 'upload') _videoShowNativePanel();
       if (id === 'quickguides') qgInit();
+      var wb = document.getElementById('floatWarpBar');
+      if (wb) wb.style.display = (id === 'hub' && _hubCurrentTab === 'user') ? 'flex' : 'none';
     }
 
     /* ══════════════════════════════════════
@@ -2658,9 +2729,9 @@
               </div>
               <span style="flex-shrink:0;font-size:11px;font-weight:700;padding:3px 10px;border-radius:2px;background:${statusBg};color:${statusColor}">${statusLabel}</span>
               <div class="cp-item-actions">
-                <button class="cp-action-btn edit" onclick="openVideoEditor('${item.id}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  Edit
+                <button class="cp-action-btn edit" onclick="_viewUploadItem('video','${item.id}')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  View
                 </button>
                 <button class="cp-action-btn del" onclick="_deleteVideo('${item.id}')">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
@@ -2683,7 +2754,7 @@
           ondrop="event.preventDefault();this.style.borderColor='#CBD5E1';this.style.background='#fff';_videoDropUpload(event)">
           <span style="color:#5189F3"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></span>
           <div style="font-weight:700;font-size:15px">Upload a Video</div>
-          <div style="font-size:13px;color:#9CA3AF">MP4, MOV, AVI · up to 500 MB · opens for transcript editing right after upload</div>
+          <div style="font-size:13px;color:#9CA3AF">MP4, MOV, AVI · up to 500 MB</div>
           <input type="file" accept="video/*" style="display:none" onchange="_videoUploadFile(event)">
         </label>
         <div class="cp-list">${listHtml}</div>`;
@@ -3115,7 +3186,6 @@
       const newItem = { id: 'vu' + Date.now(), title: file.name.replace(/\.[^.]+$/, ''), module: _moduleList()[0] || '', cls: '', duration: '', status: 'draft', blobUrl: URL.createObjectURL(file) };
       _videoLibrary.unshift(newItem);
       renderVideoPanel();
-      openVideoEditor(newItem.id);
     }
 
     function _videoDropUpload(ev) {
@@ -3127,6 +3197,262 @@
       if (!confirm('Delete this video?')) return;
       _videoLibrary = _videoLibrary.filter(v => v.id !== id);
       renderVideoPanel();
+    }
+
+    function _closeUVM() {
+      var m = document.getElementById('_uploadViewModal');
+      if (!m) return;
+      var v = m.querySelector('video,audio'); if (v) v.pause();
+      m.remove();
+    }
+
+    function _uvToggleFS() {
+      var wrap    = document.getElementById('_uvMediaWrap');
+      var details = document.getElementById('_uvDetails');
+      var topBar  = document.getElementById('_uvTopBar');
+      var btnIcon = document.getElementById('_uvFSIcon');
+      if (!wrap) return;
+      var isFS = wrap.getAttribute('data-fs') === '1';
+      if (isFS) {
+        wrap.setAttribute('data-fs', '0');
+        wrap.style.position = '';
+        wrap.style.inset = '';
+        wrap.style.zIndex = '';
+        wrap.style.height = '55vh';
+        wrap.style.borderRadius = '';
+        if (details) details.style.display = '';
+        if (topBar)  topBar.style.display  = '';
+        if (btnIcon) btnIcon.innerHTML = '<path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>';
+      } else {
+        wrap.setAttribute('data-fs', '1');
+        wrap.style.position = 'fixed';
+        wrap.style.inset = '0';
+        wrap.style.zIndex = '10001';
+        wrap.style.height = '100vh';
+        wrap.style.borderRadius = '0';
+        if (details) details.style.display = 'none';
+        if (topBar)  topBar.style.display  = 'none';
+        if (btnIcon) btnIcon.innerHTML = '<path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>';
+      }
+    }
+
+    function _viewUploadItem(type, id) {
+      var item;
+      if (type === 'video') item = _videoLibrary.find(function(v) { return v.id === id; });
+      else item = (CONTENT_LIBRARY[type] || []).find(function(x) { return x.id === id; });
+      if (!item) return;
+      var prev = document.getElementById('_uploadViewModal');
+      if (prev) { var _pm = prev.querySelector('video,audio'); if (_pm) _pm.pause(); prev.remove(); }
+
+      var LABELS = { video: 'Video', voiceover: 'Voice Over', document: 'Document' };
+      var typeLabel = LABELS[type] || type;
+
+      var statusColor = (item.status === 'live'  || item.status === 'Live')  ? '#059669' : (item.status === 'draft' || item.status === 'Draft') ? '#D97706' : '#6B7280';
+      var statusBg    = (item.status === 'live'  || item.status === 'Live')  ? '#ECFDF5' : (item.status === 'draft' || item.status === 'Draft') ? '#FFFBEB' : '#F3F4F6';
+      var statusBadge = item.status
+        ? '<span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:' + statusBg + ';color:' + statusColor + '">' + item.status + '</span>'
+        : '';
+
+      var modal = document.createElement('div');
+      modal.id = '_uploadViewModal';
+
+      /* ── VIDEO ── */
+      if (type === 'video') {
+        modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;overflow:hidden';
+
+        var topBar =
+          '<div id="_uvTopBar" style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:13px 20px;background:#fff;border-bottom:1px solid #F0F2F5">'
+            + '<button onclick="_closeUVM()" style="width:32px;height:32px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;flex-shrink:0" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'#fff\'">'
+              + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+            + '</button>'
+            + '<div style="min-width:0;flex:1">'
+              + '<div style="font-size:14px;font-weight:800;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
+              + '<div style="font-size:11px;color:#9CA3AF;margin-top:1px;font-weight:500">' + (item.module || '') + (item.cls ? ' › ' + item.cls : '') + '</div>'
+            + '</div>'
+            + statusBadge
+          + '</div>';
+
+        /* expand / collapse icon — expand arrows by default */
+        var fsBtn =
+          '<button onclick="_uvToggleFS()" title="Toggle fullscreen" style="position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border:none;background:rgba(0,0,0,.45);border-radius:8px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center" onmouseover="this.style.background=\'rgba(0,0,0,.65)\'" onmouseout="this.style.background=\'rgba(0,0,0,.45)\'">'
+            + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+              + '<path id="_uvFSIcon" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>'
+            + '</svg>'
+          + '</button>';
+
+        var mediaInner = item.blobUrl
+          ? '<video src="' + item.blobUrl + '" controls style="width:100%;height:100%;object-fit:contain;display:block;background:#000"></video>'
+          : '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#F8F9FA">'
+              + '<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>'
+              + '<span style="font-size:12px;font-weight:600;color:#9CA3AF">No file uploaded — preview unavailable</span>'
+            + '</div>';
+
+        var mediaWrap =
+          '<div id="_uvMediaWrap" data-fs="0" style="flex-shrink:0;height:55vh;position:relative;background:#F0F2F5">'
+            + mediaInner
+            + fsBtn
+          + '</div>';
+
+        var detailRows = [
+          ['Module',   item.module   || '—'],
+          ['Class',    item.cls      || '—'],
+          ['Duration', item.duration || '—'],
+          ['Status',   item.status   || '—'],
+        ];
+        var detailCards = detailRows.map(function(r) {
+          return '<div style="background:#fff;border:1px solid #F0F2F5;border-radius:10px;padding:14px 16px">'
+            + '<div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">' + r[0] + '</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#1E2532;word-break:break-word">' + r[1] + '</div>'
+          + '</div>';
+        }).join('');
+
+        var detailSection =
+          '<div id="_uvDetails" style="flex:1;overflow-y:auto;padding:20px 24px 32px;background:#F8F9FA">'
+            + '<div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px">Details</div>'
+            + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' + detailCards + '</div>'
+          + '</div>';
+
+        modal.innerHTML = topBar + mediaWrap + detailSection;
+
+      /* ── VOICEOVER ── */
+      } else if (type === 'voiceover') {
+        modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;overflow:hidden';
+
+        var topBar =
+          '<div id="_uvTopBar" style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:13px 20px;background:#fff;border-bottom:1px solid #F0F2F5">'
+            + '<button onclick="_closeUVM()" style="width:32px;height:32px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;flex-shrink:0" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'#fff\'">'
+              + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+            + '</button>'
+            + '<div style="min-width:0;flex:1">'
+              + '<div style="font-size:14px;font-weight:800;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
+              + '<div style="font-size:11px;color:#9CA3AF;margin-top:1px;font-weight:500">' + typeLabel + '</div>'
+            + '</div>'
+            + statusBadge
+          + '</div>';
+
+        /* waveform-style audio player area */
+        var expandBtn =
+          '<button onclick="_uvToggleFS()" title="Toggle fullscreen" style="position:absolute;top:10px;right:10px;z-index:2;width:34px;height:34px;border:none;background:rgba(59,130,246,.15);border-radius:8px;cursor:pointer;color:#3B82F6;display:flex;align-items:center;justify-content:center" onmouseover="this.style.background=\'rgba(59,130,246,.25)\'" onmouseout="this.style.background=\'rgba(59,130,246,.15)\'">'
+            + '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'
+              + '<path id="_uvFSIcon" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>'
+            + '</svg>'
+          + '</button>';
+
+        var audioInner = item.blobUrl
+          ? '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;width:100%;height:100%;padding:0 40px;box-sizing:border-box">'
+              + '<div style="width:72px;height:72px;border-radius:50%;background:#EFF6FF;display:flex;align-items:center;justify-content:center">'
+                + '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>'
+              + '</div>'
+              + '<audio src="' + item.blobUrl + '" controls style="width:100%;max-width:480px"></audio>'
+            + '</div>'
+          : '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;width:100%;height:100%">'
+              + '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>'
+              + '<span style="font-size:12px;font-weight:600;color:#9CA3AF">No audio file uploaded</span>'
+            + '</div>';
+
+        var mediaWrap =
+          '<div id="_uvMediaWrap" data-fs="0" style="flex-shrink:0;height:55vh;position:relative;background:#F8FAFF;border-bottom:1px solid #E9EEF6">'
+            + audioInner
+            + expandBtn
+          + '</div>';
+
+        var detailRows = [['Module', item.module || '—'], ['Class', item.cls || '—'], ['Duration', item.duration || '—'], ['Date', item.date || '—']];
+        var detailCards = detailRows.map(function(r) {
+          return '<div style="background:#fff;border:1px solid #F0F2F5;border-radius:10px;padding:14px 16px">'
+            + '<div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">' + r[0] + '</div>'
+            + '<div style="font-size:14px;font-weight:700;color:#1E2532;word-break:break-word">' + r[1] + '</div>'
+          + '</div>';
+        }).join('');
+
+        var detailSection =
+          '<div id="_uvDetails" style="flex:1;overflow-y:auto;padding:20px 24px 32px;background:#F8F9FA">'
+            + '<div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px">Details</div>'
+            + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' + detailCards + '</div>'
+          + '</div>';
+
+        modal.innerHTML = topBar + mediaWrap + detailSection;
+
+      /* ── DOCUMENT — full-page reader ── */
+      } else {
+        modal.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#fff;display:flex;flex-direction:column;overflow:hidden';
+
+        var topBar =
+          '<div style="flex-shrink:0;display:flex;align-items:center;gap:12px;padding:13px 20px;background:#fff;border-bottom:1px solid #F0F2F5">'
+            + '<button onclick="_closeUVM()" style="width:32px;height:32px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;cursor:pointer;color:#555;display:flex;align-items:center;justify-content:center;flex-shrink:0" onmouseover="this.style.background=\'#F9FAFB\'" onmouseout="this.style.background=\'#fff\'">'
+              + '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+            + '</button>'
+            + '<div style="min-width:0;flex:1">'
+              + '<div style="font-size:14px;font-weight:800;color:#1E2532;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + (item.title || '—') + '</div>'
+              + '<div style="font-size:11px;color:#9CA3AF;margin-top:1px;font-weight:500">' + (item.module || '') + (item.cls ? ' › ' + item.cls : '') + '</div>'
+            + '</div>'
+            + statusBadge
+            + (item.version ? '<span style="font-size:11px;font-weight:600;color:#6B7280;background:#F3F4F6;padding:3px 10px;border-radius:20px">' + item.version + '</span>' : '')
+          + '</div>';
+
+        /* ── content area: left=preview, right=details ── */
+        var isPDF = item.blobUrl && item.file && /\.pdf$/i.test(item.file);
+        var isTXT = item.blobUrl && item.file && /\.txt$/i.test(item.file);
+
+        var previewHtml;
+        if (isPDF) {
+          previewHtml = '<embed src="' + item.blobUrl + '" type="application/pdf" style="width:100%;height:100%;border:none;display:block">';
+        } else if (item.sections && item.sections.length) {
+          /* render sections as a styled document reader */
+          var secHtml = item.sections.map(function(s) {
+            return '<div style="margin-bottom:24px">'
+              + (s.heading ? '<h3 style="font-size:14px;font-weight:800;color:#1E2532;margin:0 0 8px;padding-bottom:6px;border-bottom:2px solid #F0F2F5">' + s.heading + '</h3>' : '')
+              + '<p style="font-size:13px;line-height:1.75;color:#374151;margin:0;white-space:pre-wrap">' + (s.body || '<span style="color:#C4C9D4;font-style:italic">No content</span>') + '</p>'
+              + '</div>';
+          }).join('');
+          previewHtml =
+            '<div style="width:100%;height:100%;overflow-y:auto;padding:32px 48px;box-sizing:border-box;background:#FAFAFA">'
+              + '<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:12px;border:1px solid #F0F2F5;padding:36px 40px;box-shadow:0 2px 12px rgba(0,0,0,.04)">'
+                + '<div style="font-size:20px;font-weight:900;color:#1E2532;margin-bottom:4px">' + (item.title || '') + '</div>'
+                + '<div style="font-size:12px;color:#9CA3AF;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid #F0F2F5">'
+                  + (item.docType || '') + (item.version ? ' · ' + item.version : '') + (item.date ? ' · ' + item.date : '')
+                + '</div>'
+                + secHtml
+              + '</div>'
+            + '</div>';
+        } else if (item.blobUrl) {
+          previewHtml =
+            '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:#F8F9FA">'
+              + '<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+              + '<span style="font-size:13px;font-weight:600;color:#9CA3AF">In-browser preview not available for this file type</span>'
+              + '<a href="' + item.blobUrl + '" download="' + (item.file || item.title) + '" style="font-size:12px;font-weight:700;color:#5189F3;text-decoration:none;border:1px solid #5189F3;padding:8px 18px;border-radius:8px">Download to view</a>'
+            + '</div>';
+        } else {
+          previewHtml =
+            '<div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#F8F9FA">'
+              + '<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+              + '<span style="font-size:12px;font-weight:600;color:#9CA3AF">No file uploaded — preview unavailable</span>'
+            + '</div>';
+        }
+
+        /* right sidebar details */
+        var detailRows = [['Module', item.module || '—'], ['Class', item.cls || '—'], ['Type', item.docType || '—'], ['Version', item.version || '—'], ['Status', item.status || '—'], ['Date', item.date || '—']];
+        var sidebarRows = detailRows.map(function(r) {
+          return '<div style="padding:11px 0;border-bottom:1px solid #F0F2F5">'
+            + '<div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">' + r[0] + '</div>'
+            + '<div style="font-size:13px;font-weight:700;color:#1E2532;word-break:break-word">' + r[1] + '</div>'
+          + '</div>';
+        }).join('');
+
+        var body =
+          '<div style="flex:1;display:flex;min-height:0;overflow:hidden">'
+            /* preview pane */
+            + '<div style="flex:1;min-width:0;height:100%;overflow:hidden">' + previewHtml + '</div>'
+            /* details sidebar */
+            + '<div style="flex-shrink:0;width:220px;border-left:1px solid #F0F2F5;overflow-y:auto;padding:16px 18px;background:#fff">'
+              + '<div style="font-size:10px;font-weight:700;color:#9CA3AF;text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px">Details</div>'
+              + sidebarRows
+            + '</div>'
+          + '</div>';
+
+        modal.innerHTML = topBar + body;
+      }
+
+      document.body.appendChild(modal);
     }
 
     /* ── library list view ── */
@@ -3153,9 +3479,9 @@
                 <div class="cp-item-meta">${item.module} › ${item.cls}${item.duration?' · '+item.duration:item.version?' · '+item.version:''} · ${item.date}</div>
               </div>
               <div class="cp-item-actions">
-                <button class="cp-action-btn edit" onclick="openCpEditor('${type}','${item.id}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                  Edit
+                <button class="cp-action-btn edit" onclick="_viewUploadItem('${type}','${item.id}')">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  View
                 </button>
                 <button class="cp-action-btn del" onclick="deleteCpItem('${type}','${item.id}')">
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
@@ -3164,12 +3490,12 @@
               </div>
             </div>`)
             .join('')
-        : `<div class="cp-empty">${cpTypeIcon(type,32)}<span>No ${label}s yet.<br>Upload a file above or click "Create ${label}" to get started.</span></div>`;
+        : `<div class="cp-empty">${cpTypeIcon(type,32)}<span>No ${label}s yet.<br>Upload a file above to get started.</span></div>`;
 
       const uploadAccept = type === 'voiceover' ? 'audio/*' : '.docx,.doc,.txt,.pdf';
       const uploadSubtitle = type === 'voiceover'
-        ? 'MP3, WAV, M4A · up to 200 MB · opens for script editing right after upload'
-        : 'DOCX, DOC, TXT, PDF · opens for content editing right after upload';
+        ? 'MP3, WAV, M4A · up to 200 MB'
+        : 'DOCX, DOC, TXT, PDF';
       const uploadIcon = type === 'voiceover'
         ? '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>'
         : '<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg>';
@@ -3177,10 +3503,6 @@
       panel.innerHTML = `
         <div class="cp-toolbar">
           <span class="cp-title">${label} Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${items.length} file${items.length!==1?'s':''}</span></span>
-          <button class="cp-add-btn" onclick="addNewCpItem('${type}')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Create ${label}
-          </button>
         </div>
 
         <label id="cpUploadZone-${type}" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;box-sizing:border-box;border:2px dashed #CBD5E1;border-radius:10px;background:#fff;cursor:pointer;padding:46px 20px;margin-bottom:4px;transition:border-color .15s,background .15s;color:#374151"
@@ -3244,11 +3566,9 @@
           }
         };
         renderContentPanel('voiceover');
-        openCpEditor('voiceover', CONTENT_LIBRARY.voiceover[0].id);
       } else {
         CONTENT_LIBRARY.document.unshift({ id: 'd' + Date.now(), title: file.name.replace(/\.[^.]+$/, ''), module: mod, cls, desc: '', file: file.name, blobUrl, date: dateStr, docType: 'Guide', version: 'v1.0', status: 'Draft', sections: [{ heading: 'Introduction', body: '' }] });
         renderContentPanel('document');
-        openCpEditor('document', CONTENT_LIBRARY.document[0].id);
       }
     }
 
@@ -4148,30 +4468,40 @@
       } catch(e) {}
     }
 
+    function _switchLbMain(view, btn) {
+      document.querySelectorAll('#lbViewTabs .lb-view-tab').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      if (view === 'dashboard') {
+        document.getElementById('lbStatsGrid').style.display = 'none';
+        document.getElementById('lbMainView').style.display  = 'none';
+        document.getElementById('lbDashPanel').style.display = 'block';
+        _lbDashOpen    = true;
+        _lbDashSearchQ = '';
+        _lbJourneyOpen = null;
+        if (!_ujSelectedUser) _ujSelectedUser = LB_USERS[0] ? LB_USERS[0].name : null;
+        _renderLbDashboard();
+      } else {
+        document.getElementById('lbDashPanel').style.display = 'none';
+        document.getElementById('lbStatsGrid').style.display = '';
+        document.getElementById('lbMainView').style.display  = 'block';
+        _lbDashOpen = false;
+        renderLbStats();
+        renderLbTable();
+      }
+    }
+
     function switchLbView(view, btn) {
       lbCurrentView = view;
-      document.querySelectorAll('.lb-view-tab').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('lbMainView').style.display  = view === 'overall' ? 'block' : 'none';
-      document.getElementById('lbDeptView').style.display  = view === 'department' ? 'block' : 'none';
-      document.getElementById('lbTeamView').style.display  = view === 'team'       ? 'block' : 'none';
-      if (view === 'overall') {
-        document.getElementById('lbSortBy').value = 'completionPct';
-      }
       renderLbStats();
-      if (view === 'overall') renderLbTable();
-      if (view === 'department') renderDeptView();
-      if (view === 'team') renderTeamView();
+      renderLbTable();
     }
 
     function getSortedUsers() {
       const q    = (document.getElementById('lbSearch')?.value || '').toLowerCase();
-      const dept = document.getElementById('lbDeptFilter')?.value || '';
       const sort = document.getElementById('lbSortBy')?.value || 'completionPct';
       return LB_USERS
         .map(u => Object.assign({}, u, { certsEarned: _computeUserCertCount(u.name), completionPct: _computeUserCompletion(u.name) }))
-        .filter(u => (!q || u.name.toLowerCase().includes(q) || u.dept.toLowerCase().includes(q) || ROLE_LABELS[u.role].toLowerCase().includes(q)))
-        .filter(u => !dept || u.dept === dept)
+        .filter(u => (!q || u.name.toLowerCase().includes(q) || ROLE_LABELS[u.role].toLowerCase().includes(q)))
         .sort((a,b) => b[sort] - a[sort]);
     }
 
@@ -4236,18 +4566,49 @@
       }).join('');
     }
 
+    function _computeUserModuleCompletion(userName, moduleName) {
+      if (typeof CLASS_COMPLETIONS === 'undefined' || !CLASS_COMPLETIONS) return 0;
+      var classes = (MODULE_DATA[moduleName] || {}).classes || [];
+      if (!classes.length) return 0;
+      var done = classes.filter(function(cls) {
+        var key = userName + ':' + moduleName + ':' + cls;
+        return CLASS_COMPLETIONS[key] && CLASS_COMPLETIONS[key].certEarned;
+      }).length;
+      return Math.round(done / classes.length * 100);
+    }
+
+    function _buildModuleBars(userName) {
+      var mods = [
+        { name:'Forms',           short:'Forms', color:'#5189F3' },
+        { name:'Master Forms',    short:'Master', color:'#7C3AED' },
+        { name:'Quality Control', short:'QC',    color:'#059669' },
+      ];
+      return '<div style="display:flex;flex-direction:column;gap:5px;min-width:160px">' +
+        mods.map(function(m) {
+          var pct = _computeUserModuleCompletion(userName, m.name);
+          return '<div style="display:flex;align-items:center;gap:7px">' +
+            '<span style="font-size:9px;font-weight:800;color:' + m.color + ';width:38px;flex-shrink:0;letter-spacing:.02em">' + m.short + '</span>' +
+            '<div style="flex:1;height:5px;background:#F3F4F6;border-radius:3px;overflow:hidden">' +
+              '<div style="width:' + pct + '%;height:100%;background:' + m.color + ';border-radius:3px;transition:width .4s"></div>' +
+            '</div>' +
+            '<span style="font-size:10px;font-weight:800;color:' + (pct > 0 ? m.color : '#C4C9D4') + ';min-width:28px;text-align:right">' + pct + '%</span>' +
+          '</div>';
+        }).join('') +
+      '</div>';
+    }
+
     function renderLbTable() {
       const ranked = getSortedUsers();
       document.getElementById('lbCount').textContent = ranked.length + ' user' + (ranked.length !== 1 ? 's' : '');
 
       document.getElementById('lbThead').innerHTML = `
         <tr>
-          <th style="width:5%">Rank</th>
-          <th style="width:22%">User</th>
-          <th style="width:18%">Department</th>
-          <th style="width:20%">Completion</th>
-          <th style="width:13%;text-align:center">Certs</th>
-          <th style="width:22%;text-align:center">Badges</th>
+          <th style="width:4%">#</th>
+          <th style="width:24%">User</th>
+          <th style="width:13%">Role</th>
+          <th style="width:35%">Progress by Module</th>
+          <th style="width:10%;text-align:center">Certs</th>
+          <th style="width:14%;text-align:center">Status</th>
         </tr>`;
 
       if (ranked.length === 0) {
@@ -4256,37 +4617,16 @@
       }
 
       document.getElementById('lbBody').innerHTML = ranked.map((u, i) => {
-        const avColor  = AVATAR_COLORS[LB_USERS.indexOf(u) % AVATAR_COLORS.length];
-        const serial   = i + 1;
-
-        const compColor = u.completionPct >= 80 ? '#10B981' : u.completionPct >= 50 ? '#F59E0B' : '#EF4444';
-
-        const _modColors = { 'Forms':'#5189F3', 'Master Forms':'#7C3AED', 'Quality Control':'#16a34a' };
-        const _parseDate = s => { try { return new Date(s); } catch(e) { return new Date(0); } };
-        let _latestBadge = null;
-        if (typeof CLASS_COMPLETIONS !== 'undefined' && CLASS_COMPLETIONS) {
-          const uKeys = Object.keys(CLASS_COMPLETIONS).filter(k => {
-            const p = k.split(':'); return p[0] === u.name && CLASS_COMPLETIONS[k].certEarned;
-          });
-          if (uKeys.length > 0) {
-            uKeys.sort((a, b) => _parseDate(CLASS_COMPLETIONS[b].earnedDate) - _parseDate(CLASS_COMPLETIONS[a].earnedDate));
-            const lk = uKeys[0]; const lp = lk.split(':');
-            _latestBadge = { mod: lp[1], cls: lp[2], date: CLASS_COMPLETIONS[lk].earnedDate, color: _modColors[lp[1]] || '#5189F3' };
-          }
-        }
-        const _abbr = { 'Forms':'FRM', 'Master Forms':'MFM', 'Quality Control':'QC' };
-        const badgeImg = _latestBadge
-          ? `<div style="display:inline-flex;align-items:center;gap:6px;background:${_latestBadge.color}12;border:1.5px solid ${_latestBadge.color}44;border-radius:999px;padding:5px 12px 5px 8px;max-width:210px;white-space:nowrap;overflow:hidden">
-               <span style="width:8px;height:8px;border-radius:50%;background:${_latestBadge.color};flex-shrink:0;display:inline-block"></span>
-               <span style="font-size:10px;font-weight:700;color:${_latestBadge.color};background:${_latestBadge.color}25;border-radius:4px;padding:1px 5px;flex-shrink:0;letter-spacing:.03em">${_abbr[_latestBadge.mod]||_latestBadge.mod}</span>
-               <span style="font-size:11px;font-weight:800;color:${_latestBadge.color};overflow:hidden;text-overflow:ellipsis">${_latestBadge.cls}</span>
-             </div>`
-          : `<span style="color:#ddd;font-size:13px">—</span>`;
-
+        const avColor   = AVATAR_COLORS[LB_USERS.indexOf(u) % AVATAR_COLORS.length];
+        const serial    = i + 1;
         const roleBadge = `<span class="role-badge ${ROLE_CLASS[u.role]}">${ROLE_LABELS[u.role]}</span>`;
+        const st        = _getUserStatus(u.completionPct);
+        const statusPill = `<span style="display:inline-flex;align-items:center;font-size:10px;font-weight:800;padding:3px 10px;border-radius:999px;color:${st.color};background:${st.bg};border:1px solid ${st.border}">${st.label}</span>`;
+        const certColor  = u.certsEarned >= 3 ? '#16a34a' : u.certsEarned >= 1 ? '#5189F3' : '#9CA3AF';
+        const total18    = (MODULE_DATA['Forms'].classes.length + MODULE_DATA['Master Forms'].classes.length + MODULE_DATA['Quality Control'].classes.length);
 
         return `
-          <tr>
+          <tr style="cursor:pointer" onclick="_lbShowUserJourney('${u.name.replace(/'/g,"\\'")}')">
             <td><span class="rank-plain">${serial}</span></td>
             <td>
               <div class="user-cell">
@@ -4294,15 +4634,10 @@
                 <div><div class="user-name">${u.name}</div><div class="user-email">${u.email}</div></div>
               </div>
             </td>
-            <td><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-size:12px;font-weight:700;color:#555">${u.dept}</span>${roleBadge}</div></td>
-            <td>
-              <div class="completion-cell">
-                <span class="completion-pct">${u.completionPct}%</span>
-                <div class="mini-bar-wrap"><div class="mini-bar-fill" style="width:${u.completionPct}%;background:${compColor}"></div></div>
-              </div>
-            </td>
-            <td style="color:#7C3AED;font-weight:800;text-align:center">${u.certsEarned}</td>
-            <td style="text-align:center">${badgeImg}</td>
+            <td>${roleBadge}</td>
+            <td>${_buildModuleBars(u.name)}</td>
+            <td style="color:${certColor};font-weight:800;text-align:center">${u.certsEarned}<span style="color:#ddd;font-weight:400"> /${total18}</span></td>
+            <td style="text-align:center">${statusPill}</td>
           </tr>`;
       }).join('');
     }
@@ -4408,27 +4743,13 @@
     var _lbDashSearchQ = '';
 
     function _openLbDashboard() {
-      _lbDashOpen = true;
-      document.getElementById('lbDashPanel').style.display = 'block';
-      // Hide the rest of the leaderboard UI
-      document.querySelector('.lb-view-tabs').style.display     = 'none';
-      document.getElementById('lbStatsGrid').style.display      = 'none';
-      document.getElementById('lbMainView').style.display       = 'none';
-      var tv = document.getElementById('lbTeamView'); if (tv) tv.style.display = 'none';
-      var dv = document.getElementById('lbDeptView'); if (dv) dv.style.display = 'none';
-      _lbDashSearchQ = '';
-      _renderLbDashboard();
+      var btn = document.getElementById('lbTabDashboard');
+      if (btn) _switchLbMain('dashboard', btn);
     }
 
     function _closeLbDashboard() {
-      _lbDashOpen = false;
-      document.getElementById('lbDashPanel').style.display = 'none';
-      document.querySelector('.lb-view-tabs').style.display = '';
-      document.getElementById('lbStatsGrid').style.display  = '';
-      /* Restore whichever sub-view was active before opening dashboard */
-      document.getElementById('lbMainView').style.display  = lbCurrentView === 'overall'    ? 'block' : 'none';
-      var dv = document.getElementById('lbDeptView'); if (dv) dv.style.display = lbCurrentView === 'department' ? 'block' : 'none';
-      var tv = document.getElementById('lbTeamView'); if (tv) tv.style.display = lbCurrentView === 'team'       ? 'block' : 'none';
+      var btn = document.getElementById('lbTabLeaderboard');
+      if (btn) _switchLbMain('leaderboard', btn);
     }
 
     function _lbDashFilter(q) {
@@ -4443,133 +4764,164 @@
       return               { label:'Idle',          color:'#9CA3AF', bg:'#F9FAFB', border:'#E5E7EB' };
     }
 
+    var _ujSelectedUser = null;
+
     function _renderLbDashboard() {
       var panel = document.getElementById('lbDashPanel');
 
-      /* ── Compute KPIs ── */
       var users = LB_USERS.map(function(u) {
         var pct   = _computeUserCompletion(u.name);
         var certs = _computeUserCertCount(u.name);
         return Object.assign({}, u, { completionPct: pct, certsEarned: certs });
-      });
+      }).sort(function(a, b) { return b.completionPct - a.completionPct; });
 
-      var totalUsers    = users.length;
-      var avgCompletion = Math.round(users.reduce(function(s, u) { return s + u.completionPct; }, 0) / totalUsers);
-      var totalCerts    = users.reduce(function(s, u) { return s + u.certsEarned; }, 0);
-      var activeCount   = users.filter(function(u) { return u.completionPct >= 40; }).length;
-      var learningCount = users.filter(function(u) { return u.completionPct > 0; }).length;
-      var maxPossibleCerts = totalUsers * TOTAL_CLASSES; /* 18 classes total */
-      var efficiency    = Math.min(100, Math.round(totalCerts / maxPossibleCerts * 100));
+      window._lbDashUsers = users;
+      if (!_ujSelectedUser) _ujSelectedUser = users[0] ? users[0].name : null;
 
-      /* Status distribution */
-      var sActive  = users.filter(function(u) { return u.completionPct >= 75; }).length;
-      var sLearn   = users.filter(function(u) { return u.completionPct >= 40 && u.completionPct < 75; }).length;
-      var sStarted = users.filter(function(u) { return u.completionPct >= 5  && u.completionPct < 40; }).length;
-      var sIdle    = users.filter(function(u) { return u.completionPct < 5;  }).length;
-
-      /* Module breakdown */
-      var modDefs = [
-        { name:'Forms',           key:'Forms',           classes:8, color:'#5189F3' },
-        { name:'Master Forms',    key:'Master Forms',    classes:5, color:'#7C3AED' },
-        { name:'Quality Control', key:'Quality Control', classes:5, color:'#16a34a' },
-      ];
-      var modStats = modDefs.map(function(m) {
-        var totalPossible = totalUsers * m.classes;
-        var completed     = 0;
-        if (typeof CLASS_COMPLETIONS !== 'undefined' && CLASS_COMPLETIONS) {
-          Object.keys(CLASS_COMPLETIONS).forEach(function(k) {
-            var p = k.split(':');
-            if (p[1] === m.key && CLASS_COMPLETIONS[k].certEarned) completed++;
-          });
-        }
-        return Object.assign({}, m, { pct: Math.round(completed / totalPossible * 100), completed: completed, total: totalPossible });
-      });
-
-      /* ── Render ── */
       panel.innerHTML =
-        /* Back bar */
-        '<div class="lbd-back-bar">' +
-          '<button class="lbd-back-btn" onclick="_closeLbDashboard()">' +
-            '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>' +
-            'Back to Leaderboard' +
-          '</button>' +
-          '<div class="lbd-title">Platform Dashboard</div>' +
-          '<div class="lbd-sub">SeaTrace LMS &nbsp;·&nbsp; All Users &nbsp;·&nbsp; Live Data</div>' +
-        '</div>' +
+        /* ── Split layout ── */
+        '<div style="display:flex;gap:0;min-height:520px;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;background:#fff">' +
 
-        /* KPI strip */
-        '<div class="lbd-kpi-grid">' +
-          _kpiCard('Total Users',       totalUsers,        'on platform',        '#5189F3',  'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75') +
-          _kpiCard('Avg Completion',    avgCompletion + '%','platform-wide',      '#7C3AED',  'M22 12h-4l-3 9L9 3l-3 9H2') +
-          _kpiCard('Certs Earned',      totalCerts,        'across all modules',  '#16a34a',  'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2') +
-          _kpiCard('Active Learners',   activeCount,       'of ' + totalUsers,   '#F59E0B',  'M13 10V3L4 14h7v7l9-11h-7') +
-          _kpiCard('Platform Efficiency', efficiency + '%','certs vs potential',  '#0891B2',  'M9 19v-6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2zm0 0V9a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v10m-6 0a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2m0 0V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v14a2 2 0 0 0-2 2h-2a2 2 0 0 0-2-2z') +
-        '</div>' +
-
-        /* Mid row: Status + Module + Language */
-        '<div class="lbd-mid-grid">' +
-
-          /* Status card */
-          '<div class="lbd-card">' +
-            '<div class="lbd-card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>User Status Distribution</div>' +
-            /* Stacked proportion bar */
-            '<div style="display:flex;height:10px;border-radius:99px;overflow:hidden;margin-bottom:16px;gap:2px">' +
-              (sActive  > 0 ? '<div style="flex:' + sActive  + ';background:#16a34a;border-radius:99px;transition:flex .6s" title="Active: '          + sActive  + '"></div>' : '') +
-              (sLearn   > 0 ? '<div style="flex:' + sLearn   + ';background:#5189F3;border-radius:99px;transition:flex .6s" title="Learning: '         + sLearn   + '"></div>' : '') +
-              (sStarted > 0 ? '<div style="flex:' + sStarted + ';background:#F59E0B;border-radius:99px;transition:flex .6s" title="Getting Started: '   + sStarted + '"></div>' : '') +
-              (sIdle    > 0 ? '<div style="flex:' + sIdle    + ';background:#E5E7EB;border-radius:99px;transition:flex .6s" title="Idle: '              + sIdle    + '"></div>' : '') +
+          /* Left: user list */
+          '<div style="width:270px;flex-shrink:0;border-right:1px solid #F0F0F0;display:flex;flex-direction:column">' +
+            '<div style="padding:14px 14px 10px;border-bottom:1px solid #F0F0F0">' +
+              '<div style="font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Select Employee</div>' +
+              '<div style="position:relative">' +
+                '<svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
+                '<input id="ujSearch" type="text" placeholder="Search…" oninput="_ujFilter(this.value)" style="width:100%;height:32px;padding:0 10px 0 30px;border:1.5px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;font-weight:600;color:#333;background:#FAFAFA;outline:none;box-sizing:border-box">' +
+              '</div>' +
             '</div>' +
-            /* 2×2 stat grid */
-            '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
-              _statusBlock('Active',          sActive,  totalUsers, '#16a34a', '#F0FDF4', 'Completed 75%+') +
-              _statusBlock('Learning',        sLearn,   totalUsers, '#5189F3', '#EEF3FF', '40–74% progress') +
-              _statusBlock('Getting Started', sStarted, totalUsers, '#F59E0B', '#FFFBEB', '5–39% progress') +
-              _statusBlock('Idle',            sIdle,    totalUsers, '#9CA3AF', '#F9FAFB', 'Below 5%') +
-            '</div>' +
+            '<div id="ujUserList" style="flex:1;overflow-y:auto;padding:6px 8px"></div>' +
           '</div>' +
 
-          /* Module breakdown */
-          '<div class="lbd-card">' +
-            '<div class="lbd-card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Module Completion</div>' +
-            '<div class="lbd-mod-row">' +
-              modStats.map(function(m) {
-                return '<div>' +
-                  '<div class="lbd-mod-name"><span>' + m.name + '</span><span style="color:' + m.color + ';font-size:13px;font-weight:900">' + m.pct + '%</span></div>' +
-                  '<div class="lbd-mod-track"><div class="lbd-mod-fill" style="width:' + m.pct + '%;background:' + m.color + '"></div></div>' +
-                  '<div style="font-size:10px;color:#aaa;margin-top:3px;font-weight:600">' + m.completed + ' of ' + m.total + ' possible completions</div>' +
-                '</div>';
-              }).join('') +
-            '</div>' +
+          /* Right: journey detail */
+          '<div style="flex:1;overflow-y:auto;padding:24px 28px" id="ujDetail">' +
+            '<div style="color:#C4C9D4;font-size:13px;font-weight:700;text-align:center;padding:60px 0">Select an employee to view their learning journey</div>' +
           '</div>' +
 
-          /* Language card */
-          '<div class="lbd-card">' +
-            '<div class="lbd-card-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Languages Available</div>' +
-            '<div style="display:flex;flex-direction:column;gap:12px">' +
-              _langRow('EN', 'English',  'Primary language', totalUsers,          '#5189F3', '#EEF3FF') +
-              _langRow('हि', 'Hindi',    'हिन्दी',           Math.round(totalUsers * 0.72), '#7C3AED', '#F5F3FF') +
-              _langRow('తె', 'Telugu',   'తెలుగు',           Math.round(totalUsers * 0.61), '#0891B2', '#ECFEFF') +
-            '</div>' +
-          '</div>' +
-
-        '</div>' +
-
-        /* User tracking table */
-        '<div class="lbd-table-wrap">' +
-          '<div class="lbd-table-head">' +
-            '<div class="lbd-table-title">' +
-              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>' +
-              'Full User Tracking — Start to End' +
-              '<span style="font-size:11px;font-weight:700;color:#9CA3AF;margin-left:4px">' + totalUsers + ' users</span>' +
-            '</div>' +
-            '<input class="lbd-table-search" type="text" placeholder="Search users, dept, role…" oninput="_lbDashFilter(this.value)" />' +
-          '</div>' +
-          '<div id="lbDashTableBody"></div>' +
         '</div>';
 
-      /* Store computed users for table render */
-      window._lbDashUsers = users;
-      _renderDashUserTable();
+      _ujRenderList('');
+      if (_ujSelectedUser) _ujRenderDetail(_ujSelectedUser);
+    }
+
+    function _ujFilter(q) {
+      _ujRenderList(q);
+    }
+
+    function _ujRenderList(q) {
+      var users = (window._lbDashUsers || []);
+      if (q) users = users.filter(function(u) { return u.name.toLowerCase().includes(q.toLowerCase()); });
+      var el = document.getElementById('ujUserList');
+      if (!el) return;
+      el.innerHTML = users.map(function(u) {
+        var hue   = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#0891B2','#DB2777','#EA580C','#65A30D'][Math.abs(u.name.charCodeAt(0) + u.name.charCodeAt(1)) % 8];
+        var inits = u.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0,2).toUpperCase();
+        var st    = _getUserStatus(u.completionPct);
+        var sel   = _ujSelectedUser === u.name;
+        var roleLabel = u.role === 'qc' ? 'QC Inspector' : u.role.charAt(0).toUpperCase() + u.role.slice(1);
+        return '<div onclick="_ujSelect(\'' + u.name.replace(/'/g,"\\'") + '\')" style="display:flex;align-items:center;gap:9px;padding:9px 8px;border-radius:8px;cursor:pointer;margin-bottom:2px;' +
+          (sel ? 'background:#EEF3FF;border:1.5px solid #C7D9FF' : 'background:transparent;border:1.5px solid transparent') + '">' +
+          '<div style="width:34px;height:34px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;background:' + hue + '">' + inits + '</div>' +
+          '<div style="flex:1;min-width:0">' +
+            '<div style="font-size:12px;font-weight:800;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + u.name + '</div>' +
+            '<div style="display:flex;align-items:center;gap:5px;margin-top:2px">' +
+              '<span style="font-size:10px;color:#888;font-weight:600">' + roleLabel + '</span>' +
+              '<span style="font-size:10px;font-weight:800;color:' + st.color + '">' + u.completionPct + '%</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('') || '<div style="font-size:12px;color:#ccc;text-align:center;padding:20px">No match</div>';
+    }
+
+    function _ujSelect(name) {
+      _ujSelectedUser = name;
+      _ujRenderList((document.getElementById('ujSearch') || {}).value || '');
+      _ujRenderDetail(name);
+    }
+
+    function _ujRenderDetail(name) {
+      var detail = document.getElementById('ujDetail');
+      if (!detail) return;
+      var u = (window._lbDashUsers || []).find(function(x) { return x.name === name; });
+      if (!u) return;
+
+      var st       = _getUserStatus(u.completionPct);
+      var hue      = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#0891B2','#DB2777','#EA580C','#65A30D'][Math.abs(u.name.charCodeAt(0) + u.name.charCodeAt(1)) % 8];
+      var inits    = u.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0,2).toUpperCase();
+      var roleLabel = u.role === 'qc' ? 'QC Inspector' : u.role.charAt(0).toUpperCase() + u.role.slice(1);
+      var totalClasses = MODULE_DATA['Forms'].classes.length + MODULE_DATA['Master Forms'].classes.length + MODULE_DATA['Quality Control'].classes.length;
+
+      /* User banner */
+      var banner = '<div style="display:flex;align-items:center;gap:14px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #F0F0F0">' +
+        '<div style="width:52px;height:52px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;background:' + hue + '">' + inits + '</div>' +
+        '<div style="flex:1">' +
+          '<div style="font-size:17px;font-weight:800;color:#111;margin-bottom:3px">' + u.name + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
+            '<span style="font-size:11px;font-weight:700;color:#888">' + roleLabel + '</span>' +
+            '<span style="color:#E5E7EB">·</span>' +
+            '<span style="font-size:11px;font-weight:700;color:#888">' + u.email + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:right;flex-shrink:0">' +
+          '<div style="font-size:26px;font-weight:900;color:' + st.color + '">' + u.completionPct + '%</div>' +
+          '<span style="font-size:10px;font-weight:800;padding:2px 10px;border-radius:99px;color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + '">' + st.label + '</span>' +
+          '<div style="font-size:10px;color:#aaa;margin-top:4px;font-weight:600">' + u.certsEarned + ' of ' + totalClasses + ' classes certified</div>' +
+        '</div>' +
+      '</div>';
+
+      /* Module journey */
+      var mods = [
+        { name:'Forms',           color:'#5189F3', bg:'#EEF3FF', border:'#C7D9FF' },
+        { name:'Master Forms',    color:'#7C3AED', bg:'#F5F3FF', border:'#DDD6FE' },
+        { name:'Quality Control', color:'#059669', bg:'#ECFDF5', border:'#A7F3D0' },
+      ];
+
+      var modSections = mods.map(function(m) {
+        var classes  = (MODULE_DATA[m.name] || {}).classes || [];
+        var modPct   = _computeUserModuleCompletion(u.name, m.name);
+        var doneCount = classes.filter(function(cls) {
+          var key = u.name + ':' + m.name + ':' + cls;
+          return CLASS_COMPLETIONS && CLASS_COMPLETIONS[key] && CLASS_COMPLETIONS[key].certEarned;
+        }).length;
+
+        var classItems = classes.map(function(cls, ci) {
+          var key  = u.name + ':' + m.name + ':' + cls;
+          var info = (CLASS_COMPLETIONS && CLASS_COMPLETIONS[key]) || {};
+          var done = !!info.certEarned;
+          return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;background:' + (done ? m.color + '0a' : '#FAFAFA') + ';border:1px solid ' + (done ? m.color + '30' : '#F0F0F0') + ';margin-bottom:4px">' +
+            '<div style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:' + (done ? m.color : '#E5E7EB') + '">' +
+              (done
+                ? '<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                : '<span style="font-size:9px;font-weight:800;color:#9CA3AF">' + (ci + 1) + '</span>'
+              ) +
+            '</div>' +
+            '<div style="flex:1">' +
+              '<div style="font-size:12px;font-weight:800;color:' + (done ? '#111' : '#9CA3AF') + '">' + cls + '</div>' +
+              (done && info.earnedDate
+                ? '<div style="font-size:10px;font-weight:700;color:' + m.color + ';margin-top:1px">Certified · ' + info.earnedDate + '</div>'
+                : '<div style="font-size:10px;color:#C4C9D4;font-weight:600;margin-top:1px">Not yet completed</div>'
+              ) +
+            '</div>' +
+            (done ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="' + m.color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>' : '') +
+          '</div>';
+        }).join('');
+
+        return '<div style="margin-bottom:20px">' +
+          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
+            '<div style="width:8px;height:8px;border-radius:50%;background:' + m.color + ';flex-shrink:0"></div>' +
+            '<div style="font-size:13px;font-weight:800;color:' + m.color + ';flex:1">' + m.name + '</div>' +
+            '<span style="font-size:11px;font-weight:700;color:#888">' + doneCount + '/' + classes.length + ' classes</span>' +
+            '<span style="font-size:14px;font-weight:900;color:' + m.color + ';min-width:38px;text-align:right">' + modPct + '%</span>' +
+          '</div>' +
+          '<div style="height:5px;background:#F0F0F0;border-radius:3px;overflow:hidden;margin-bottom:12px">' +
+            '<div style="height:100%;width:' + modPct + '%;background:' + m.color + ';border-radius:3px;transition:width .5s"></div>' +
+          '</div>' +
+          classItems +
+        '</div>';
+      }).join('');
+
+      detail.innerHTML = banner + modSections;
     }
 
     function _kpiCard(label, val, sub, color, iconPath) {
@@ -4622,51 +4974,27 @@
       '</div>';
     }
 
+    var _lbJourneyOpen = null;
+
     function _renderDashUserTable() {
       var users = (window._lbDashUsers || []).slice();
       var q = (_lbDashSearchQ || '').toLowerCase();
       if (q) {
         users = users.filter(function(u) {
-          return u.name.toLowerCase().includes(q) || u.dept.toLowerCase().includes(q) ||
-                 u.role.toLowerCase().includes(q) || u.team.toLowerCase().includes(q);
+          return u.name.toLowerCase().includes(q) || u.role.toLowerCase().includes(q);
         });
       }
-      /* Sort by completion desc */
       users.sort(function(a, b) { return b.completionPct - a.completionPct; });
 
-      var LANG_COLORS = { '#5189F3':'#EEF3FF', '#7C3AED':'#F5F3FF', '#16a34a':'#F0FDF4' };
-
       var rows = users.map(function(u, i) {
-        var st   = _getUserStatus(u.completionPct);
-        var hue  = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#0891B2','#DB2777','#EA580C','#65A30D'][Math.abs(u.name.charCodeAt(0) + u.name.charCodeAt(1)) % 8];
+        var st    = _getUserStatus(u.completionPct);
+        var hue   = ['#5189F3','#7C3AED','#16a34a','#F59E0B','#0891B2','#DB2777','#EA580C','#65A30D'][Math.abs(u.name.charCodeAt(0) + u.name.charCodeAt(1)) % 8];
         var inits = u.name.split(' ').map(function(w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
-        var trend = u.trend === 'up'
-          ? '<svg width="12" height="12" viewBox="0 0 12 12" style="display:inline-block;vertical-align:middle"><polygon points="6,1 12,11 0,11" fill="#16a34a"/></svg>'
-          : u.trend === 'down'
-          ? '<svg width="12" height="12" viewBox="0 0 12 12" style="display:inline-block;vertical-align:middle"><polygon points="6,11 12,1 0,1" fill="#DC2626"/></svg>'
-          : '<svg width="12" height="4" viewBox="0 0 12 4" style="display:inline-block;vertical-align:middle"><rect x="0" y="1" width="12" height="2" rx="1" fill="#9CA3AF"/></svg>';
+        var roleLabel = u.role === 'qc' ? 'QC Inspector' : u.role.charAt(0).toUpperCase() + u.role.slice(1);
+        var isOpen = _lbJourneyOpen === u.name;
 
-        /* Quiz stats from localStorage */
-        var quizAttempts = 0; var quizPasses = 0;
-        try {
-          quizzes.forEach(function(qz) {
-            var r = JSON.parse(localStorage.getItem('sq_results_' + qz.id) || '{}');
-            /* associate by user name — only count if same user (approximation: count global for now) */
-            if (r.att1) { quizAttempts++; if (r.att1.pass) quizPasses++; }
-            if (r.att2) { quizAttempts++; if (r.att2.pass) quizPasses++; }
-          });
-        } catch(e) {}
-
-        var quizDisplay = quizAttempts > 0 ? quizPasses + '/' + quizAttempts + ' pass' : '<span style="color:#ddd">—</span>';
-
-        /* Preferred language — derive from dept heuristic */
-        var langMap = { 'Management':'EN', 'Processing':'హి', 'Quality Control':'తె', 'Cold Store':'హి', 'Dispatch':'EN' };
-        var lang = langMap[u.dept] || 'EN';
-
-        var certColor = u.certsEarned === 3 ? '#16a34a' : u.certsEarned >= 1 ? '#5189F3' : '#9CA3AF';
-
-        return '<tr>' +
-          '<td style="width:32px;color:#9CA3AF;font-weight:700;font-size:12px">' + (i + 1) + '</td>' +
+        var mainRow = '<tr style="cursor:pointer" onclick="_lbToggleJourney(\'' + u.name.replace(/'/g,"\\'") + '\')">' +
+          '<td style="color:#9CA3AF;font-weight:700;font-size:12px">' + (i + 1) + '</td>' +
           '<td>' +
             '<div style="display:flex;align-items:center;gap:9px">' +
               '<div class="lbd-uavatar" style="background:' + hue + '">' + inits + '</div>' +
@@ -4676,24 +5004,19 @@
               '</div>' +
             '</div>' +
           '</td>' +
-          '<td><span style="font-size:11px;font-weight:700;color:#555">' + u.dept + '</span></td>' +
-          '<td><span style="font-size:11px;font-weight:700;color:#777;text-transform:capitalize">' + (u.role === 'qc' ? 'QC Inspector' : u.role.charAt(0).toUpperCase() + u.role.slice(1)) + '</span></td>' +
-          '<td>' +
-            '<div style="display:flex;align-items:center;gap:8px">' +
-              '<div class="lbd-prog-bar"><div class="lbd-prog-fill" style="width:' + u.completionPct + '%;background:' + st.color + '"></div></div>' +
-              '<span style="font-size:12px;font-weight:800;color:' + st.color + ';min-width:32px">' + u.completionPct + '%</span>' +
-            '</div>' +
+          '<td><span style="font-size:11px;font-weight:700;color:#777">' + roleLabel + '</span></td>' +
+          '<td>' + _buildModuleBars(u.name) + '</td>' +
+          '<td style="text-align:center;font-size:12px;font-weight:800;color:' + (u.certsEarned >= 3 ? '#16a34a' : u.certsEarned >= 1 ? '#5189F3' : '#9CA3AF') + '">' +
+            u.certsEarned + '<span style="color:#ddd;font-weight:400">/' + (MODULE_DATA['Forms'].classes.length + MODULE_DATA['Master Forms'].classes.length + MODULE_DATA['Quality Control'].classes.length) + '</span>' +
           '</td>' +
-          '<td style="text-align:center;font-size:12px;font-weight:800;color:#374151">' + u.certsEarned + ' <span style="color:#ddd;font-weight:400">/3</span></td>' +
-          '<td style="text-align:center">' +
-            '<span style="font-size:13px;font-weight:900;color:#F59E0B">' + (u.streak || 0) + '</span>' +
-            '<span style="font-size:10px;color:#aaa;font-weight:600"> d</span>' +
-          '</td>' +
-          '<td style="text-align:center"><span style="font-size:11px;color:#888;font-weight:600">' + u.team + '</span></td>' +
-          '<td style="text-align:center"><span style="font-size:11px;font-weight:700;color:#5189F3">' + lang + '</span></td>' +
-          '<td style="text-align:center">' + trend + '</td>' +
           '<td><span class="lbd-status-pill" style="color:' + st.color + ';background:' + st.bg + ';border:1px solid ' + st.border + '">' + st.label + '</span></td>' +
+          '<td style="text-align:center;color:#9CA3AF;font-size:11px">' +
+            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="transform:rotate(' + (isOpen ? '180' : '0') + 'deg);transition:transform .2s"><polyline points="6 9 12 15 18 9"/></svg>' +
+          '</td>' +
         '</tr>';
+
+        var journeyRow = isOpen ? '<tr><td colspan="7" style="padding:0;border-top:none">' + _buildUserJourneyHtml(u.name) + '</td></tr>' : '';
+        return mainRow + journeyRow;
       }).join('');
 
       var body = document.getElementById('lbDashTableBody');
@@ -4703,18 +5026,71 @@
           '<thead><tr>' +
             '<th>#</th>' +
             '<th>User</th>' +
-            '<th>Department</th>' +
             '<th>Role</th>' +
-            '<th style="min-width:140px">Progress</th>' +
+            '<th style="min-width:200px">Progress by Module</th>' +
             '<th style="text-align:center">Certs</th>' +
-            '<th style="text-align:center">Streak</th>' +
-            '<th style="text-align:center">Team</th>' +
-            '<th style="text-align:center">Language</th>' +
-            '<th style="text-align:center">Trend</th>' +
             '<th>Status</th>' +
+            '<th style="width:28px"></th>' +
           '</tr></thead>' +
-          '<tbody>' + (rows || '<tr><td colspan="11" style="text-align:center;padding:28px;color:#ccc">No users match</td></tr>') + '</tbody>' +
+          '<tbody>' + (rows || '<tr><td colspan="7" style="text-align:center;padding:28px;color:#ccc">No users match</td></tr>') + '</tbody>' +
         '</table>';
+    }
+
+    function _lbToggleJourney(name) {
+      _lbJourneyOpen = (_lbJourneyOpen === name) ? null : name;
+      _renderDashUserTable();
+    }
+
+    function _lbShowUserJourney(name) {
+      _ujSelectedUser = name;
+      var btn = document.getElementById('lbTabDashboard');
+      if (btn) _switchLbMain('dashboard', btn);
+    }
+
+    function _buildUserJourneyHtml(userName) {
+      var mods = [
+        { name:'Forms',           color:'#5189F3', bg:'#EEF3FF' },
+        { name:'Master Forms',    color:'#7C3AED', bg:'#F5F3FF' },
+        { name:'Quality Control', color:'#059669', bg:'#ECFDF5' },
+      ];
+      var modCols = mods.map(function(m) {
+        var classes = (MODULE_DATA[m.name] || {}).classes || [];
+        var modPct  = _computeUserModuleCompletion(userName, m.name);
+        var classRows = classes.map(function(cls) {
+          var key  = userName + ':' + m.name + ':' + cls;
+          var info = (typeof CLASS_COMPLETIONS !== 'undefined' && CLASS_COMPLETIONS && CLASS_COMPLETIONS[key]) || {};
+          var done = info.certEarned;
+          var dateStr = done && info.earnedDate ? info.earnedDate : '';
+          return '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;margin-bottom:3px;background:' + (done ? m.color + '0d' : '#FAFAFA') + ';border:1px solid ' + (done ? m.color + '33' : '#F0F0F0') + '">' +
+            '<div style="width:16px;height:16px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:' + (done ? m.color : '#E5E7EB') + '">' +
+              (done
+                ? '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                : '<div style="width:5px;height:5px;border-radius:50%;background:#C4C9D4"></div>'
+              ) +
+            '</div>' +
+            '<div style="flex:1;min-width:0">' +
+              '<div style="font-size:11px;font-weight:800;color:' + (done ? '#111' : '#888') + ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + cls + '</div>' +
+              (dateStr ? '<div style="font-size:9px;font-weight:600;color:' + m.color + ';margin-top:1px">Certified ' + dateStr + '</div>' : '<div style="font-size:9px;color:#bbb;font-weight:600;margin-top:1px">Not completed</div>') +
+            '</div>' +
+          '</div>';
+        }).join('');
+
+        return '<div style="flex:1;min-width:0">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">' +
+            '<div style="font-size:11px;font-weight:800;color:' + m.color + ';letter-spacing:.03em;text-transform:uppercase">' + m.name + '</div>' +
+            '<div style="font-size:13px;font-weight:900;color:' + m.color + '">' + modPct + '%</div>' +
+          '</div>' +
+          '<div style="height:4px;background:#F0F0F0;border-radius:3px;margin-bottom:12px;overflow:hidden">' +
+            '<div style="width:' + modPct + '%;height:100%;background:' + m.color + ';border-radius:3px"></div>' +
+          '</div>' +
+          classRows +
+        '</div>';
+      }).join('');
+
+      return '<div style="padding:16px 20px;background:#FAFBFC;border-top:1px solid #F0F0F0">' +
+        '<div style="font-size:10px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Learning Journey — ' + userName + '</div>' +
+        '<div style="display:flex;gap:16px">' + modCols + '</div>' +
+      '</div>';
     }
 
     /* ── Monthly reset ── */
@@ -4997,7 +5373,7 @@
       document.getElementById('qmixMcq').value = '';
       document.getElementById('qmixTf').value = '';
       document.getElementById('qmixMs').value = '';
-      document.getElementById('qCertValidity').value = 'lifetime';
+      document.getElementById('qCertValidity').value = '3m';
       document.getElementById('qSaveBtn').textContent = 'Save Quiz';
       qCards = [{ id: qCardId++, type: 'mcq' }];
       renderQuestions();
@@ -5814,7 +6190,14 @@
 
     /* ── Quiz Attempt System ── */
     const QUIZ_ATTEMPTS    = {};  // { 'userId:quizId': { attempts: [{score,total,passed,timestamp,questionIndices}] } }
-    const SCHEDULE_REQUESTS = []; // { id, quizId, quizTitle, quizModule, quizCls, userId, userName, reason, requestedAt, status }
+    /* SCHEDULE_REQUESTS — persisted to localStorage */
+    const _SR_KEY = 'sq_schedule_requests';
+    function _srLoad()       { try { return JSON.parse(localStorage.getItem(_SR_KEY) || '[]'); } catch(e) { return []; } }
+    function _srSave(arr)    { localStorage.setItem(_SR_KEY, JSON.stringify(arr)); }
+    function _srPush(item)   { var a = _srLoad(); a.push(item); _srSave(a); }
+    function _srUpdate(id, patch) { var a = _srLoad(); var r = a.find(function(x){ return x.id === id; }); if (r) Object.assign(r, patch); _srSave(a); return a; }
+    /* Proxy array — keeps in-memory view in sync with localStorage */
+    var SCHEDULE_REQUESTS = _srLoad();
     let qmCurrentQuizId = null;
     let qmCurrentIndices = []; // question indices selected for the attempt in progress
 
@@ -5909,10 +6292,8 @@
       // Auto-reset after 15 days
       QUIZ_ATTEMPTS[key] = { attempts: [] };
       // Clean up any old schedule requests for this user+quiz
-      for (var ri2 = SCHEDULE_REQUESTS.length - 1; ri2 >= 0; ri2--) {
-        if (SCHEDULE_REQUESTS[ri2].quizId === quizId && SCHEDULE_REQUESTS[ri2].userId === userId)
-          SCHEDULE_REQUESTS.splice(ri2, 1);
-      }
+      var _a1 = _srLoad().filter(function(r){ return !(r.quizId === quizId && r.userId === userId); });
+      _srSave(_a1); SCHEDULE_REQUESTS.length = 0; _a1.forEach(function(r){ SCHEDULE_REQUESTS.push(r); });
       renderScheduleRequests();
       return { state: 'available', attemptNumber: 1, attempts: [] };
     }
@@ -5925,11 +6306,8 @@
 
     function adminResetAttempts(quizId, userId) {
       delete QUIZ_ATTEMPTS[_attemptKey(quizId, userId)];
-      // Remove any schedule requests for this user+quiz
-      for (var i = SCHEDULE_REQUESTS.length - 1; i >= 0; i--) {
-        if (SCHEDULE_REQUESTS[i].quizId === quizId && SCHEDULE_REQUESTS[i].userId === userId)
-          SCHEDULE_REQUESTS.splice(i, 1);
-      }
+      var _a2 = _srLoad().filter(function(r){ return !(r.quizId === quizId && r.userId === userId); });
+      _srSave(_a2); SCHEDULE_REQUESTS.length = 0; _a2.forEach(function(r){ SCHEDULE_REQUESTS.push(r); });
     }
 
     function _fmtCountdown(ms) {
@@ -6108,7 +6486,7 @@
           req = SCHEDULE_REQUESTS[ri]; break;
         }
       }
-      if (req && req.status === 'approved') req.status = 'used';
+      if (req && req.status === 'approved') { _srUpdate(req.id, { status: 'used' }); req.status = 'used'; }
 
       recordAttempt(quizId, userId, score, total, passed, qmCurrentIndices.slice());
       var record = QUIZ_ATTEMPTS[_attemptKey(quizId, userId)] || { attempts: [] };
@@ -6241,17 +6619,183 @@
       refreshQuizModal();
     }
 
+    /* ══ NOTIFICATION SYSTEM ══ */
+    var _notifs = [];   // { id, type:'reset'|'sched', title, sub, ts, read }
+
+    function _addNotif(type, title, sub) {
+      _notifs.unshift({ id: Date.now(), type: type, title: title, sub: sub, ts: Date.now(), read: false });
+      _renderNotifPanel();
+      _updateNotifBell();
+      _showToast(type, title, sub);
+    }
+
+    function _updateNotifBell() {
+      var unread = _notifs.filter(function(n){ return !n.read; }).length;
+      var badge = document.getElementById('notifBellBadge');
+      if (badge) badge.style.display = unread ? 'block' : 'none';
+    }
+
+    function _toggleNotifPanel() {
+      var p = document.getElementById('notifPanel');
+      if (!p) return;
+      var open = p.style.display === 'block';
+      p.style.display = open ? 'none' : 'block';
+      if (!open) { _renderNotifPanel(); }
+    }
+
+    function _markAllNotifsRead() {
+      _notifs.forEach(function(n){ n.read = true; });
+      _renderNotifPanel();
+      _updateNotifBell();
+    }
+
+    function _fmtNotifTime(ts) {
+      var diff = Math.floor((Date.now() - ts) / 1000);
+      if (diff < 60) return 'Just now';
+      if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+      if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+      return Math.floor(diff/86400) + 'd ago';
+    }
+
+    function _renderNotifPanel() {
+      var list = document.getElementById('notifList');
+      if (!list) return;
+      if (_notifs.length === 0) {
+        list.innerHTML = '<div class="notif-empty">No notifications yet</div>';
+        return;
+      }
+      list.innerHTML = _notifs.map(function(n) {
+        var dotCls = n.read ? 'read' : (n.type === 'reset' ? 'red' : 'amber');
+        return '<div class="notif-item' + (n.read ? '' : ' unread') + '" onclick="_readNotif(' + n.id + ')">' +
+          '<span class="notif-dot ' + dotCls + '"></span>' +
+          '<div style="flex:1">' +
+            '<div class="notif-title">' + _escHtml(n.title) + '</div>' +
+            '<div class="notif-sub">' + _escHtml(n.sub) + '</div>' +
+            '<div class="notif-time">' + _fmtNotifTime(n.ts) + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    function _readNotif(id) {
+      var n = _notifs.find(function(x){ return x.id === id; });
+      if (n) n.read = true;
+      _renderNotifPanel();
+      _updateNotifBell();
+    }
+
+    function _showToast(type, title, sub) {
+      var stack = document.getElementById('toastStack');
+      if (!stack) return;
+      var cls = type === 'reset' ? 'toast-red' : type === 'reset-cleared' ? 'toast-green' : 'toast-amber';
+      var icon = type === 'reset'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="#FCA5A5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'
+        : type === 'reset-cleared'
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="#FCD34D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" style="flex-shrink:0"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>';
+      var el = document.createElement('div');
+      el.className = 'toast ' + cls;
+      el.innerHTML = icon + '<div><div>' + _escHtml(title) + '</div><div style="font-weight:600;opacity:.75;margin-top:2px">' + _escHtml(sub) + '</div></div>';
+      stack.appendChild(el);
+      setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 4500);
+    }
+
+    document.addEventListener('click', function(e) {
+      var panel = document.getElementById('notifPanel');
+      var btn   = document.getElementById('notifBellBtn');
+      if (panel && panel.style.display === 'block' && !panel.contains(e.target) && !btn.contains(e.target))
+        panel.style.display = 'none';
+    });
+
+    /* ── Admin reset requests panel ── */
+    function renderResetRequests() {
+      var body  = document.getElementById('resetRequestsBody');
+      var badge = document.getElementById('resetPendingBadge');
+      if (!body || !badge) return;
+      var requests = [];
+      try { requests = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+      var pending = requests.filter(function(r){ return r.status === 'pending'; });
+      badge.style.display = pending.length ? 'inline' : 'none';
+      badge.textContent = pending.length;
+      var active = requests.filter(function(r){ return r.status !== 'dismissed'; });
+      if (active.length === 0) {
+        body.innerHTML = '<div style="padding:14px 18px;font-size:13px;color:#bbb;text-align:center">No reset requests.</div>';
+        return;
+      }
+      body.innerHTML = '<div style="border-top:1px solid #F0F0F0">' +
+        active.map(function(r) {
+          var isPending = r.status === 'pending';
+          var isCleared = r.status === 'cleared';
+          var statusColor = isPending ? '#DC2626' : '#16a34a';
+          var statusBg    = isPending ? '#FEF2F2'  : '#F0FDF4';
+          var statusLabel = isPending ? 'Pending'  : 'Cleared';
+          var fmtDate = function(ts){ return new Date(ts).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); };
+          var userLabel = r.userName ? _escHtml(r.userName) : 'Unknown user';
+          var emailLabel = r.userEmail ? _escHtml(r.userEmail) : '';
+          return '<div style="display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid #F7F7F7;flex-wrap:wrap">' +
+            '<div style="flex:1;min-width:160px">' +
+              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+                '<div style="width:30px;height:30px;border-radius:50%;background:#EEF3FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#5189F3;flex-shrink:0">' + userLabel.charAt(0) + '</div>' +
+                '<div>' +
+                  '<div style="font-weight:800;font-size:13px;color:#111">' + userLabel + '</div>' +
+                  (emailLabel ? '<div style="font-size:11px;color:#5189F3;font-weight:600">' + emailLabel + '</div>' : '') +
+                '</div>' +
+              '</div>' +
+              '<div style="font-size:12px;color:#555;margin-top:2px">Quiz: <strong>' + _escHtml(r.quizTitle) + '</strong></div>' +
+              '<div style="font-size:11px;color:#aaa;margin-top:1px">' + fmtDate(r.requestedAt) + '</div>' +
+              (r.reason ? '<div style="font-size:12px;color:#555;margin-top:6px;background:#F9F9F9;border-left:3px solid #FECACA;padding:6px 10px;border-radius:0 4px 4px 0;line-height:1.5">"' + _escHtml(r.reason) + '"</div>' : '') +
+            '</div>' +
+            '<span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:5px;background:' + statusBg + ';color:' + statusColor + ';flex-shrink:0;margin-top:2px">' + statusLabel + '</span>' +
+            (isPending ?
+              '<div style="display:flex;gap:6px;flex-shrink:0">' +
+                '<button onclick="dismissResetRequest(' + r.id + ')" style="font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:700;padding:6px 12px;border-radius:6px;border:1.5px solid #DFE2E6;background:#fff;color:#666;cursor:pointer">Dismiss</button>' +
+                '<button onclick="clearResetAttempts(' + r.id + ',' + r.quizId + ')" style="font-family:\'Nunito\',sans-serif;font-size:11px;font-weight:800;padding:6px 14px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer">Clear Attempts</button>' +
+              '</div>' : '') +
+          '</div>';
+        }).join('') + '</div>';
+    }
+
+    function clearResetAttempts(reqId, quizId) {
+      if (!confirm('Clear all 3 attempts for this quiz? The employee will be able to retake from Attempt 1.')) return;
+      localStorage.removeItem('sq_results_' + quizId);
+      var requests = [];
+      try { requests = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+      var req = requests.find(function(r){ return r.id === reqId; });
+      if (req) { req.status = 'cleared'; req.clearedAt = Date.now(); }
+      localStorage.setItem('sq_reset_requests', JSON.stringify(requests));
+      renderResetRequests();
+    }
+
+    function dismissResetRequest(reqId) {
+      var requests = [];
+      try { requests = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+      var req = requests.find(function(r){ return r.id === reqId; });
+      if (req) req.status = 'dismissed';
+      localStorage.setItem('sq_reset_requests', JSON.stringify(requests));
+      renderResetRequests();
+    }
+
     /* ── Admin schedule requests panel ── */
+    function dismissScheduleRequest(reqId) {
+      var updated = _srUpdate(reqId, { status: 'dismissed' });
+      SCHEDULE_REQUESTS.length = 0; updated.forEach(function(r){ SCHEDULE_REQUESTS.push(r); });
+      renderScheduleRequests();
+    }
+
     function renderScheduleRequests() {
+      /* always re-read from localStorage so refresh never loses data */
+      var fresh = _srLoad();
+      SCHEDULE_REQUESTS.length = 0; fresh.forEach(function(r){ SCHEDULE_REQUESTS.push(r); });
+
       var body  = document.getElementById('schedRequestsBody');
       var badge = document.getElementById('schedPendingBadge');
       if (!body || !badge) return;
 
-      var pending = SCHEDULE_REQUESTS.filter(function(r) { return r.status === 'pending'; });
+      var pending = fresh.filter(function(r) { return r.status === 'pending'; });
       badge.style.display = pending.length ? 'inline' : 'none';
       badge.textContent = pending.length;
 
-      var active = SCHEDULE_REQUESTS.filter(function(r) { return r.status !== 'used'; });
+      var active = fresh.filter(function(r) { return r.status !== 'used' && r.status !== 'dismissed'; });
       if (active.length === 0) {
         body.innerHTML = '<div style="padding:14px 18px;font-size:13px;color:#bbb;text-align:center">No schedule requests.</div>';
         return;
@@ -6259,40 +6803,49 @@
 
       body.innerHTML = '<div style="border-top:1px solid #F0F0F0">' +
         active.map(function(r) {
-          var statusColor = r.status === 'pending' ? '#F59E0B' : r.status === 'approved' ? '#16a34a' : '#DC2626';
-          var statusBg    = r.status === 'pending' ? '#FFF7ED' : r.status === 'approved' ? '#F0FDF4' : '#FEF2F2';
-          var statusLabel = r.status === 'pending' ? 'Pending' : r.status === 'approved' ? 'Approved' : 'Denied';
-          return '<div style="display:flex;align-items:center;gap:12px;padding:11px 18px;border-bottom:1px solid #F7F7F7;flex-wrap:wrap">' +
+          var isPending  = r.status === 'pending';
+          var statusColor = isPending ? '#F59E0B' : r.status === 'approved' ? '#16a34a' : '#DC2626';
+          var statusBg    = isPending ? '#FFF7ED' : r.status === 'approved' ? '#F0FDF4' : '#FEF2F2';
+          var statusLabel = isPending ? 'Pending'  : r.status === 'approved' ? 'Approved' : 'Denied';
+          var _sUsr = _escHtml(r.userName || 'Unknown');
+          var _sEml = _escHtml(r.userEmail || '');
+          return '<div style="display:flex;align-items:flex-start;gap:12px;padding:13px 18px;border-bottom:1px solid #F7F7F7;flex-wrap:wrap">' +
             '<div style="flex:1;min-width:160px">' +
-            '<div style="font-weight:700;font-size:13px;color:#111">' + _escHtml(r.userName) + '</div>' +
-            '<div style="font-size:11px;color:#888;margin-top:1px">' + _escHtml(r.quizTitle) + ' · ' + _escHtml(r.quizCls) + '</div>' +
-            (r.reason ? '<div style="font-size:11px;color:#aaa;margin-top:2px;font-style:italic">"' + _escHtml(r.reason) + '"</div>' : '') +
+              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">' +
+                '<div style="width:30px;height:30px;border-radius:50%;background:#EEF3FE;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#5189F3;flex-shrink:0">' + (_sUsr.charAt(0)||'?') + '</div>' +
+                '<div>' +
+                  '<div style="font-weight:800;font-size:13px;color:#111">' + _sUsr + '</div>' +
+                  (_sEml ? '<div style="font-size:11px;color:#5189F3;font-weight:600">' + _sEml + '</div>' : '') +
+                '</div>' +
+              '</div>' +
+              '<div style="font-size:12px;color:#555;margin-top:2px">Quiz: <strong>' + _escHtml(r.quizTitle) + '</strong> · ' + _escHtml(r.quizCls) + '</div>' +
+              (r.reason ? '<div style="font-size:12px;color:#555;margin-top:5px;background:#F9F9F9;border-left:3px solid #FCD34D;padding:6px 10px;border-radius:0 4px 4px 0;line-height:1.5;font-style:italic">"' + _escHtml(r.reason) + '"</div>' : '') +
             '</div>' +
-            '<div style="font-size:11px;color:#aaa">' + _fmtDate(r.requestedAt) + '</div>' +
-            '<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:2px;background:' + statusBg + ';color:' + statusColor + '">' + statusLabel + '</span>' +
-            (r.status === 'pending' ?
-              '<div style="display:flex;gap:6px">' +
-              '<button class="sched-deny-btn" onclick="denyScheduleRequest(' + r.id + ')">Deny</button>' +
-              '<button class="sched-approve-btn" onclick="approveScheduleRequest(' + r.id + ')">Approve</button>' +
-              '</div>' : '') +
-            '</div>';
+            '<div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0">' +
+              '<div style="font-size:11px;color:#aaa">' + _fmtDate(r.requestedAt) + '</div>' +
+              '<span style="font-size:11px;font-weight:700;padding:2px 9px;border-radius:5px;background:' + statusBg + ';color:' + statusColor + '">' + statusLabel + '</span>' +
+              (isPending
+                ? '<div style="display:flex;gap:6px;margin-top:2px">' +
+                    '<button class="sched-deny-btn" onclick="denyScheduleRequest(' + r.id + ')">Deny</button>' +
+                    '<button class="sched-approve-btn" onclick="approveScheduleRequest(' + r.id + ')">Approve</button>' +
+                  '</div>'
+                : '<button onclick="dismissScheduleRequest(' + r.id + ')" style="font-family:\'Nunito\',sans-serif;font-size:10px;font-weight:700;padding:3px 10px;border-radius:5px;border:1px solid #E5E7EB;background:#fff;color:#9CA3AF;cursor:pointer;margin-top:2px">Dismiss</button>') +
+            '</div>' +
+          '</div>';
         }).join('') + '</div>';
     }
 
     function approveScheduleRequest(reqId) {
-      var req = SCHEDULE_REQUESTS.find(function(r) { return r.id === reqId; });
-      if (!req) return;
-      req.status = 'approved';
+      var updated = _srUpdate(reqId, { status: 'approved' });
+      SCHEDULE_REQUESTS.length = 0; updated.forEach(function(r){ SCHEDULE_REQUESTS.push(r); });
       renderScheduleRequests();
     }
 
     function denyScheduleRequest(reqId) {
-      var req = SCHEDULE_REQUESTS.find(function(r) { return r.id === reqId; });
-      if (!req) return;
       var note = prompt('Optional: add a reason for denial (shown to employee):', '');
-      if (note === null) return; // cancelled
-      req.status   = 'denied';
-      req.adminNote = note.trim();
+      if (note === null) return;
+      var updated = _srUpdate(reqId, { status: 'denied', adminNote: note.trim() });
+      SCHEDULE_REQUESTS.length = 0; updated.forEach(function(r){ SCHEDULE_REQUESTS.push(r); });
       renderScheduleRequests();
     }
 
@@ -6302,9 +6855,8 @@
     function _showAtt3RequestForm(quizId, module, cls) {
       _att3QuizId = quizId; _att3Module = module; _att3Cls = cls;
       var quiz = quizzes.find(function(q) { return q.id === quizId; });
-      var nameOptions = LB_USERS.map(function(u) {
-        return '<option value="' + _escHtml(u.name) + '">' + _escHtml(u.name) + '</option>';
-      }).join('');
+      var _pu = _hubPreviewUser || LB_USERS[0];
+      var _puInitial = _pu && _pu.name ? _pu.name.charAt(0) : '?';
       document.getElementById('att3ReqContent').innerHTML =
         '<div class="att3req-head">' +
           '<div style="display:flex;align-items:center;justify-content:space-between;gap:12px">' +
@@ -6320,10 +6872,14 @@
         '</div>' +
         '<div class="att3req-body">' +
           '<div class="att3req-field">' +
-            '<label class="att3req-label">Your Name <span style="color:#DC2626">*</span></label>' +
-            '<select id="att3NameSel" class="att3req-input" style="appearance:auto">' +
-              '<option value="">— Select your name —</option>' + nameOptions +
-            '</select>' +
+            '<label class="att3req-label">Submitting as</label>' +
+            '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#F0F5FF;border:1.5px solid #C7D8FB;border-radius:8px">' +
+              '<div style="width:34px;height:34px;border-radius:50%;background:#5189F3;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0">' + _escHtml(_puInitial) + '</div>' +
+              '<div>' +
+                '<div style="font-size:13px;font-weight:800;color:#111">' + _escHtml(_pu ? _pu.name : '') + '</div>' +
+                '<div style="font-size:11px;color:#5189F3;font-weight:600">' + _escHtml(_pu ? _pu.email : '') + '</div>' +
+              '</div>' +
+            '</div>' +
           '</div>' +
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">' +
             '<div>' +
@@ -6357,22 +6913,28 @@
     }
 
     function _submitAtt3Request() {
-      var name   = (document.getElementById('att3NameSel').value || '').trim();
+      var _pu   = _hubPreviewUser || LB_USERS[0];
+      var name  = _pu ? _pu.name  : '';
+      var email = _pu ? _pu.email : '';
       var reason = (document.getElementById('att3ReasonInput').value || '').trim();
       var notes  = (document.getElementById('att3NotesInput').value || '').trim();
-      if (!name)   { alert('Please select your name.'); return; }
+      if (!name)   { alert('No user selected. Please choose a user from "Viewing as" in the hub header.'); return; }
       if (!reason) { alert('Please enter a reason for the request.'); return; }
       var quiz = quizzes.find(function(q) { return q.id === _att3QuizId; });
       var dup  = SCHEDULE_REQUESTS.find(function(r) {
-        return r.quizId === _att3QuizId && r.userId === name && (r.status === 'pending' || r.status === 'approved');
+        return r.quizId === _att3QuizId && r.userId === email && (r.status === 'pending' || r.status === 'approved');
       });
       if (dup) { alert('A request is already pending for this user.'); return; }
-      SCHEDULE_REQUESTS.push({
+      var _sqTitle = quiz ? quiz.title : _att3Cls;
+      var _newSR = {
         id: Date.now(), quizId: _att3QuizId,
-        quizTitle: quiz ? quiz.title : '', quizModule: _att3Module, quizCls: _att3Cls,
-        userId: name, userName: name, reason: reason, notes: notes,
+        quizTitle: _sqTitle, quizModule: _att3Module, quizCls: _att3Cls,
+        userId: email, userName: name, userEmail: email, reason: reason, notes: notes,
         requestedAt: Date.now(), status: 'pending', adminNote: ''
-      });
+      };
+      _srPush(_newSR);
+      SCHEDULE_REQUESTS.push(_newSR);
+      _addNotif('sched', 'Scheduled Attempt Request', name + ' requested Attempt 3 for "' + _sqTitle + '"');
       renderScheduleRequests();
       _closeAtt3Form();
       if (typeof hubView !== 'undefined' && hubView === 'class') { _renderHubClassDetail(); }
@@ -6391,6 +6953,7 @@
 
     renderQuizList();
     renderScheduleRequests();
+    renderResetRequests();
     renderQuestions();
 
     /* ══════════════════════════════════════
@@ -7071,7 +7634,7 @@
 
     function _classCertTitle(mod, cls) {
       const suffix = (CLSCERT_MOD_CONFIG[mod] || {}).suffix || 'Specialist';
-      return 'SeatTrace Certified ' + cls + ' ' + suffix;
+      return 'SeaTrace Certified ' + cls + ' ' + suffix;
     }
 
     function _getClassCertHolders(mod, cls) {
@@ -7808,6 +8371,21 @@
     /* ─── Hub Redesign ─────────────────────────────────────────── */
     let hubView = 'overview';
     let hubClassMod = null, hubClassCls = null, hubClassIdx = null;
+    var _hubPreviewUser = LB_USERS[0] || { name: 'User', email: '' };
+
+    function _initHubViewAsSelect() {
+      var sel = document.getElementById('hubViewAsSelect');
+      if (!sel) return;
+      sel.innerHTML = LB_USERS.map(function(u) {
+        return '<option value="' + u.email + '">' + u.name + ' &lt;' + u.email + '&gt;</option>';
+      }).join('');
+      sel.value = _hubPreviewUser.email;
+    }
+    function _onHubViewAsChange() {
+      var sel = document.getElementById('hubViewAsSelect');
+      var user = LB_USERS.find(function(u) { return u.email === sel.value; });
+      if (user) { _hubPreviewUser = user; _renderHubOverview(); }
+    }
 
     const CLASS_GLOSSARY_TERMS = {
       'Beheading':             ['Beheading', 'Yield'],
@@ -8034,16 +8612,39 @@
 
     function _switchHubTab(tab) {
       _hubCurrentTab = tab;
-      document.getElementById('hubAdminView').style.display = tab === 'admin' ? 'block' : 'none';
-      document.getElementById('hubUserView').style.display  = tab === 'user'  ? 'block' : 'none';
+      document.getElementById('hubAdminView').style.display  = tab === 'admin' ? 'block' : 'none';
+      document.getElementById('hubUserView').style.display   = tab === 'user'  ? 'block' : 'none';
+      document.getElementById('hubSearchWrap').style.display  = tab === 'user'  ? 'block' : 'none';
       document.getElementById('hubTabAdmin').className = 'hub-tab-btn' + (tab === 'admin' ? ' hub-tab-active' : '');
       document.getElementById('hubTabUser').className  = 'hub-tab-btn' + (tab === 'user'  ? ' hub-tab-active' : '');
+      var wb = document.getElementById('floatWarpBar');
+      if (wb) wb.style.display = tab === 'user' ? 'flex' : 'none';
       var sub = document.getElementById('hubSubtitle');
       if (sub) sub.textContent = tab === 'admin'
         ? 'Manage modules, classes, content and quizzes'
         : 'Employee learning path — Modules · Classes · Videos · Quizzes · Certifications';
       if (tab === 'admin') _renderHubAdminView();
-      else                 _renderHubOverview();
+      else {
+        _renderHubOverview();
+        _notifyUserOfClearedRequests();
+      }
+    }
+
+    function _notifyUserOfClearedRequests() {
+      if (!_hubPreviewUser) return;
+      var allReqs = [];
+      try { allReqs = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+      var cleared = allReqs.filter(function(r) {
+        return r.status === 'cleared' && r.userEmail === _hubPreviewUser.email && !r.userSeen;
+      });
+      cleared.forEach(function(r) {
+        var dateStr = r.clearedAt
+          ? new Date(r.clearedAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+          : 'recently';
+        _showToast('reset-cleared', 'Attempts Reset', 'Admin cleared your attempts for "' + r.quizTitle + '" on ' + dateStr + '. You can now retake from Attempt 1.');
+        r.userSeen = true;
+      });
+      if (cleared.length) localStorage.setItem('sq_reset_requests', JSON.stringify(allReqs));
     }
 
     /* ════════════════════════════════════════════════
@@ -8497,6 +9098,14 @@
                 'Watch 90% to unlock</span>';
         }
 
+        /* ── Quiz version / stale-pass detection ── */
+        var _curVer = quiz.version || 1;
+        var _passedVer = null;
+        if (_sqR.att1 && _sqR.att1.pass) _passedVer = _sqR.att1.quizVersion || 1;
+        else if (_sqR.att2 && _sqR.att2.pass) _passedVer = _sqR.att2.quizVersion || 1;
+        else if (_sqR.att3 && _sqR.att3.pass) _passedVer = _sqR.att3.quizVersion || 1;
+        var _isStalePass = _passedVer !== null && _passedVer < _curVer;
+
         var infoRow = '<div class="hub-quiz-info" style="' + headerFade + '">' +
           '<div class="hub-quiz-info-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>' +
           '<div class="hub-quiz-info-body">' +
@@ -8509,14 +9118,6 @@
           '</div>' +
           headerBtn +
         '</div>';
-
-        /* ── Quiz version / stale-pass detection ── */
-        var _curVer = quiz.version || 1;
-        var _passedVer = null;
-        if (_sqR.att1 && _sqR.att1.pass) _passedVer = _sqR.att1.quizVersion || 1;
-        else if (_sqR.att2 && _sqR.att2.pass) _passedVer = _sqR.att2.quizVersion || 1;
-        else if (_sqR.att3 && _sqR.att3.pass) _passedVer = _sqR.att3.quizVersion || 1;
-        var _isStalePass = _passedVer !== null && _passedVer < _curVer;
 
         var _upgradePassedVer = _passedVer;
 
@@ -8533,6 +9134,30 @@
 
         /* Video gate under the header when no attempt yet */
         var preQuizGate = (!hasAtt1 && !_vidGatePassed) ? _vidGateLock(1) : '';
+
+        /* ── Admin reset notification banner (user side) ── */
+        var _adminResetBanner = '';
+        if (!hasAtt1) {
+          var _allReqs = [];
+          try { _allReqs = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+          var _myCleared = _allReqs.find(function(r) {
+            return r.quizId === quiz.id && r.status === 'cleared' &&
+                   _hubPreviewUser && r.userEmail === _hubPreviewUser.email;
+          });
+          if (_myCleared) {
+            var _clearedDateStr = _myCleared.clearedAt
+              ? new Date(_myCleared.clearedAt).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+              : 'recently';
+            _adminResetBanner =
+              '<div style="display:flex;align-items:flex-start;gap:12px;background:#F0FDF4;border:1.5px solid #86EFAC;border-radius:10px;padding:13px 16px;margin-bottom:12px">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20" style="flex-shrink:0;margin-top:1px"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>' +
+                '<div style="flex:1">' +
+                  '<div style="font-size:13px;font-weight:800;color:#166534;margin-bottom:2px">Admin reset your attempts</div>' +
+                  '<div style="font-size:12px;color:#15803D;line-height:1.5">Your request was approved on ' + _clearedDateStr + '. Your attempts have been cleared — you can retake the quiz from Attempt 1.</div>' +
+                '</div>' +
+              '</div>';
+          }
+        }
 
         var attHistory = '';
 
@@ -8557,21 +9182,46 @@
                   if (_sqR.att3.pass) {
                     attHistory += _isStalePass ? _upgradeRequiredBanner() : _buildHubNextClassBanner(mod, cls, classes, ci);
                   } else {
+                    var _resetReqs = [];
+                    try { _resetReqs = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+                    var _att3Ts = _sqR.att3 && _sqR.att3.ts ? _sqR.att3.ts : 0;
+                    /* pending in this round = pending after the latest att3 */
+                    var _existingReq = _resetReqs.find(function(r){
+                      return r.quizId === quiz.id && r.status === 'pending' && r.requestedAt >= _att3Ts;
+                    });
+                    /* cleared in this round = clearedAt before current att3 means it's a past round, ignore */
+                    var _clearedReq = _resetReqs.find(function(r){
+                      return r.quizId === quiz.id && r.status === 'cleared' && (r.clearedAt || 0) >= _att3Ts;
+                    });
                     attHistory +=
                       '<div class="hub-att3-banner" style="background:#FEF2F2;border-color:#FECACA">' +
                         '<div class="hub-att3-banner-text">' +
                           '<div class="hub-att3-banner-title" style="color:#991B1B">All 3 attempts exhausted</div>' +
-                          '<div class="hub-att3-banner-sub" style="color:#B91C1C">Please contact your supervisor for further guidance.</div>' +
+                          '<div class="hub-att3-banner-sub" style="color:#B91C1C">You can still access all class videos, voiceovers and documents. Submit a reset request — admin will review and decide.</div>' +
+                        '</div>' +
+                        (!_existingReq && !_clearedReq
+                          ? '<button class="hub-att3-req-btn" style="background:#DC2626" onclick="_showResetRequestForm(' + quiz.id + ')">Request Reset</button>'
+                          : _existingReq
+                            ? '<span style="font-size:11px;font-weight:800;color:#DC2626;background:#FEE2E2;border-radius:6px;padding:6px 12px;flex-shrink:0">Request Pending</span>'
+                            : '<span style="font-size:11px;font-weight:800;color:#16a34a;background:#DCFCE7;border-radius:6px;padding:6px 12px;flex-shrink:0">Attempts Cleared ✓</span>') +
+                      '</div>' +
+                      '<div id="resetReqForm-' + quiz.id + '" style="display:none;margin-top:8px;background:#fff;border:1.5px solid #FECACA;border-radius:8px;padding:14px 16px">' +
+                        '<div style="font-size:12px;font-weight:800;color:#991B1B;margin-bottom:8px">Request Attempt Reset</div>' +
+                        '<textarea id="resetReqReason-' + quiz.id + '" placeholder="Explain why you need another attempt…" style="width:100%;box-sizing:border-box;height:72px;padding:9px 12px;border:1.5px solid #DFE2E6;border-radius:6px;font-family:\'Nunito\',sans-serif;font-size:13px;resize:none;outline:none;color:#333" onfocus="this.style.borderColor=\'#5189F3\'" onblur="this.style.borderColor=\'#DFE2E6\'"></textarea>' +
+                        '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">' +
+                          '<button onclick="document.getElementById(\'resetReqForm-' + quiz.id + '\').style.display=\'none\'" style="font-family:\'Nunito\',sans-serif;font-size:12px;font-weight:700;padding:7px 14px;border-radius:6px;border:1.5px solid #DFE2E6;background:#fff;color:#666;cursor:pointer">Cancel</button>' +
+                          '<button onclick="_submitResetRequest(' + quiz.id + ',\'' + quiz.title.replace(/'/g,"\\'") + '\')" style="font-family:\'Nunito\',sans-serif;font-size:12px;font-weight:800;padding:7px 14px;border-radius:6px;border:none;background:#DC2626;color:#fff;cursor:pointer">Submit Request</button>' +
                         '</div>' +
                       '</div>';
                   }
                 } else {
                   var _att2Ts      = _sqR.att2 && _sqR.att2.ts ? _sqR.att2.ts : 0;
-                  var _msAfterAtt2 = _att2Ts ? (Date.now() - _att2Ts) : 0;
+                  var _msAfterAtt2 = _att2Ts ? (_devNow() - _att2Ts) : 0;
                   var _att3CdMs    = 7 * 24 * 3600 * 1000;
                   var _att3Time    = _msAfterAtt2 >= _att3CdMs;
-                  var _att3Approved = SCHEDULE_REQUESTS.some(function(r) { return r.quizId === quiz.id && r.status === 'approved'; });
-                  var _att3Req     = SCHEDULE_REQUESTS.find(function(r) { return r.quizId === quiz.id && (r.status === 'pending' || r.status === 'approved'); });
+                  var _srFresh     = _srLoad();
+                  var _att3Approved = _srFresh.some(function(r) { return r.quizId === quiz.id && r.status === 'approved'; });
+                  var _att3Req     = _srFresh.find(function(r) { return r.quizId === quiz.id && (r.status === 'pending' || r.status === 'approved'); });
 
                   if ((_att3Time || _att3Approved) && _vidGatePassed) {
                     attHistory +=
@@ -8620,7 +9270,7 @@
             } else {
               /* Att2 not yet taken: 2-day cooldown + video re-watch */
               var _att1Ts      = _sqR.att1 && _sqR.att1.ts ? _sqR.att1.ts : 0;
-              var _msAfterAtt1 = _att1Ts ? (Date.now() - _att1Ts) : 0;
+              var _msAfterAtt1 = _att1Ts ? (_devNow() - _att1Ts) : 0;
               var _att2CdMs    = 2 * 24 * 3600 * 1000;
               var _att2Time    = _msAfterAtt1 >= _att2CdMs;
 
@@ -8647,7 +9297,7 @@
         }
 
         var certCard = _buildCertStatusCard(quiz, _sqR);
-        quizHtml = infoRow + preQuizGate + (attHistory ? '<div class="hub-att-history">' + attHistory + '</div>' : '') + certCard;
+        quizHtml = infoRow + _adminResetBanner + preQuizGate + (attHistory ? '<div class="hub-att-history">' + attHistory + '</div>' : '') + certCard;
       }
 
       /* Certification (last class of module) */
@@ -8715,6 +9365,7 @@
             : '') +
           '<div class="hub-detail-sec-title" style="margin-top:22px">Assessment</div>' +
           quizHtml + certHtml +
+
           '<div class="hub-detail-nav">' + prevBtn + nextBtn + '</div>' +
         '</div>';
     }
@@ -9047,6 +9698,145 @@
     var _sqViewMode       = false;
     var _sqIsRenewal      = false;
 
+    /* ── Time Warp (testing only) ── */
+    var _devTimeOffsetMs  = 0;
+    function _devNow()    { return Date.now() + _devTimeOffsetMs; }
+    function _devSetDays(days) {
+      _devTimeOffsetMs = days * 86400000;
+      var lbl = document.getElementById('floatWarpLabel');
+      if (lbl) lbl.textContent = days === 0 ? 'Real time' : '+' + days + ' day' + (days !== 1 ? 's' : '');
+      if (typeof hubView !== 'undefined' && hubView === 'class') openHubClass(hubClassMod, hubClassCls, hubClassIdx);
+    }
+    function _devAddDays(delta) {
+      var cur = Math.round(_devTimeOffsetMs / 86400000);
+      _devSetDays(Math.max(0, cur + delta));
+    }
+    function _devResetWarp() { _devSetDays(0); }
+
+    /* ══ TESTING / DEV TOOLS ══ */
+    function _devClearResults(quizId, mod, cls, ci) {
+      localStorage.removeItem('sq_results_' + quizId);
+      VID_GATE_RESET[mod + ':' + cls] = false;
+      openHubClass(mod, cls, ci);
+    }
+
+    function _devSetAtt(quizId, mod, cls, ci, attNum, pass, daysAgo) {
+      var k = 'sq_results_' + quizId;
+      var d = {};
+      try { d = JSON.parse(localStorage.getItem(k) || '{}'); } catch(e) {}
+      var ts   = Date.now() - (daysAgo * 86400000);
+      var date = new Date(ts).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+      var quiz = quizzes.find(function(q){ return q.id === quizId; });
+      var total = quiz && quiz.questions ? quiz.questions.length : 5;
+      var score = pass ? total : Math.floor(total * 0.3);
+      var pct   = Math.round(score / total * 100);
+      d['att' + attNum] = { score:score, total:total, pct:pct, pass:pass, date:date, ts:ts, quizVersion: quiz ? (quiz.version||1) : 1 };
+      if (pass && !d.certIssuedAt) d.certIssuedAt = ts;
+      if (attNum === 1 && !pass) { VID_GATE_RESET[mod+':'+cls] = true; }
+      if (attNum === 2 && !pass) { VID_GATE_RESET[mod+':'+cls] = true; }
+      localStorage.setItem(k, JSON.stringify(d));
+      openHubClass(mod, cls, ci);
+    }
+
+    function _devExpireCert(quizId, mod, cls, ci, mode) {
+      var k = 'sq_results_' + quizId;
+      var d = {};
+      try { d = JSON.parse(localStorage.getItem(k) || '{}'); } catch(e) {}
+      var quiz      = quizzes.find(function(q){ return q.id === quizId; });
+      var validity  = quiz ? (quiz.certValidity || '3m') : '3m';
+      var msMap     = { '3m': 91*86400000, '6m': 182*86400000 };
+      var validMs   = msMap[validity] || 91*86400000;
+      if (mode === 'soon')    d.certIssuedAt = Date.now() - validMs + (30*86400000);
+      if (mode === 'expired') d.certIssuedAt = Date.now() - validMs - (15*86400000);
+      localStorage.setItem(k, JSON.stringify(d));
+      openHubClass(mod, cls, ci);
+    }
+
+    function _devBumpVersion(quizId, mod, cls, ci) {
+      var quiz = quizzes.find(function(q){ return q.id === quizId; });
+      if (quiz) {
+        quiz.version  = (quiz.version || 1) + 1;
+        quiz.updatedAt = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+        _persistQuizzes();
+      }
+      openHubClass(mod, cls, ci);
+    }
+
+    function _devBuildTestPanel(quiz, sqR, mod, cls, ci) {
+      if (!quiz) return '';
+      var qid  = quiz.id;
+      var ems  = mod.replace(/'/g,"\\'");
+      var ecs  = cls.replace(/'/g,"\\'");
+
+      /* ── State summary ── */
+      var stateLines = [];
+      if (!sqR.att1 && !sqR.att2 && !sqR.att3) stateLines.push('No attempts yet');
+      if (sqR.att1) stateLines.push('Att1: ' + (sqR.att1.pass ? '✓ PASS' : '✗ FAIL') + ' · ' + sqR.att1.pct + '%');
+      if (sqR.att2) stateLines.push('Att2: ' + (sqR.att2.pass ? '✓ PASS' : '✗ FAIL') + ' · ' + sqR.att2.pct + '%');
+      if (sqR.att3) stateLines.push('Att3: ' + (sqR.att3.pass ? '✓ PASS' : '✗ FAIL') + ' · ' + sqR.att3.pct + '%');
+      if (sqR.certIssuedAt) {
+        var _msMap2 = { '3m': 91*86400000, '6m': 182*86400000 };
+        var _expAt2 = sqR.certIssuedAt + (_msMap2[quiz.certValidity||'3m'] || 91*86400000);
+        var _dLeft2 = Math.floor((_expAt2 - _devNow()) / 86400000);
+        stateLines.push('Cert: ' + (_dLeft2 > 0 ? _dLeft2 + 'd left' : Math.abs(_dLeft2) + 'd expired'));
+      }
+      stateLines.push('Quiz v' + (quiz.version||1));
+
+      /* ── Time warp ── */
+      var _warpDays   = Math.round(_devTimeOffsetMs / 86400000);
+      var _warpActive = _warpDays > 0;
+      var _warpLabel  = _warpActive ? '+' + _warpDays + ' day' + (_warpDays !== 1 ? 's' : '') : 'Real time';
+      var _warpBg     = _warpActive ? '#FEF3C7' : '#F0F9FF';
+      var _warpBorder = _warpActive ? '#FDE68A' : '#BAE6FD';
+      var _warpTxt    = _warpActive ? '#92400E' : '#0369A1';
+
+      var b = function(label, cls2, fn) {
+        return '<button class="dev-btn ' + cls2 + '" onclick="' + fn + '">' + label + '</button>';
+      };
+
+      return '<div class="dev-panel collapsed">' +
+        '<div class="dev-panel-hdr" onclick="this.parentNode.classList.toggle(\'collapsed\')">' +
+          '<span style="font-size:14px">🧪</span>' +
+          '<span class="dev-panel-title">Testing Tools</span>' +
+          '<span class="dev-panel-note">Dev only</span>' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="6 9 12 15 18 9"/></svg>' +
+        '</div>' +
+        '<div class="dev-panel-body">' +
+
+          '<div class="dev-state-bar">' + stateLines.join(' &nbsp;·&nbsp; ') + '</div>' +
+
+          /* ── Time Warp ── */
+          '<div>' +
+            '<div class="dev-group-label">⏱ Time Warp — jump forward in time to test cooldowns &amp; expiry</div>' +
+            '<div id="devWarpBar" style="display:flex;align-items:center;gap:10px;background:' + _warpBg + ';border:1.5px solid ' + _warpBorder + ';border-radius:8px;padding:8px 12px;margin-bottom:6px;">' +
+              '<span style="font-size:13px">🕐</span>' +
+              '<span id="devWarpLabel" style="font-weight:800;font-size:12px;color:' + _warpTxt + ';min-width:90px;">' + _warpLabel + '</span>' +
+              '<div style="display:flex;gap:4px;flex-wrap:wrap;">' +
+                b('+1d',   'dev-warp', '_devAddDays(1)') +
+                b('+2d',   'dev-warp', '_devAddDays(2)') +
+                b('+7d',   'dev-warp', '_devAddDays(7)') +
+                b('+30d',  'dev-warp', '_devAddDays(30)') +
+                b('+90d',  'dev-warp', '_devAddDays(90)') +
+                b('+180d', 'dev-warp', '_devAddDays(180)') +
+              '</div>' +
+              b('↺ Real time', 'dev-warp dev-warp-reset', '_devResetWarp()') +
+            '</div>' +
+          '</div>' +
+
+          /* ── Utilities ── */
+          '<div>' +
+            '<div class="dev-group-label">Utilities</div>' +
+            '<div class="dev-btn-row">' +
+              b('Reset All Attempts', 'dev-reset', '_devClearResults(' + qid + ',\'' + ems + '\',\'' + ecs + '\',' + ci + ')') +
+              b('Bump Quiz Version', 'dev-reset', '_devBumpVersion(' + qid + ',\'' + ems + '\',\'' + ecs + '\',' + ci + ')') +
+              b('Simulate Watch Video', '', '_simWatchVideos(\'' + ems + '\',\'' + ecs + '\')') +
+            '</div>' +
+          '</div>' +
+
+        '</div>' +
+      '</div>';
+    }
+
     function _startCertRenewal(quizId) {
       var quiz = quizzes.find(function(q) { return q.id === quizId; });
       if (!quiz || !quiz.questions || quiz.questions.length === 0) { alert('Quiz not found.'); return; }
@@ -9069,22 +9859,12 @@
       var issuedAt = rData.certIssuedAt;
       var fmtDate  = function(ts) { return new Date(ts).toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' }); };
 
-      if (validity === 'lifetime') {
-        return '<div class="cert-status-card cs-lifetime">' +
-          '<div class="cert-status-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#0EA5E9" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>' +
-          '<div class="cert-status-body">' +
-            '<div class="cert-status-title">Certified — Lifetime</div>' +
-            '<div class="cert-status-sub">Issued ' + fmtDate(issuedAt) + ' · No renewal required</div>' +
-          '</div>' +
-        '</div>';
-      }
-
-      var msMap    = { '1y': 365, '3y': 1095, '6y': 2190 };
-      var days     = msMap[validity] || 365;
+      var msMap    = { '3m': 91, '6m': 182 };
+      var days     = msMap[validity] || 91;
       var expiresAt = issuedAt + days * 86400000;
-      var now      = Date.now();
+      var now      = _devNow();
       var daysLeft = Math.floor((expiresAt - now) / 86400000);
-      var lblMap   = { '1y': '1 yr', '3y': '3 yr', '6y': '6 yr' };
+      var lblMap   = { '3m': '3 mo', '6m': '6 mo' };
 
       var renewals = (rData.renewalHistory || []).filter(function(r){ return r.pass; });
       var renewalNote = renewals.length > 0
@@ -9123,6 +9903,41 @@
       '</div>';
     }
 
+    function _showResetRequestForm(quizId) {
+      var el = document.getElementById('resetReqForm-' + quizId);
+      if (el) el.style.display = 'block';
+    }
+
+    function _submitResetRequest(quizId, quizTitle) {
+      var textarea = document.getElementById('resetReqReason-' + quizId);
+      var reason = textarea ? textarea.value.trim() : '';
+      if (!reason) { alert('Please enter a reason before submitting.'); return; }
+      var requests = [];
+      try { requests = JSON.parse(localStorage.getItem('sq_reset_requests') || '[]'); } catch(e) {}
+      requests.push({
+        id: Date.now(),
+        quizId: quizId,
+        quizTitle: quizTitle,
+        userName: _hubPreviewUser ? _hubPreviewUser.name  : 'Unknown',
+        userEmail: _hubPreviewUser ? _hubPreviewUser.email : '',
+        reason: reason,
+        requestedAt: Date.now(),
+        status: 'pending'
+      });
+      localStorage.setItem('sq_reset_requests', JSON.stringify(requests));
+      var _rqUser = (_hubPreviewUser ? _hubPreviewUser.name : 'A user');
+      _addNotif('reset', 'Attempt Reset Request', _rqUser + ' requested a reset for "' + quizTitle + '"');
+      var form = document.getElementById('resetReqForm-' + quizId);
+      if (form) {
+        form.innerHTML = '<div style="text-align:center;padding:10px;font-size:13px;font-weight:700;color:#16a34a">✓ Request submitted. Admin will review and notify you.</div>';
+        setTimeout(function() {
+          var quiz = quizzes.find(function(q){ return q.id === quizId; });
+          if (quiz) renderHub(quiz.module);
+        }, 1800);
+      }
+      renderResetRequests();
+    }
+
     function _upgradeQuiz(qid, passedVer) {
       var k = 'sq_results_' + qid;
       var existing = {};
@@ -9148,7 +9963,17 @@
       _sqPassedAtt1 = false;
       _sqIsRenewal  = false;
       document.getElementById('sqOverlay').classList.add('open');
-      document.getElementById('sqCloseFootBtn').style.display = 'none';
+      // Rebuild footer (may have been replaced by _sqShowResult from a prior session)
+      document.getElementById('sqFoot').innerHTML =
+        '<button class="sq-nav-btn" id="sqPrevBtn" onclick="_sqPrev()" style="display:none">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>Back</button>' +
+        '<div style="display:flex;gap:10px">' +
+          '<button class="sq-nav-btn" id="sqNextBtn" onclick="_sqNext()">Next' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg></button>' +
+          '<button class="sq-submit-btn" id="sqSubmitBtn" onclick="_sqSubmit()" style="display:none">' +
+            '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>Submit Assessment</button>' +
+          '<button class="sq-close-btn" id="sqCloseFootBtn" onclick="_sqClose()" style="display:none">Close</button>' +
+        '</div>';
       _sqRender();
       _sqStartTimer();
     }
@@ -9307,7 +10132,7 @@
       var msg = '';
       if (pass) {
         msg = _sqIsRenewal
-          ? 'Certificate renewed! Your certification is now current and valid for another ' + ({ '1y':'year', '3y':'3 years', '6y':'6 years', 'lifetime':'lifetime' }[_sqQuiz.certValidity || 'lifetime']) + '.'
+          ? 'Certificate renewed! Your certification is now current and valid for another ' + ({ '3m':'3 months', '6m':'6 months' }[_sqQuiz.certValidity || '3m'] || '3 months') + '.'
           : 'Congratulations! You\'ve passed. You can now move to the next class.';
       } else {
         if (att === 1) {
@@ -9696,6 +10521,28 @@
     <div class="att3req-modal">
       <div id="att3ReqContent"></div>
     </div>
+  </div>
+
+  <div id="toastStack"></div>
+
+  <!-- ── Floating Time Warp Bar (dev only — shown only in Hub > User Preview) ── -->
+  <div id="floatWarpBar" style="
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%);
+    display:none; align-items:center; gap:8px;
+    background:#1C1917; border:1.5px solid #44403C; border-radius:12px;
+    padding:8px 14px; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.45);
+    font-family:'Nunito',sans-serif; user-select:none;">
+    <span style="font-size:13px; opacity:.6;">⏱</span>
+    <span id="floatWarpLabel" style="font-size:12px; font-weight:800; color:#FCD34D; min-width:80px;">Real time</span>
+    <div style="width:1px; height:16px; background:#44403C;"></div>
+    <button onclick="_devAddDays(1)"   style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+1d</button>
+    <button onclick="_devAddDays(2)"   style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+2d</button>
+    <button onclick="_devAddDays(7)"   style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+7d</button>
+    <button onclick="_devAddDays(30)"  style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+30d</button>
+    <button onclick="_devAddDays(90)"  style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+90d</button>
+    <button onclick="_devAddDays(180)" style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+180d</button>
+    <div style="width:1px; height:16px; background:#44403C;"></div>
+    <button onclick="_devResetWarp()"  style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#93C5FD;padding:3px 8px;border-radius:6px;border:1px solid #1D4ED8;">↺ Reset</button>
   </div>
 
 </body>
