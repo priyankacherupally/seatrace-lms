@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
+import * as path from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const config = app.get(ConfigService);
 
   const apiPrefix = config.get<string>('API_PREFIX', 'api');
@@ -23,6 +25,10 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  // Serve the Client/ folder as static files from repo root
+  const clientPath = path.join(process.cwd(), 'Client');
+  app.useStaticAssets(clientPath);
 
   await app.listen(port);
   Logger.log(
