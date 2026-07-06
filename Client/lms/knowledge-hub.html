@@ -65,6 +65,10 @@
       font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 2px;
     }
     .sidebar-divider { height: 1px; background: #F0F0F0; margin: 10px 0; }
+    #sb-modules-wrap::-webkit-scrollbar { width: 3px; }
+    #sb-modules-wrap::-webkit-scrollbar-track { background: transparent; }
+    #sb-modules-wrap::-webkit-scrollbar-thumb { background: #DFE2E6; border-radius: 3px; }
+    #sb-modules-wrap::-webkit-scrollbar-thumb:hover { background: #C4C9D4; }
 
     /* ── Main ── */
     .main { flex: 1; overflow-y: auto; padding: 24px; display: flex; flex-direction: column; }
@@ -108,8 +112,9 @@
       transition: background 0.12s;
     }
     .class-row:last-child { border-bottom: none; }
-    .class-row:not(.locked):hover { background: #FAFBFF; }
-    .class-row.locked { opacity: 0.5; }
+    .class-row:hover { background: #EEF3FF; cursor: pointer; }
+    .class-row:hover .class-row-name { color: #5189F3; }
+    .class-row:hover .class-row-chevron { color: #5189F3; }
     .class-step-circle {
       width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
       display: flex; align-items: center; justify-content: center;
@@ -136,7 +141,8 @@
     .class-prog-pct { font-size: 12px; font-weight: 800; min-width: 36px; text-align: right; }
     .class-content-count { font-size: 11px; font-weight: 600; color: #C4C9D4; flex-shrink: 0; }
     .class-card-btns { display: flex; gap: 6px; align-items: center; flex-shrink: 0; }
-    .class-row-chevron { flex-shrink: 0; color: #DFE2E6; }
+    .class-row-chevron { flex-shrink: 0; color: #C4C9D4; cursor: pointer; transition: color .15s; }
+    .class-row-chevron:hover { color: #5189F3; }
     /* legacy compat */
     .class-prog-track { height: 5px; background: #F0F0F0; border-radius: 2px; overflow: hidden; }
     .btn-primary { display: inline-flex; align-items: center; gap: 6px; padding: 7px 16px; background: #5189F3; color: #fff; border: none; border-radius: 6px; font-family: 'Nunito', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; white-space: nowrap; }
@@ -577,8 +583,10 @@
     .j-module-rows.collapsed { display:none; }
     .j-chevron { transition:transform .2s; flex-shrink:0; color:#C4C9D4; }
     .j-chevron.open { transform:rotate(180deg); }
-    .j-class-row { display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #F5F5F5 }
+    .j-class-row { display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid #F5F5F5;cursor:pointer;transition:background .12s }
     .j-class-row:last-child { border-bottom:none }
+    .j-class-row:hover { background:#EEF3FF; }
+    .j-class-row:hover .j-cls-name { color:#5189F3; }
     .j-colleague-row { display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:2px;margin-bottom:4px }
     .j-colleague-row.me { background:#EEF3FF }
     /* ── Cert Kanban ── */
@@ -683,21 +691,23 @@
 
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Knowledge Hub</div>
-      <button class="sidebar-item" id="sb-forms" onclick="switchSection('module','Forms')">
-        <div class="sidebar-item-dot" style="background:#5189F3"></div>
-        <span class="sidebar-item-name">Forms</span>
-        <span class="sidebar-item-count" style="background:#EEF3FF;color:#5189F3">8</span>
-      </button>
-      <button class="sidebar-item" id="sb-masterforms" onclick="switchSection('module','Master Forms')">
-        <div class="sidebar-item-dot" style="background:#7C3AED"></div>
-        <span class="sidebar-item-name">Master Forms</span>
-        <span class="sidebar-item-count" style="background:#F5F3FF;color:#7C3AED">5</span>
-      </button>
-      <button class="sidebar-item" id="sb-qc" onclick="switchSection('module','Quality Control')">
-        <div class="sidebar-item-dot" style="background:#16a34a"></div>
-        <span class="sidebar-item-name">Quality Control</span>
-        <span class="sidebar-item-count" style="background:#F0FDF4;color:#16a34a">5</span>
-      </button>
+      <div id="sb-modules-wrap" style="overflow-y:auto;max-height:220px">
+        <button class="sidebar-item" id="sb-forms" onclick="switchSection('module','Forms')">
+          <div class="sidebar-item-dot" style="background:#5189F3"></div>
+          <span class="sidebar-item-name">Forms</span>
+          <span class="sidebar-item-count" style="background:#EEF3FF;color:#5189F3">8</span>
+        </button>
+        <button class="sidebar-item" id="sb-masterforms" onclick="switchSection('module','Master Forms')">
+          <div class="sidebar-item-dot" style="background:#7C3AED"></div>
+          <span class="sidebar-item-name">Master Forms</span>
+          <span class="sidebar-item-count" style="background:#F5F3FF;color:#7C3AED">5</span>
+        </button>
+        <button class="sidebar-item" id="sb-qc" onclick="switchSection('module','Quality Control')">
+          <div class="sidebar-item-dot" style="background:#16a34a"></div>
+          <span class="sidebar-item-name">Quality Control</span>
+          <span class="sidebar-item-count" style="background:#F0FDF4;color:#16a34a">5</span>
+        </button>
+      </div>
 
       <div class="sidebar-divider"></div>
       <div class="sidebar-label">Team</div>
@@ -783,11 +793,10 @@
           <table class="lb-tbl">
             <thead><tr>
               <th style="width:6%">Rank</th>
-              <th style="width:26%">Learner</th>
-              <th style="width:16%">Department</th>
-              <th style="width:28%">Completion</th>
-              <th style="width:12%;text-align:center">Certs</th>
-              <th style="width:12%;text-align:center">Points</th>
+              <th style="width:30%">Learner</th>
+              <th style="width:18%">Department</th>
+              <th style="width:32%">Completion</th>
+              <th style="width:14%;text-align:center">Certs</th>
             </tr></thead>
             <tbody id="lbBody"></tbody>
           </table>
@@ -857,6 +866,61 @@
           <button class="guide-btn-start" id="guideBtnStart" onclick="_guideClose()" style="display:none">Start Learning →</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- CLASS VIEWER MODAL -->
+  <div id="classViewOverlay" onclick="_cvOverlayClick(event)" style="position:fixed;inset:0;background:rgba(8,18,36,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:690;padding:24px">
+    <div id="classViewBox" style="background:#fff;border-radius:2px;width:100%;max-width:720px;box-shadow:0 24px 64px rgba(0,0,0,.28);overflow:hidden;display:flex;flex-direction:column;max-height:90vh">
+
+      <!-- Header -->
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;padding:16px 20px;border-bottom:1px solid #DFE2E6;gap:12px">
+        <div style="display:flex;align-items:flex-start;gap:12px;min-width:0">
+          <button onclick="closeClassView()" style="flex-shrink:0;margin-top:1px;width:26px;height:26px;border:1px solid #DFE2E6;background:#F9FAFB;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#888;font-family:inherit;font-size:12px;padding:0">✕</button>
+          <div style="min-width:0">
+            <div id="cvTitle" style="font-size:15px;font-weight:800;color:#111;letter-spacing:-.01em;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></div>
+            <div id="cvBreadcrumb" style="font-size:12px;color:#9CA3AF;margin-top:3px"></div>
+          </div>
+        </div>
+        <div id="cvLiveBadge" style="flex-shrink:0;font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:2px;border:1.5px solid #16a34a;color:#16a34a;text-transform:uppercase;margin-top:2px">live</div>
+      </div>
+
+      <!-- Video area -->
+      <div style="position:relative;background:#F5F6F8;flex:1;min-height:300px;display:flex;align-items:center;justify-content:center">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#CBD5E1" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="15" height="12" rx="2"/><polygon points="17 10 22 7 22 17 17 14"/>
+          </svg>
+          <div style="font-size:13px;color:#CBD5E1;letter-spacing:.01em">No file uploaded — preview unavailable</div>
+        </div>
+        <button onclick="toggleClassViewFull()" title="Toggle fullscreen" style="position:absolute;top:10px;right:10px;width:30px;height:30px;background:rgba(0,0,0,.18);border:none;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff">
+          <svg id="cvFsIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+
+      <!-- Details -->
+      <div style="padding:20px 24px;border-top:1px solid #DFE2E6;background:#fff">
+        <div style="font-size:10px;font-weight:700;letter-spacing:.08em;color:#9CA3AF;text-transform:uppercase;margin-bottom:12px">Details</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="border:1px solid #DFE2E6;border-radius:2px;padding:12px 16px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;text-transform:uppercase;margin-bottom:4px">Module</div>
+            <div id="cvModuleVal" style="font-size:14px;font-weight:700;color:#111"></div>
+          </div>
+          <div style="border:1px solid #DFE2E6;border-radius:2px;padding:12px 16px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;text-transform:uppercase;margin-bottom:4px">Class</div>
+            <div id="cvClassVal" style="font-size:14px;font-weight:700;color:#111"></div>
+          </div>
+          <div style="border:1px solid #DFE2E6;border-radius:2px;padding:12px 16px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;text-transform:uppercase;margin-bottom:4px">Duration</div>
+            <div id="cvDurationVal" style="font-size:14px;font-weight:700;color:#111"></div>
+          </div>
+          <div style="border:1px solid #DFE2E6;border-radius:2px;padding:12px 16px">
+            <div style="font-size:10px;font-weight:700;letter-spacing:.06em;color:#9CA3AF;text-transform:uppercase;margin-bottom:4px">Status</div>
+            <div id="cvStatusVal" style="font-size:14px;font-weight:700;color:#16a34a"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -1079,6 +1143,78 @@
                            classCounts:{'Supplier Registration':12,'Raw Material Intake':7,'Batch Traceability':4,'Equipment Log':2,'Staff Records':1} },
       'Quality Control': { color:'#16a34a', classes:['Organoleptic Test','Microbiological Check','Chemical Analysis','Packaging Inspection','Final Release'],
                            classCounts:{'Organoleptic Test':9,'Microbiological Check':7,'Chemical Analysis':4,'Packaging Inspection':4,'Final Release':3} }
+    };
+
+    /* ── Inject admin-created modules from localStorage into sidebar ── */
+    (function _injectAdminModules() {
+      var EXTRA_COLORS = ['#F59E0B','#EC4899','#14B8A6','#6366F1','#F97316','#8B5CF6','#DC2626'];
+      var extraIdx = 0;
+      var added = [];
+      try {
+        var allItems = [];
+        ['lms_video_library','lms_voiceover_library','lms_document_library'].forEach(function(k) {
+          (JSON.parse(localStorage.getItem(k) || '[]')).forEach(function(v) { allItems.push(v); });
+        });
+        allItems.forEach(function(item) {
+          var mod = item.module, cls = item.cls;
+          if (!mod || !cls) return;
+          if (!MODULES[mod]) {
+            MODULES[mod] = { color: EXTRA_COLORS[extraIdx++ % EXTRA_COLORS.length], classes: [], classCounts: {} };
+            added.push(mod);
+          }
+          if (MODULES[mod].classes.indexOf(cls) === -1) {
+            MODULES[mod].classes.push(cls);
+            MODULES[mod].classCounts[cls] = 1;
+          }
+        });
+      } catch(e) {}
+
+      if (!added.length) return;
+      var sbQc = document.getElementById('sb-qc');
+      if (!sbQc) return;
+      var insertAfter = sbQc;
+      added.forEach(function(mod) {
+        var col = MODULES[mod].color;
+        var cnt = MODULES[mod].classes.length;
+        var safeId = 'sb-admin-' + mod.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        var btn = document.createElement('button');
+        btn.className = 'sidebar-item';
+        btn.id = safeId;
+        btn.innerHTML = '<div class="sidebar-item-dot" style="background:' + col + '"></div>'
+          + '<span class="sidebar-item-name">' + mod + '</span>'
+          + '<span class="sidebar-item-count" style="background:#F5F5F5;color:' + col + '">' + cnt + '</span>';
+        btn.onclick = function() { switchSection('module', mod); };
+        insertAfter.parentNode.insertBefore(btn, insertAfter.nextSibling);
+        insertAfter = btn;
+      });
+    })();
+
+    /* ── Class Metadata: descriptions, key terms, content titles ── */
+    var CLASS_META = {
+      'Forms': {
+        'Beheading':          { desc:'Hand positioning, hygiene protocols, blade safety, and line speed standards.', videoTitle:'Beheading Safety & Hygiene', voiceTitle:'Beheading Introduction', terms:[{t:'Beheading',d:'Removal of the head from shrimp body; the first step on the processing line.'},{t:'Yield',d:'Percentage of usable product recovered after processing; a key efficiency metric.'}] },
+        'Grading':            { desc:'Size classification, weight standards, and quality sorting procedures for shrimp.', videoTitle:'Grading Standards & Size Classification', voiceTitle:'Grading Introduction', terms:[{t:'Count Size',d:'Number of shrimp per pound; e.g., 16/20 means 16–20 shrimp per pound.'},{t:'Uniformity',d:'Consistency in size and appearance across a graded batch.'}] },
+        'Peeling & Cutting':  { desc:'Shell removal techniques, cutting angles, and waste reduction best practices.', videoTitle:'Peeling Technique & Blade Safety', voiceTitle:'Peeling Introduction', terms:[{t:'Shell-on',d:'Shrimp sold with shell intact; a premium product form valued in certain markets.'},{t:'Butterfly Cut',d:'Technique that opens the shrimp along the back while keeping it joined.'}] },
+        'De-veining':         { desc:'Vein identification, extraction techniques, and hygiene standards during processing.', videoTitle:'De-veining Methods & Hygiene', voiceTitle:'De-veining Introduction', terms:[{t:'Digestive Tract',d:'The dark vein running along the shrimp\'s back, removed for quality and safety.'},{t:'Deveining Needle',d:'Specialist tool used to cleanly extract the digestive tract without tearing.'}] },
+        'Weighing & Packing': { desc:'Tare weight, net weight accuracy, labelling requirements, and approved pack formats.', videoTitle:'Weighing Accuracy & Pack Standards', voiceTitle:'Weighing Introduction', terms:[{t:'Tare Weight',d:'Weight of the empty container, subtracted to determine the net product weight.'},{t:'Net Weight',d:'Actual weight of the product, excluding all packaging materials.'}] },
+        'IQF Freezing':       { desc:'Individual Quick Freezing process, crust-freeze temperature, and blast-freeze protocols.', videoTitle:'IQF Process & Temperature Control', voiceTitle:'IQF Introduction', terms:[{t:'IQF',d:'Individual Quick Freezing — freezes each piece separately to prevent clumping.'},{t:'Crust Freeze',d:'Partial surface freeze that sets the product shape before full IQF processing.'}] },
+        'Cold Store Inward':  { desc:'Temperature logging, pallet positioning, FIFO compliance, and stock management.', videoTitle:'Cold Store Inward Procedures', voiceTitle:'Cold Store Inward Introduction', terms:[{t:'FIFO',d:'First In, First Out — ensures oldest stock is dispatched before newer arrivals.'},{t:'Cold Chain',d:'Unbroken refrigerated logistics from processing through to the end customer.'}] },
+        'Cold Store Outward': { desc:'Dispatch documentation, load-out temperature compliance, and transport standards.', videoTitle:'Cold Store Outward & Dispatch', voiceTitle:'Cold Store Outward Introduction', terms:[{t:'FEFO',d:'First Expired, First Out — prioritises dispatch of stock nearest to expiry date.'},{t:'Bill of Lading',d:'Shipping document acknowledging cargo receipt and authorising transport.'}] }
+      },
+      'Master Forms': {
+        'Supplier Registration': { desc:'Supplier onboarding, documentation verification, and approval workflow procedures.', videoTitle:'Supplier Registration & Approval', voiceTitle:'Supplier Registration Introduction', terms:[{t:'Vendor Code',d:'Unique identifier assigned to each approved supplier within the system.'},{t:'COA',d:'Certificate of Analysis — lab report confirming a product meets required specifications.'}] },
+        'Raw Material Intake':   { desc:'Receiving inspection standards, temperature verification, and rejection criteria.', videoTitle:'Raw Material Inspection & Intake', voiceTitle:'Raw Material Introduction', terms:[{t:'Sensory Evaluation',d:'Quality check using sight, smell, and touch to assess incoming raw material.'},{t:'Rejection Threshold',d:'Maximum permitted defect rate before an incoming batch is rejected.'}] },
+        'Batch Traceability':    { desc:'Lot coding systems, batch linkage records, and full traceability documentation.', videoTitle:'Batch Traceability & Lot Coding', voiceTitle:'Batch Traceability Introduction', terms:[{t:'Lot Code',d:'Alphanumeric code linking a product batch back to its production records.'},{t:'Traceability',d:'Ability to track a product through every step from raw material to final sale.'}] },
+        'Equipment Log':         { desc:'Calibration schedules, maintenance records, and equipment sign-off procedures.', videoTitle:'Equipment Log & Calibration', voiceTitle:'Equipment Log Introduction', terms:[{t:'Calibration',d:'Process of configuring equipment to produce accurate, reliable measurements.'},{t:'Downtime Log',d:'Record of equipment stoppages including duration, cause, and corrective action.'}] },
+        'Staff Records':         { desc:'Employment documentation, training record management, and health declaration requirements.', videoTitle:'Staff Records & Health Declarations', voiceTitle:'Staff Records Introduction', terms:[{t:'Health Declaration',d:'Form confirming a worker is fit for duty and free of communicable illness.'},{t:'Training Matrix',d:'Grid showing each staff member\'s completed and outstanding training modules.'}] }
+      },
+      'Quality Control': {
+        'Organoleptic Test':      { desc:'Sensory scoring methods, defect classification, and panel evaluation standards.', videoTitle:'Organoleptic Evaluation Methods', voiceTitle:'Organoleptic Introduction', terms:[{t:'Organoleptic',d:'Relating to sensory properties: smell, taste, texture, and visual appearance.'},{t:'Defect Score',d:'Numerical penalty applied for each quality defect detected during evaluation.'}] },
+        'Microbiological Check':  { desc:'Sampling plans, microbial limits, lab submission procedures, and result interpretation.', videoTitle:'Microbiological Sampling & Limits', voiceTitle:'Microbiological Introduction', terms:[{t:'TVC',d:'Total Viable Count — measure of total bacterial load present in a sample.'},{t:'APC',d:'Aerobic Plate Count — standard method for quantifying bacteria in food products.'}] },
+        'Chemical Analysis':      { desc:'Permitted additive levels, residue limits, test frequencies, and compliance standards.', videoTitle:'Chemical Analysis & Residue Testing', voiceTitle:'Chemical Analysis Introduction', terms:[{t:'Sulphite Level',d:'Concentration of sulphites used as a preservative; must stay within legal limits.'},{t:'MRL',d:'Maximum Residue Limit — highest legally permitted concentration of a chemical in food.'}] },
+        'Packaging Inspection':   { desc:'Label accuracy verification, seal integrity testing, and weight compliance checks.', videoTitle:'Packaging Inspection & Label Compliance', voiceTitle:'Packaging Introduction', terms:[{t:'Seal Integrity',d:'Airtight packaging closure that prevents contamination and extends shelf life.'},{t:'Label Compliance',d:'All mandatory label information is present, accurate, and legible.'}] },
+        'Final Release':          { desc:'Release criteria, hold and quarantine procedures, and sign-off documentation.', videoTitle:'Final Release & Certificate Procedures', voiceTitle:'Final Release Introduction', terms:[{t:'Certificate of Conformance',d:'Document confirming a product batch meets all required specifications.'},{t:'Hold Status',d:'Products quarantined pending further investigation, testing, or senior approval.'}] }
+      }
     };
 
     /* ── Quiz Questions ── */
@@ -1540,7 +1676,7 @@
       if (av) av.textContent = initials;
       if (nm) nm.textContent = u.name;
       try { renderJourney(); } catch(e) { console.error('renderJourney error:', e); }
-      setTimeout(_showGuide, 600);
+      if (!localStorage.getItem('st_guide_seen') && !sessionStorage.getItem('cv_visited')) { setTimeout(_showGuide, 600); }
     }
 
     /* ── Section switching ── */
@@ -1561,8 +1697,10 @@
       } else if (section === 'module') {
         document.getElementById('moduleView').style.display = 'block';
         if (subMod) curMod = subMod;
-        var sbId = { 'Forms':'sb-forms', 'Master Forms':'sb-masterforms', 'Quality Control':'sb-qc' }[curMod];
-        if (sbId) document.getElementById(sbId).classList.add('active');
+        var sbId = { 'Forms':'sb-forms', 'Master Forms':'sb-masterforms', 'Quality Control':'sb-qc' }[curMod]
+          || 'sb-admin-' + curMod.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        var sbEl = document.getElementById(sbId);
+        if (sbEl) sbEl.classList.add('active');
         document.getElementById('mainTitle').textContent = curMod;
         renderModule();
       } else if (section === 'certs') {
@@ -1578,10 +1716,11 @@
 
     /* ── My Journey ── */
     function _modColor(mod) {
-      return { 'Forms':'#5189F3', 'Master Forms':'#7C3AED', 'Quality Control':'#059669' }[mod] || '#5189F3';
+      return { 'Forms':'#5189F3', 'Master Forms':'#7C3AED', 'Quality Control':'#059669' }[mod]
+        || (MODULES[mod] && MODULES[mod].color) || '#5189F3';
     }
     function _modBg(mod) {
-      return { 'Forms':'#EEF3FF', 'Master Forms':'#F5F3FF', 'Quality Control':'#ECFDF5' }[mod] || '#EEF3FF';
+      return { 'Forms':'#EEF3FF', 'Master Forms':'#F5F3FF', 'Quality Control':'#ECFDF5' }[mod] || '#F5F5F5';
     }
 
     function _countCertified(mod) {
@@ -1668,7 +1807,16 @@
         _jStatCard(totalCerts,   'Certified',     '#059669', '#F0FDF4', '<path d="M20 6L9 17l-5-5"/>')
         + _jStatCard(totalCls - totalCerts, 'Remaining', '#5189F3', '#EEF3FF', '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>')
         + _jStatCard(avg + '%',  'Avg Quiz Score','#7C3AED', '#F5F3FF', '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>')
-        + _jStatCard(u.skillPoints ? u.skillPoints.toLocaleString() : '—', 'Skill Points', '#D97706', '#FFFBEB', '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>');
+        + (function() {
+            var inProg = 0;
+            Object.keys(MODULES).forEach(function(mod) {
+              MODULES[mod].classes.forEach(function(cls, i) {
+                var st = getStatus(mod, cls, i);
+                if (st === 'in-progress' || st === 'quiz-ready' || st === 'cooldown' || st === 'att2-ready') inProg++;
+              });
+            });
+            return _jStatCard(inProg, 'In Progress', '#D97706', '#FFFBEB', '<polygon points="5 3 19 12 5 21 5 3"/>');
+          })();
 
       /* Module bars */
       document.getElementById('jModuleBars').innerHTML = '<div style="display:flex;flex-direction:column;gap:12px">'+Object.keys(MODULES).map(function(mod) {
@@ -1701,7 +1849,7 @@
         certified:    { bg:'#ECFDF5', color:'#059669', label:'Certified' },
         'quiz-ready': { bg:'#EEF3FF', color:'#5189F3', label:'Quiz Ready' },
         'in-progress':   { bg:'#EEF3FF', color:'#5189F3', label:'In Progress' },
-        cooldown:        { bg:'#FFFBEB', color:'#D97706', label:'Cooldown' },
+        cooldown:        { bg:'#FFFBEB', color:'#D97706', label:'Retry Soon' },
         'att2-ready':    { bg:'#FFF7ED', color:'#EA580C', label:'Att 2 Ready' },
         exhausted:       { bg:'#FFF7ED', color:'#B45309', label:'Both Used' },
         'sched-pending': { bg:'#FFFBEB', color:'#D97706', label:'Request Pending' },
@@ -1780,7 +1928,9 @@
           var sc = stColors[st] || stColors.locked;
           var sm = mod.replace(/'/g,"\\'"), sc2 = cls.replace(/'/g,"\\'");
           var ctaBtn = '';
-          if (st === 'in-progress' || st === 'available') {
+          if (st === 'locked') {
+            ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Watch</button>';
+          } else if (st === 'in-progress' || st === 'available') {
             ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer;font-family:inherit">'+(st==='in-progress'?'Continue':'Start')+'</button>';
           } else if (st === 'quiz-ready') {
             ctaBtn = '<button onclick="startQuiz(\''+sm+'\',\''+sc2+'\',1)" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#5189F3;color:#fff;cursor:pointer;font-family:inherit">Take Quiz</button>';
@@ -1794,6 +1944,8 @@
             ctaBtn = '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:none;background:#F3F4F6;color:#9CA3AF;cursor:default;font-family:inherit">Pending…</button>';
           } else if (st === 'quiz-failed') {
             ctaBtn = '<button disabled style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #FECACA;background:#FEF2F2;color:#EF4444;cursor:default;font-family:inherit">Exhausted</button>';
+          } else if (st === 'cooldown') {
+            ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">&#9654; Rewatch</button>';
           } else if (st === 'certified') {
             ctaBtn = '<button onclick="watchVid(\''+sm+'\',\''+sc2+'\')" style="flex-shrink:0;font-size:11px;font-weight:700;padding:5px 12px;border-radius:6px;border:1px solid #DFE2E6;background:#fff;color:#555;cursor:pointer;font-family:inherit">Rewatch</button>';
           }
@@ -1819,9 +1971,10 @@
             jCircle='<div style="width:30px;height:30px;border-radius:50%;border:2px solid '+col+';background:'+bg+';color:'+col+';font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(i+1)+'</div>';
           }
           var vp=s.vp||0; var vpColor=vp===100?'#16a34a':vp>0?col:'#C4C9D4'; var vpLabel=vp===100?'Done':vp>0?vp+'%':'—';
-          return '<div class="j-class-row" style="display:flex;align-items:center;gap:12px">'
+          var statusLabel = sc.label;
+          return '<div class="j-class-row" onclick="if(!event.target.closest(\'button\')) watchVid(\''+sm+'\',\''+sc2+'\')">'
             + jCircle
-            + '<span style="font-size:13px;font-weight:700;color:#111;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + cls + '</span>'
+            + '<span class="j-cls-name" style="font-size:13px;font-weight:700;color:#111;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + cls + '</span>'
             + quizInfo
             + '<div style="display:flex;align-items:center;gap:6px;flex-shrink:0">'
               + '<div style="width:72px;height:4px;background:#F0F0F0;border-radius:3px;overflow:hidden">'
@@ -1829,7 +1982,7 @@
               + '</div>'
               + '<span style="font-size:11px;font-weight:800;color:' + vpColor + ';min-width:32px;text-align:right">' + vpLabel + '</span>'
             + '</div>'
-            + '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + sc.bg + ';color:' + sc.color + ';flex-shrink:0;white-space:nowrap">' + sc.label + '</span>'
+            + '<span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:' + sc.bg + ';color:' + sc.color + ';flex-shrink:0;white-space:nowrap">' + statusLabel + '</span>'
             + (ctaBtn ? '<div style="margin-left:4px">'+ctaBtn+'</div>' : '<div style="width:70px;flex-shrink:0"></div>')
           + '</div>';
         }).join('');
@@ -2089,7 +2242,7 @@
       /* Action button */
       var actionBtn='';
       if(locked){
-        actionBtn='<button class="btn-disabled" style="padding:5px 12px;font-size:12px">'+I.lock+' Locked</button>';
+        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Watch</button>';
       }else if(st==='certified'){
         actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
       }else if(st==='quiz-ready'){
@@ -2097,7 +2250,9 @@
       }else if(st==='in-progress'||st==='available'){
         actionBtn='<button class="btn-primary" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">'+(st==='in-progress'?'Continue':'Start')+'</button>';
       }else if(st==='cooldown'){
-        actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
+        var cdLbl=cdRemain(mod,cls)||'soon';
+        actionBtn='<button disabled style="padding:5px 12px;font-size:12px;font-weight:600;font-family:inherit;border-radius:7px;border:1px solid #FDE68A;background:#FFFBEB;color:#D97706;cursor:not-allowed;display:inline-flex;align-items:center;gap:5px">'+I.clock+' Retry in '+cdLbl+'</button>'
+          +'<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>';
       }else if(st==='att2-ready'){
         var attNum=2; if(lq){var lr2=_sqRes(lq.id);if(lr2.att2&&!lr2.att2.pass)attNum=3;}
         actionBtn='<button class="btn-outline" style="padding:5px 12px;font-size:12px" onclick="watchVid(\''+sm+'\',\''+sc+'\')">&#9654; Rewatch</button>'
@@ -2114,24 +2269,70 @@
           +'<button class="btn-disabled" style="padding:5px 12px;font-size:12px" title="All 3 attempts used">'+I.xmark+' Exhausted</button>';
       }
 
-      return '<div class="class-row'+(locked?' locked':'')+'">'
+      return '<div class="class-row" style="cursor:pointer" onclick="if(!event.target.closest(\'button\')) watchVid(\''+sm+'\',\''+sc+'\')">'
         +stepHtml
         +'<div style="flex:1;min-width:0">'
           +'<div class="class-row-name">'+cls+'</div>'
           +(chips?'<div class="class-row-chips">'+chips+'</div>':'')
-          +(locked?'<div style="font-size:11px;color:#C4C9D4;margin-top:3px">'+I.lock+' Complete previous class first</div>':'')
+          +(locked?'<div style="font-size:11px;color:#C4C9D4;margin-top:3px">'+I.lock+' Quiz unlocks after completing previous class</div>':'')
         +'</div>'
-        +(locked?'':'<div style="display:flex;align-items:center;gap:14px;flex-shrink:0">'
-          +quizPill
-          +progHtml
+        +'<div style="display:flex;align-items:center;gap:14px;flex-shrink:0">'
+          +(locked?'':''+quizPill+progHtml)
           +'<span class="class-content-count">1 video</span>'
           +'<div class="class-card-btns">'+actionBtn+'</div>'
           +'<svg class="class-row-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>'
-        +'</div>')
+        +'</div>'
       +'</div>';
     }
 
-    function watchVid(mod,cls){ alert('Opening video player for: '+cls+' ('+mod+')'); }
+    function watchVid(mod, cls) {
+      var mc = MODULES[mod] || {};
+      var classes = mc.classes || [];
+      var idx = classes.indexOf(cls);
+      var total = classes.length;
+      var count = (mc.classCounts || {})[cls] || 10;
+      var dur = Math.max(5, Math.round(count * 0.7)) + ' min';
+      var meta = (CLASS_META[mod] || {})[cls] || {};
+      var qq = (QQ[mod] || {})[cls] || {};
+      var s = (ST[mod] || {})[cls] || {};
+      var liveQ = _liveQuiz(mod, cls);
+      var liveQQuestions = [];
+      var livePassMark = 70;
+      if (liveQ) {
+        try { var lqFull = (JSON.parse(localStorage.getItem('lms_quizzes')||'[]')||[]).find(function(q){return q.id===liveQ.id;}); if(lqFull){ liveQQuestions=lqFull.questions||[]; livePassMark=lqFull.passMark||70; } } catch(e){}
+      }
+      /* pull admin-uploaded content for this class */
+      var adminVideos = [], adminVoices = [], adminDocs = [];
+      try {
+        var _vl = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
+        adminVideos = _vl.filter(function(v){ return v.module===mod && v.cls===cls && v.status==='live'; });
+        var _vo = JSON.parse(localStorage.getItem('lms_voiceover_library') || '[]');
+        adminVoices = _vo.filter(function(v){ return v.module===mod && v.cls===cls; });
+        var _dl = JSON.parse(localStorage.getItem('lms_document_library') || '[]');
+        adminDocs = _dl.filter(function(v){ return v.module===mod && v.cls===cls; });
+      } catch(e){}
+
+      var data = {
+        mod: mod, cls: cls, clsIdx: idx, totalCls: total,
+        nextCls: idx < total-1 ? classes[idx+1] : null,
+        prevCls: idx > 0 ? classes[idx-1] : null,
+        col: _modColor(mod), dur: dur,
+        vp: s.vp || 0,
+        desc: meta.desc || '',
+        videoTitle: meta.videoTitle || cls + ' Training',
+        voiceTitle: meta.voiceTitle || cls + ' Introduction',
+        terms: meta.terms || [],
+        passMark: liveQ ? livePassMark : (qq.passMark || 70),
+        questions: liveQ ? liveQQuestions : (qq.questions || []),
+        liveQuizId: liveQ ? liveQ.id : null,
+        a1: s.a1 || null, a2: s.a2 || null, cd: s.cd || null,
+        adminVideos: adminVideos, adminVoices: adminVoices, adminDocs: adminDocs
+      };
+      data.modules = Object.keys(MODULES).map(function(m){ return {name:m, color:MODULES[m].color}; });
+      sessionStorage.setItem('cv_visited', '1');
+      sessionStorage.setItem('cv_class', JSON.stringify(data));
+      window.location.href = 'class-viewer.html';
+    }
 
     /* ── Quiz flow ── */
     var _qM,_qC,_qA,_qQs,_qIndices,_qIdx,_qAns;
@@ -2684,7 +2885,7 @@
 
     function renderLbTable(rankedIn) {
       var shared  = rankedIn ? null : loadSharedState();
-      var users   = rankedIn || buildLbUsers(shared).slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.skillPoints - a.skillPoints; });
+      var users   = rankedIn || buildLbUsers(shared).slice().sort(function(a,b){ return b.certsEarned - a.certsEarned || b.completionPct - a.completionPct; });
       var q       = (document.getElementById('lbSearch')?.value || '').toLowerCase();
       var visible = q ? users.filter(function(u){ return u.name.toLowerCase().includes(q) || (u.dept||'').toLowerCase().includes(q); }) : users;
 
@@ -2708,7 +2909,6 @@
             '<span class="lb-bar-pct" style="color:'+compColor+'">'+u.completionPct+'%</span>'+
           '</div></td>'+
           '<td style="text-align:center"><span class="lb-cert-count">'+u.certsEarned+'</span><span class="lb-cert-total">/'+TOTAL_CLS+'</span></td>'+
-          '<td style="text-align:center;font-size:13px;font-weight:800;color:#F59E0B">'+(u.skillPoints||u.certsEarned*150).toLocaleString()+'</td>'+
         '</tr>';
       }).join('');
     }
@@ -2716,9 +2916,9 @@
     _initUser();
     // renderModule is called by switchSection when needed
 
-    /* Show guide only on first visit; never again on refresh */
+    /* Show guide only on first visit — never on return from class-viewer */
     window.addEventListener('load', function() {
-      if (!localStorage.getItem('st_guide_seen')) {
+      if (!localStorage.getItem('st_guide_seen') && !sessionStorage.getItem('cv_visited')) {
         setTimeout(_showGuide, 300);
       }
     });
@@ -2852,6 +3052,7 @@
     var _GUIDE_TOTAL = 4;
 
     function _showGuide() {
+      if (localStorage.getItem('st_guide_seen') || sessionStorage.getItem('cv_visited')) return;
       _guideStep = 0;
       var el = document.getElementById('guideOverlay');
       if (el) { el.style.display = 'flex'; }

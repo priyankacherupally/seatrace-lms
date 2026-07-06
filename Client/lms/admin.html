@@ -103,7 +103,7 @@
     }
     .table-search-wrap svg { position: absolute; left: 10px; color: #aaa; pointer-events: none; }
     .table-search-wrap input {
-      width: 100%; height: 32px; padding: 0 12px 0 32px;
+      width: 100%; height: 32px; padding: 0 28px 0 32px;
       border: 1px solid #DFE2E6; border-radius: 2px;
       font-family: 'Nunito', sans-serif; font-size: 13px; color: #111; outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
@@ -111,6 +111,9 @@
     .table-search-wrap input:focus { border-color: #5189F3; box-shadow: 0 0 0 2px rgba(81,137,243,0.12); }
     .table-search-wrap input::placeholder { color: #ccc; }
     .table-count { font-size: 12px; color: #aaa; font-weight: 600; }
+    .srch-x{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:17px;height:17px;border:none;background:none;cursor:pointer;color:#C0C4CC;display:none;align-items:center;justify-content:center;border-radius:50%;padding:0;flex-shrink:0;transition:background .12s,color .12s}
+    .srch-x:hover{background:#EAECF0;color:#6B7280}
+    .srch-x.on{display:flex}
 
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; }
@@ -191,12 +194,14 @@
     .upload-type-tab svg{flex-shrink:0}
     /* ── Content panel (non-video types) ── */
     .content-panel{flex:1;overflow-y:auto;padding:20px;background:#F7F8FA;display:flex;flex-direction:column;gap:16px}
-    .cp-toolbar{display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .cp-toolbar{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;padding:12px 0;border-bottom:1px solid #F0F0F0}
+    .lib-filt-sel{height:32px;padding:0 28px 0 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;color:#374151;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 8px center;appearance:none;outline:none;cursor:pointer;transition:border-color .15s}
+    .lib-filt-sel:focus{border-color:#5189F3}
     .cp-title{font-size:15px;font-weight:800;color:#111}
     .cp-add-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
     .cp-add-btn:hover{background:#3b6fd4}
     .cp-layout{display:grid;grid-template-columns:1fr 360px;gap:16px;flex:1;min-height:0}
-    .cp-list{background:#fff;border:1px solid #DFE2E6;border-radius:4px;overflow-y:auto;min-height:300px}
+    .cp-list{display:flex;flex-direction:column;gap:0;overflow-y:auto;min-height:200px}
     .cp-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#bbb;font-size:13px;font-weight:600;padding:60px 20px;text-align:center}
     .cp-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F0F0F0;transition:background 0.1s}
     .cp-item:last-child{border-bottom:none}
@@ -225,6 +230,77 @@
     .cp-audio-player{background:#F7F8FA;border:1px solid #DFE2E6;border-radius:4px;padding:12px 14px;display:flex;align-items:center;gap:10px}
     .cp-audio-player svg{color:#5189F3;flex-shrink:0}
     .cp-audio-player span{font-size:12px;font-weight:700;color:#555;font-family:'Nunito',sans-serif}
+    /* ── Upload Details Modal ── */
+    .udm-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
+    .udm-modal{background:#fff;border-radius:12px;width:480px;max-width:100%;max-height:90vh;box-shadow:0 24px 64px rgba(0,0,0,0.22);display:flex;flex-direction:column;overflow:hidden;font-family:'Nunito',sans-serif}
+    .udm-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px 14px;border-bottom:1px solid #F0F0F0}
+    .udm-header-left{display:flex;align-items:center;gap:10px}
+    .udm-type-badge{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#EEF3FF;color:#5189F3;padding:3px 10px;border-radius:999px}
+    .udm-title{font-size:15px;font-weight:800;color:#111}
+    .udm-close{width:28px;height:28px;border:none;background:none;cursor:pointer;color:#9CA3AF;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:background .15s,color .15s;padding:0}
+    .udm-close:hover{background:#F3F4F6;color:#374151}
+    .udm-file-strip{display:flex;align-items:center;gap:12px;padding:10px 20px;background:#F8FAFF;border-bottom:1px solid #EEF3FF}
+    .udm-file-name{font-size:12px;font-weight:700;color:#374151;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:340px}
+    .udm-file-size{font-size:11px;color:#9CA3AF;font-weight:600;margin-top:1px}
+    .udm-body{padding:18px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:14px}
+    .udm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .udm-field{display:flex;flex-direction:column;gap:5px}
+    .udm-field label{font-size:10px;font-weight:800;color:#374151;letter-spacing:.05em;text-transform:uppercase}
+    .udm-field input,.udm-field select,.udm-field textarea{border:1px solid #DFE2E6;border-radius:7px;padding:8px 12px;font-size:13px;font-family:'Nunito',sans-serif;font-weight:600;color:#111;outline:none;transition:border-color .15s;background:#fff;box-sizing:border-box;width:100%}
+    .udm-field input:focus,.udm-field select:focus,.udm-field textarea:focus{border-color:#5189F3}
+    .udm-field select{appearance:none;-webkit-appearance:none;padding-right:30px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+    .udm-field textarea{resize:vertical;min-height:68px;line-height:1.5}
+    .udm-footer{display:flex;justify-content:flex-end;gap:10px;padding:14px 20px;border-top:1px solid #F0F0F0;flex-shrink:0}
+    .udm-btn-cancel{padding:8px 18px;border:1.5px solid #DFE2E6;background:#fff;color:#555;border-radius:7px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:border-color .15s,color .15s}
+    .udm-btn-cancel:hover{border-color:#5189F3;color:#5189F3}
+    .udm-btn-upload{display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#5189F3;color:#fff;border:none;border-radius:7px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s}
+    .udm-btn-upload:hover{background:#3b6fd4}
+    /* ── Grouped library (table layout) ── */
+    .lib-group{border:1px solid #E5E7EB;border-radius:0;overflow:hidden;background:#fff}
+    .lib-group+.lib-group{border-top:none}
+    .lib-mod-hdr{display:flex;align-items:center;gap:8px;padding:8px 14px;background:#F8F9FB;cursor:pointer;user-select:none;border-bottom:1px solid #EAECF0}
+    .lib-mod-hdr:hover{background:#EFF1F5}
+    .lib-mod-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .lib-mod-name{font-size:12px;font-weight:800;color:#111;flex:1}
+    .lib-mod-count{font-size:10px;font-weight:700;color:#9CA3AF;background:#EAECF0;padding:2px 8px;border-radius:999px}
+    .lib-mod-chev{color:#C4C9D4;transition:transform .2s;flex-shrink:0}
+    .lib-mod-hdr.collapsed .lib-mod-chev{transform:rotate(-90deg)}
+    .lib-mod-hdr-hidden{opacity:0.6}
+    .lib-mod-actions{display:flex;align-items:center;gap:4px;margin-left:auto;margin-right:6px;flex-shrink:0}
+    .lib-act-btn{padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:10px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
+    .lib-act-btn:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
+    .lib-act-btn-hide{color:#F59E0B;border-color:#FDE68A;background:#FFFBEB}
+    .lib-act-btn-show{color:#10B981;border-color:#10B981;background:#F0FDF4}
+    .lib-act-btn-del{color:#EF4444;border-color:#FECACA;background:#FFF5F5}
+    .lib-act-btn-del:hover{background:#FEE2E2}
+    .lib-btn-hide{color:#F59E0B;border-color:#FDE68A;background:#FFFBEB;font-size:10px;font-weight:700}
+    .lib-btn-show{color:#10B981;border-color:#10B981;background:#F0FDF4;font-size:10px;font-weight:700}
+    /* table */
+    .lib-tbl{width:100%;border-collapse:collapse;table-layout:fixed}
+    .lib-tbl-head th{font-size:9px;font-weight:800;color:#B0B5BE;text-transform:uppercase;letter-spacing:.07em;padding:5px 10px;text-align:left;background:#FAFBFC;border-bottom:1px solid #F0F0F0;white-space:nowrap}
+    .lib-tbl-head .lib-th-dur{text-align:right;width:80px}
+    .lib-tbl-head .lib-th-cls{width:120px}
+    .lib-tbl-head .lib-th-status{width:80px;text-align:center}
+    .lib-tbl-head .lib-th-ico{width:36px}
+    .lib-tbl-head .lib-th-act{width:240px;text-align:right}
+    .lib-tbl tr{border-bottom:1px solid #F3F4F6}
+    .lib-tbl tr:last-child{border-bottom:none}
+    .lib-tbl tr:hover td{background:#FAFBFF}
+    .lib-tbl td{padding:6px 10px;vertical-align:middle}
+    .lib-td-ico{width:28px}
+    .lib-ico{width:20px;height:20px;border-radius:5px;display:flex;align-items:center;justify-content:center}
+    .lib-td-title{font-size:12px;font-weight:700;color:#111;max-width:260px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .lib-cls-chip{display:inline-block;font-size:10px;font-weight:700;color:#6B7280;background:#F3F4F6;padding:1px 7px;border-radius:3px;white-space:nowrap}
+    .lib-td-dur{font-size:11px;color:#9CA3AF;font-weight:600;white-space:nowrap;text-align:right}
+    .lib-td-status{white-space:nowrap;text-align:center}
+    .lib-status{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px}
+    .lib-td-act{text-align:right;white-space:nowrap}
+    .lib-btn{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:4px;border:1px solid #E5E7EB;background:#fff;font-size:10px;font-weight:700;cursor:pointer;color:#555;font-family:inherit;transition:all .12s;white-space:nowrap}
+    .lib-btn:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
+    .lib-btn.edit{border-color:#E5E7EB;color:#555;background:#fff}
+    .lib-btn.edit:hover{border-color:#5189F3;color:#5189F3;background:#F5F8FF}
+    .lib-btn.del{border-color:#FECACA;color:#EF4444;background:#FFF5F5}
+    .lib-btn.del:hover{background:#FEE2E2}
     .cp-form-actions{display:flex;gap:10px;padding-top:8px;border-top:1px solid #F0F0F0;margin-top:4px}
     .cp-save-btn{flex:1;padding:9px;background:#5189F3;color:#fff;border:none;border-radius:6px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.15s}
     .cp-save-btn:hover{background:#3b6fd4}
@@ -1037,7 +1113,7 @@
       flex:1; min-width:180px; max-width:280px; transition:border-color 0.15s;
     }
     .clscert-search-wrap:focus-within { border-color:#5189F3; }
-    .clscert-search-wrap input { border:none; outline:none; font-family:'Nunito',sans-serif; font-size:13px; color:#111; flex:1; background:transparent; }
+    .clscert-search-wrap input { border:none; outline:none; font-family:'Nunito',sans-serif; font-size:13px; color:#111; flex:1; background:transparent; padding-right:4px; }
     .clscert-search-wrap svg { color:#bbb; flex-shrink:0; }
     .clscert-module-group { margin-bottom:28px; }
     .clscert-module-header {
@@ -1947,7 +2023,8 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
-              <input type="text" id="lbSearch" placeholder="Search users…" oninput="renderLbTable()" />
+              <input type="text" id="lbSearch" placeholder="Search users…" oninput="renderLbTable();_srchTog('lbSrchX',this)" />
+              <button class="srch-x" id="lbSrchX" onclick="_srchClr('lbSearch','lbSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <select class="lb-select" id="lbSortBy" onchange="renderLbTable()">
               <option value="completionPct">Sort: Completion %</option>
@@ -2013,7 +2090,7 @@
         <!-- Video panel -->
         <div id="uploadTypeVideo" style="flex:1;display:flex;flex-direction:column;min-height:0">
           <!-- Native library view -->
-          <div id="videoNativePanel" style="padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;flex:1"></div>
+          <div id="videoNativePanel" style="padding:0;display:flex;flex-direction:column;gap:0;overflow-y:auto;flex:1"></div>
           <!-- Iframe editor (hidden until user clicks Edit) -->
           <div id="videoFrameContainer" style="display:none;flex:1;flex-direction:column;min-height:0">
             <iframe
@@ -2143,7 +2220,8 @@
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
               </svg>
-              <input type="text" id="quizSearch" placeholder="Search quizzes…" oninput="filterQuizList()" />
+              <input type="text" id="quizSearch" placeholder="Search quizzes…" oninput="filterQuizList();_srchTog('quizSrchX',this)" />
+              <button class="srch-x" id="quizSrchX" onclick="_srchClr('quizSearch','quizSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             </div>
             <span class="table-count" id="quizCount">0 quizzes</span>
           </div>
@@ -2235,9 +2313,10 @@
         <div class="cert-section-label" style="margin-top:24px"><span>Class Certifications</span></div>
         <div class="clscert-toolbar">
           <div class="clscert-mod-tabs" id="clscertModTabs"></div>
-          <div class="clscert-search-wrap" style="margin-left:auto">
+          <div class="clscert-search-wrap" style="margin-left:auto;position:relative">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="text" id="clscertSearch" placeholder="Search employee or class…" oninput="renderClassCertPanel()" />
+            <input type="text" id="clscertSearch" placeholder="Search employee or class…" oninput="renderClassCertPanel();_srchTog('clscertSrchX',this)" />
+            <button class="srch-x" id="clscertSrchX" onclick="_srchClr('clscertSearch','clscertSrchX')" style="right:4px"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
           <button class="cp-add-btn" onclick="openIssueCertModal()" style="flex-shrink:0">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
@@ -2326,7 +2405,8 @@
           <!-- Search — shown only in User Preview tab -->
           <div id="hubSearchWrap" style="display:none;position:relative;width:220px;flex-shrink:0">
             <svg style="position:absolute;left:11px;top:50%;transform:translateY(-50%);pointer-events:none" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input id="hubSearch" type="text" placeholder="Search classes…" oninput="filterHub(this.value)" style="height:36px;width:100%;box-sizing:border-box;padding:0 14px 0 34px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111;background:#fff;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E4E7EC'">
+            <input id="hubSearch" type="text" placeholder="Search classes…" oninput="filterHub(this.value);_srchTog('hubSrchX',this)" style="height:36px;width:100%;box-sizing:border-box;padding:0 28px 0 34px;border:1.5px solid #E4E7EC;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111;background:#fff;transition:border-color 0.15s" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E4E7EC'">
+            <button class="srch-x" id="hubSrchX" onclick="_srchClr('hubSearch','hubSrchX')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
           <!-- Admin / User tab toggle -->
           <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #E5E7EB;border-radius:8px;padding:3px;flex-shrink:0">
@@ -2691,8 +2771,8 @@
       const panel = document.getElementById('videoNativePanel');
       panel.style.display = 'flex';
       panel.style.flexDirection = 'column';
-      panel.style.padding = '20px';
-      panel.style.gap = '16px';
+      panel.style.padding = '0';
+      panel.style.gap = '0';
       panel.style.background = '';
       panel.style.overflow = 'auto';
       document.getElementById('videoFrameContainer').style.display = 'none';
@@ -2708,55 +2788,174 @@
       _videoShowNativePanel();
     }
 
+    /* ── Shared grouped-list builder ── */
+    const _LIB_COLORS = ['#5189F3','#8B5CF6','#16a34a','#D97706','#EF4444','#0EA5E9'];
+    function _modLibColor(mod) {
+      if (MODULE_DATA[mod] && MODULE_DATA[mod].color) return MODULE_DATA[mod].color;
+      const mods = _moduleList();
+      return _LIB_COLORS[mods.indexOf(mod) % _LIB_COLORS.length] || '#5189F3';
+    }
+    const _EYE_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+    const _DEL_SVG = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>';
+
+    let _libCollapsed = {};
+    function _libToggle(mod, type) {
+      const key = type + ':' + mod;
+      _libCollapsed[key] = !_libCollapsed[key];
+      if (type === 'video') renderVideoPanel();
+      else renderContentPanel(type);
+    }
+
+    let _libSearch = { video:'', voiceover:'', document:'' };
+    let _libModFilter = { video:'', voiceover:'', document:'' };
+    function _libModFilterChange(type, val) {
+      _libModFilter[type] = val || '';
+      _libRerender(type);
+    }
+    function _libSearchChange(type, val) {
+      _libSearch[type] = (val||'').toLowerCase().trim();
+      if (type === 'video') renderVideoPanel();
+      else renderContentPanel(type);
+      // Restore focus after re-render
+      var inp = document.getElementById('_lsInp-' + type);
+      if (inp) { inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length); }
+    }
+
+    function _buildGroupedListHtml(items, type) {
+      if (!items.length) return '';
+      const groups = {};
+      items.forEach(v => {
+        const m = v.module || 'Unassigned';
+        if (!groups[m]) groups[m] = [];
+        groups[m].push(v);
+      });
+
+      const chevSvg = '<svg class="lib-mod-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>';
+
+      const typeIcoHtml = {
+        video: `<div class="lib-ico" style="background:#EEF3FF;color:#5189F3"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div>`,
+        voiceover: `<div class="lib-ico" style="background:#EEF6FF;color:#3B82F6"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2a3 3 0 0 1 3 3v7a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg></div>`,
+        document:  `<div class="lib-ico" style="background:#F0FDF4;color:#16A34A"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>`
+      };
+
+      function tableRow(item) {
+        const safeId = (item.id||'').replace(/'/g,"\\'");
+        const ico = typeIcoHtml[type] || typeIcoHtml.document;
+        const cls = item.cls || '—';
+        const dur = item.duration || item.version || '—';
+        const isItemHidden = !!item._hidden;
+        let statusHtml = '';
+        if (type === 'video') {
+          const sc = item.status==='live'?'#10B981':item.status==='draft'?'#F59E0B':'#6B7280';
+          const sb = item.status==='live'?'#ECFDF5':item.status==='draft'?'#FFFBEB':'#F3F4F6';
+          const sl = item.status==='live'?'Live':item.status==='draft'?'Draft':(item.status||'—');
+          statusHtml = `<span class="lib-status" style="background:${sb};color:${sc}">${sl}</span>`;
+        }
+        const delFn  = type==='video' ? `_deleteVideo('${safeId}')` : `deleteCpItem('${type}','${safeId}')`;
+        const viewFn = `_viewUploadItem('${type}','${safeId}')`;
+        const editFn = `_libItemEdit('${type}','${safeId}')`;
+        const hideFn = `_libItemHide('${type}','${safeId}')`;
+        return `<tr style="${isItemHidden?'opacity:0.5':''}">
+          <td class="lib-td-ico">${ico}</td>
+          <td class="lib-td-title">${item.title}${isItemHidden?' <span style="font-size:9px;color:#F59E0B;font-weight:700;margin-left:3px">(hidden)</span>':''}</td>
+          <td><span class="lib-cls-chip">${cls}</span></td>
+          <td class="lib-td-dur">${dur}</td>
+          ${type==='video'?`<td class="lib-td-status">${statusHtml}</td>`:''}
+          <td class="lib-td-act">
+            <button class="lib-btn edit" onclick="${editFn}">Edit</button>
+            <button class="lib-btn ${isItemHidden?'lib-btn-show':'lib-btn-hide'}" onclick="${hideFn}">${isItemHidden?'Show':'Hide'}</button>
+            <button class="lib-btn" onclick="${viewFn}">View</button>
+            <button class="lib-btn del" onclick="${delFn}">Delete</button>
+          </td>
+        </tr>`;
+      }
+
+      return Object.keys(groups).map(mod => {
+        const col = _modLibColor(mod);
+        const modItems = groups[mod];
+        const collapsed = !!_libCollapsed[type+':'+mod];
+        const safeMod = mod.replace(/'/g,"\\'");
+        const tableBody = modItems.map(tableRow).join('');
+        const statusCol = type==='video' ? '<th class="lib-th-status">Status</th>' : '';
+        const isModHidden = MODULE_META[mod] && MODULE_META[mod].hidden;
+        return `<div class="lib-group">
+          <div class="lib-mod-hdr${collapsed?' collapsed':''}${isModHidden?' lib-mod-hdr-hidden':''}" onclick="_libToggle('${safeMod}','${type}')">
+            <span class="lib-mod-dot" style="background:${col}"></span>
+            <span class="lib-mod-name">${mod}${isModHidden?' <span style="font-size:9px;color:#F59E0B;font-weight:700;margin-left:4px">(hidden)</span>':''}</span>
+            <span class="lib-mod-count">${modItems.length} item${modItems.length!==1?'s':''}</span>
+            <div class="lib-mod-actions" onclick="event.stopPropagation()">
+              <button class="lib-act-btn" onclick="_libModAddClass('${safeMod}','${type}')">+ Add Class</button>
+              <button class="lib-act-btn" onclick="_libModRename('${safeMod}','${type}')">Rename</button>
+              <button class="lib-act-btn ${isModHidden?'lib-act-btn-show':'lib-act-btn-hide'}" onclick="_libModHide('${safeMod}','${type}')">${isModHidden?'Show':'Hide'}</button>
+              <button class="lib-act-btn lib-act-btn-del" onclick="_libModDelete('${safeMod}','${type}')">Delete</button>
+            </div>
+            ${chevSvg}
+          </div>
+          ${collapsed?'':`<table class="lib-tbl">
+            <thead class="lib-tbl-head"><tr>
+              <th class="lib-th-ico"></th><th>Title</th><th class="lib-th-cls">Class</th><th class="lib-th-dur">Duration</th>${statusCol}<th class="lib-th-act"></th>
+            </tr></thead>
+            <tbody>${tableBody}</tbody>
+          </table>`}
+        </div>`;
+      }).join('');
+    }
+
     function renderVideoPanel() {
       const panel = document.getElementById('videoNativePanel');
       if (!panel) return;
-      if (_videoLibrary.length === 0) _videoLibrary = VIDEO_LIBRARY.map(v => Object.assign({}, v));
+      if (_videoLibrary.length === 0) {
+        _videoLibrary = VIDEO_LIBRARY.map(v => Object.assign({}, v));
+        try {
+          var _storedV = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
+          _storedV.forEach(function(v) {
+            if (!_videoLibrary.find(function(x){ return x.id === v.id; }))
+              _videoLibrary.unshift(Object.assign({}, v, { _adminUploaded: true }));
+          });
+        } catch(e) {}
+      }
 
-      const items = _videoLibrary;
+      const q = _libSearch.video || '';
+      const mf = _libModFilter.video || '';
+      const mods = _moduleList();
+      let items = q
+        ? _videoLibrary.filter(v => (v.title||'').toLowerCase().includes(q)||(v.module||'').toLowerCase().includes(q)||(v.cls||'').toLowerCase().includes(q))
+        : _videoLibrary;
+      if (mf) items = items.filter(v => v.module === mf);
       const listHtml = items.length
-        ? items.map(item => {
-            const statusColor = item.status === 'live'  ? '#10B981' : item.status === 'draft' ? '#F59E0B' : '#6B7280';
-            const statusBg    = item.status === 'live'  ? '#F0FDF4' : item.status === 'draft' ? '#FFFBEB' : '#F3F4F6';
-            const statusLabel = item.status === 'live'  ? 'Live'    : item.status === 'draft' ? 'Draft'   : item.status;
-            return `<div class="cp-item">
-              <div class="cp-item-icon" style="background:#EEF3FF;color:#5189F3">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-              </div>
-              <div class="cp-item-body">
-                <div class="cp-item-name">${item.title}</div>
-                <div class="cp-item-meta">${item.module} › ${item.cls}${item.duration ? ' · ' + item.duration : ''}</div>
-              </div>
-              <span style="flex-shrink:0;font-size:11px;font-weight:700;padding:3px 10px;border-radius:2px;background:${statusBg};color:${statusColor}">${statusLabel}</span>
-              <div class="cp-item-actions">
-                <button class="cp-action-btn edit" onclick="_viewUploadItem('video','${item.id}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  View
-                </button>
-                <button class="cp-action-btn del" onclick="_deleteVideo('${item.id}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                  Delete
-                </button>
-              </div>
-            </div>`;
-          }).join('')
-        : `<div class="cp-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><span>No videos yet.<br>Upload a video above to get started.</span></div>`;
+        ? _buildGroupedListHtml(items, 'video')
+        : (q||mf)
+          ? `<div class="cp-empty"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>No videos match your filter.</span></div>`
+          : `<div class="cp-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><span>No videos yet.<br>Click Upload Video to get started.</span></div>`;
+      const modOptVid = `<option value="">All Modules</option>${mods.map(m=>`<option value="${m}" ${mf===m?'selected':''}>${m}</option>`).join('')}`;
 
       panel.innerHTML = `
         <div class="cp-toolbar">
-          <span class="cp-title">Video Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${items.length} video${items.length!==1?'s':''}</span></span>
+          <span class="cp-title">Video Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${_videoLibrary.length} video${_videoLibrary.length!==1?'s':''}</span></span>
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+            <select class="lib-filt-sel" onchange="_libModFilterChange('video',this.value)">${modOptVid}</select>
+            <div style="position:relative;display:flex;align-items:center">
+              <svg style="position:absolute;left:9px;color:#9CA3AF;pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="_lsInp-video" type="text" value="${q}" oninput="_libSearchChange('video',this.value);_srchTog('_lsX-video',this)"
+                placeholder="Search videos…"
+                style="border:1px solid #E5E7EB;border-radius:7px;padding:7px 28px 7px 30px;font-size:12px;font-family:'Nunito',sans-serif;color:#374151;outline:none;width:170px;transition:border-color .15s"
+                onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E5E7EB'">
+              <button class="srch-x ${q?'on':''}" id="_lsX-video" onclick="_srchClr('_lsInp-video','_lsX-video')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <button onclick="_libModAddModule('video')"
+              style="background:#fff;color:#374151;border:1px solid #DFE2E6;border-radius:7px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:all .15s"
+              onmouseover="this.style.borderColor='#5189F3';this.style.color='#5189F3'" onmouseout="this.style.borderColor='#DFE2E6';this.style.color='#374151'">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Module
+            </button>
+            <button onclick="document.getElementById('_vidFileInput').click()"
+              style="background:#5189F3;color:#fff;border:none;border-radius:7px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .15s;white-space:nowrap"
+              onmouseover="this.style.background='#3b6edf'" onmouseout="this.style.background='#5189F3'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Upload Video
+            </button>
+            <input id="_vidFileInput" type="file" accept="video/*" style="display:none" onchange="_videoUploadFile(event)">
+          </div>
         </div>
-        <label style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;box-sizing:border-box;border:2px dashed #CBD5E1;border-radius:10px;background:#fff;cursor:pointer;padding:46px 20px;margin-bottom:4px;transition:border-color .15s,background .15s;color:#374151"
-          onmouseover="this.style.borderColor='#5189F3';this.style.background='#EEF3FF'"
-          onmouseout="this.style.borderColor='#CBD5E1';this.style.background='#fff'"
-          ondragover="event.preventDefault();this.style.borderColor='#5189F3';this.style.background='#EEF3FF'"
-          ondragleave="this.style.borderColor='#CBD5E1';this.style.background='#fff'"
-          ondrop="event.preventDefault();this.style.borderColor='#CBD5E1';this.style.background='#fff';_videoDropUpload(event)">
-          <span style="color:#5189F3"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg></span>
-          <div style="font-weight:700;font-size:15px">Upload a Video</div>
-          <div style="font-size:13px;color:#9CA3AF">MP4, MOV, AVI · up to 500 MB</div>
-          <input type="file" accept="video/*" style="display:none" onchange="_videoUploadFile(event)">
-        </label>
         <div class="cp-list">${listHtml}</div>`;
     }
 
@@ -3180,22 +3379,229 @@
       _videoGoView(view);
     }
 
+    /* ── Upload Details Modal ── */
+    let _udmFile = null, _udmType = null, _udmEditId = null;
+
+    function _showUploadModal(file, type, editItem) {
+      _udmFile = editItem ? null : file;
+      _udmType = type;
+      _udmEditId = editItem ? editItem.id : null;
+      const mods = _moduleList();
+      const editMod = editItem ? (editItem.module || mods[0] || '') : (mods[0] || '');
+      const editModClasses = (MODULE_DATA[editMod] && MODULE_DATA[editMod].classes) || [];
+      const firstClasses = editItem ? editModClasses : ((mods[0] && MODULE_DATA[mods[0]]) ? MODULE_DATA[mods[0]].classes : []);
+      const typeLabels = { video:'Video', voiceover:'Voice Over', document:'Document' };
+      const typeLabel = typeLabels[type] || type;
+      const fileName = file ? file.name : '';
+      const fileSizeMB = file ? (file.size / (1024*1024)).toFixed(1) + ' MB' : '';
+      const guessTitle = editItem ? editItem.title : (fileName ? fileName.replace(/\.[^.]+$/, '').replace(/[-_]+/g,' ') : '');
+      const editDuration = editItem ? (editItem.duration || '') : '';
+      const editDesc = editItem ? (editItem.desc || '') : '';
+      const editStatus = editItem ? (editItem.status || 'draft') : 'draft';
+      const fileIcons = {
+        video: '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>',
+        voiceover: '<path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>',
+        document: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'
+      };
+      document.body.insertAdjacentHTML('beforeend', `
+        <div class="udm-overlay" id="udmOverlay" onclick="if(event.target===this)_closeUploadModal()">
+          <div class="udm-modal">
+            <div class="udm-header">
+              <div class="udm-header-left">
+                <span class="udm-type-badge">${typeLabel}</span>
+                <span class="udm-title">${editItem ? 'Edit Details' : 'Upload Details'}</span>
+              </div>
+              <button class="udm-close" onclick="_closeUploadModal()">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            ${file ? `<div class="udm-file-strip">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5189F3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${fileIcons[type]||fileIcons.document}</svg>
+              <div style="min-width:0">
+                <div class="udm-file-name">${fileName}</div>
+                <div class="udm-file-size">${fileSizeMB}</div>
+              </div>
+            </div>` : ''}
+            <div class="udm-body">
+              <div class="udm-row">
+                <div class="udm-field">
+                  <label>Module</label>
+                  <select id="udmModule" onchange="_udmModuleChange()">
+                    ${mods.map(m=>`<option value="${m}" ${m===editMod?'selected':''}>${m}</option>`).join('')}
+                  </select>
+                </div>
+                <div class="udm-field">
+                  <label>Class</label>
+                  <select id="udmClass">
+                    ${firstClasses.map(c=>`<option value="${c}" ${editItem&&c===editItem.cls?'selected':''}>${c}</option>`).join('')}
+                  </select>
+                </div>
+              </div>
+              <div class="udm-field">
+                <label>Title</label>
+                <input type="text" id="udmTitle" value="${guessTitle.replace(/"/g,'&quot;')}" placeholder="Enter title…">
+              </div>
+              <div class="udm-row">
+                <div class="udm-field">
+                  <label>Duration <span style="color:#aaa;font-size:10px;font-weight:600;text-transform:none">(auto-detected)</span></label>
+                  <input type="text" id="udmDuration" value="${editDuration.replace(/"/g,'&quot;')}" placeholder="Detecting…" readonly style="background:#F3F4F6;color:#6B7280;cursor:default;border-color:#E5E7EB">
+                </div>
+                <div class="udm-field">
+                  <label>Status</label>
+                  <select id="udmStatus">
+                    <option value="draft" ${editStatus==='draft'?'selected':''}>Draft</option>
+                    <option value="live" ${editStatus==='live'?'selected':''}>Live</option>
+                  </select>
+                </div>
+              </div>
+              <div class="udm-field">
+                <label>Description <span style="color:#aaa;font-size:10px;font-weight:600;text-transform:none">(optional)</span></label>
+                <textarea id="udmDesc" placeholder="Brief description of this content…">${editDesc.replace(/</g,'&lt;')}</textarea>
+              </div>
+            </div>
+            <div class="udm-footer">
+              <button class="udm-btn-cancel" onclick="_closeUploadModal()">Cancel</button>
+              <button class="udm-btn-upload" onclick="_confirmUpload()">
+                ${editItem
+                  ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Save Changes`
+                  : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/></svg> Upload ${typeLabel}`
+                }
+              </button>
+            </div>
+          </div>
+        </div>`);
+      // auto-fill duration from file metadata (upload mode only)
+      if (!editItem) _autoDetectDuration(file, type);
+    }
+
+    /* auto-detect duration from video/audio file metadata */
+    function _autoDetectDuration(file, type) {
+      if (!file) return;
+      if (type !== 'video' && type !== 'voiceover') return;
+      const tmpUrl = URL.createObjectURL(file);
+      const tmpEl = type === 'video' ? document.createElement('video') : new Audio();
+      tmpEl.preload = 'metadata';
+      tmpEl.onloadedmetadata = function() {
+        const dur = tmpEl.duration;
+        if (isFinite(dur) && dur > 0) {
+          const m = Math.floor(dur / 60), s = Math.floor(dur % 60);
+          const field = document.getElementById('udmDuration');
+          if (field) field.value = m + ':' + String(s).padStart(2,'0') + ' min';
+        }
+        URL.revokeObjectURL(tmpUrl);
+      };
+      tmpEl.src = tmpUrl;
+    }
+
+    function _udmModuleChange() {
+      const mod = document.getElementById('udmModule').value;
+      const classes = (MODULE_DATA[mod] && MODULE_DATA[mod].classes) || [];
+      document.getElementById('udmClass').innerHTML = classes.map(c=>`<option value="${c}">${c}</option>`).join('');
+    }
+
+    function _closeUploadModal() {
+      const el = document.getElementById('udmOverlay');
+      if (el) el.remove();
+      _udmFile = null; _udmType = null; _udmEditId = null;
+    }
+
+    /* ── IndexedDB file storage (persistent, same origin as class-viewer.html) ── */
+    function _openLibDB() {
+      return new Promise(function(res, rej) {
+        var req = indexedDB.open('st_media_lib', 1);
+        req.onupgradeneeded = function(e) { e.target.result.createObjectStore('files', { keyPath: 'id' }); };
+        req.onsuccess = function(e) { res(e.target.result); };
+        req.onerror = function() { rej(); };
+      });
+    }
+    function _storeMediaFile(id, file) {
+      if (!file) return;
+      _openLibDB().then(function(db) {
+        var tx = db.transaction('files', 'readwrite');
+        tx.objectStore('files').put({ id: id, file: file });
+      }).catch(function(){});
+    }
+    function _deleteMediaFile(id) {
+      _openLibDB().then(function(db) {
+        db.transaction('files', 'readwrite').objectStore('files').delete(id);
+      }).catch(function(){});
+    }
+
+    function _saveContentLibrary() {
+      try {
+        const strip = function(arr) { return arr.map(function(v) {
+          const o = Object.assign({}, v); delete o.blobUrl; return o;
+        }); };
+        // Only persist admin-uploaded items (not hardcoded defaults)
+        localStorage.setItem('lms_video_library',     JSON.stringify(strip(_videoLibrary.filter(v => v._adminUploaded))));
+        localStorage.setItem('lms_voiceover_library', JSON.stringify(strip(CONTENT_LIBRARY.voiceover.filter(v => v._adminUploaded))));
+        localStorage.setItem('lms_document_library',  JSON.stringify(strip(CONTENT_LIBRARY.document.filter(v => v._adminUploaded))));
+      } catch(e) {}
+    }
+
+    function _confirmUpload() {
+      const mod  = document.getElementById('udmModule').value;
+      const cls  = document.getElementById('udmClass').value;
+      const title = (document.getElementById('udmTitle').value||'').trim() || 'Untitled';
+      const duration = (document.getElementById('udmDuration').value||'').trim();
+      const desc = (document.getElementById('udmDesc').value||'').trim();
+      const status = document.getElementById('udmStatus').value;
+      const file = _udmFile; const type = _udmType;
+
+      // ── Edit mode: update existing item ──
+      if (_udmEditId) {
+        const editId = _udmEditId;
+        _closeUploadModal();
+        let item = type === 'video'
+          ? _videoLibrary.find(v => v.id === editId)
+          : (CONTENT_LIBRARY[type]||[]).find(v => v.id === editId);
+        if (item) {
+          item.title = title; item.module = mod; item.cls = cls;
+          item.duration = duration; item.desc = desc;
+          if (type === 'video') item.status = status;
+          _saveContentLibrary();
+          _libRerender(type);
+          if (type === 'video') renderVideoPanel();
+          else renderContentPanel(type);
+        }
+        return;
+      }
+
+      // ── Upload mode: add new item ──
+      const dateStr = cpDateStr();
+      const itemId = type === 'video' ? 'vu'+Date.now() : type === 'voiceover' ? 'v'+Date.now() : 'd'+Date.now();
+      const blobUrl = file ? URL.createObjectURL(file) : '';
+      if (file) _storeMediaFile(itemId, file);
+      _closeUploadModal();
+      if (type === 'video') {
+        _videoLibrary.unshift({ id:itemId, title, module:mod, cls, duration, desc, status, blobUrl, file:file?file.name:'', _adminUploaded:true });
+        renderVideoPanel();
+      } else if (type === 'voiceover') {
+        CONTENT_LIBRARY.voiceover.unshift({ id:itemId, title, module:mod, cls, desc, file:file?file.name:'', blobUrl, date:dateStr, duration:duration||'0:00', status, script:[{start:'00:00',end:'00:08',en:'',hi:'',te:''}], _adminUploaded:true });
+        renderContentPanel('voiceover');
+      } else if (type === 'document') {
+        CONTENT_LIBRARY.document.unshift({ id:itemId, title, module:mod, cls, desc, file:file?file.name:'', blobUrl, date:dateStr, docType:'Guide', version:'v1.0', status, sections:[{heading:'Introduction',body:''}], _adminUploaded:true });
+        renderContentPanel('document');
+      }
+      _saveContentLibrary();
+    }
+
     function _videoUploadFile(ev) {
       const file = ev.target.files[0];
       if (!file) return;
-      const newItem = { id: 'vu' + Date.now(), title: file.name.replace(/\.[^.]+$/, ''), module: _moduleList()[0] || '', cls: '', duration: '', status: 'draft', blobUrl: URL.createObjectURL(file) };
-      _videoLibrary.unshift(newItem);
-      renderVideoPanel();
+      _showUploadModal(file, 'video');
     }
 
     function _videoDropUpload(ev) {
       const file = ev.dataTransfer && ev.dataTransfer.files && ev.dataTransfer.files[0];
-      if (file) _videoUploadFile({ target: { files: [file] } });
+      if (file) _showUploadModal(file, 'video');
     }
 
     function _deleteVideo(id) {
       if (!confirm('Delete this video?')) return;
+      _deleteMediaFile(id);
       _videoLibrary = _videoLibrary.filter(v => v.id !== id);
+      _saveContentLibrary();
       renderVideoPanel();
     }
 
@@ -3455,42 +3861,52 @@
       document.body.appendChild(modal);
     }
 
+    /* tracks which content types we've already restored from localStorage */
+    let _cpRestored = {};
+
     /* ── library list view ── */
     function renderContentPanel(type) {
       const panelId = 'uploadType' + type.charAt(0).toUpperCase() + type.slice(1);
       const panel   = document.getElementById(panelId);
       if (!panel) return;
 
-      // restore panel padding (from editor mode) and stop playback
-      panel.style.padding = '20px';
-      panel.style.gap = '16px';
+      // Restore admin-uploaded items from localStorage on first open
+      if (!_cpRestored[type]) {
+        _cpRestored[type] = true;
+        try {
+          const _lsKey = type === 'voiceover' ? 'lms_voiceover_library' : type === 'document' ? 'lms_document_library' : null;
+          if (_lsKey) {
+            const _storedCp = JSON.parse(localStorage.getItem(_lsKey) || '[]');
+            _storedCp.forEach(function(v) {
+              if (!CONTENT_LIBRARY[type].find(function(x){ return x.id === v.id; }))
+                CONTENT_LIBRARY[type].unshift(Object.assign({}, v, { _adminUploaded: true }));
+            });
+          }
+        } catch(e) {}
+      }
+
+      // restore panel layout (from editor mode) and stop playback
+      panel.style.padding = '0';
+      panel.style.gap = '0';
       voStopClock(); voPlaying = false;
 
       const LABELS = { voiceover: 'Voice Over', document: 'Document' };
       const label  = LABELS[type] || type;
-      const items  = CONTENT_LIBRARY[type] || [];
+      const allItems = CONTENT_LIBRARY[type] || [];
+      const qCp = _libSearch[type] || '';
+      const mfCp = _libModFilter[type] || '';
+      const mods = _moduleList();
+      let items = qCp
+        ? allItems.filter(v => (v.title||'').toLowerCase().includes(qCp)||(v.module||'').toLowerCase().includes(qCp)||(v.cls||'').toLowerCase().includes(qCp))
+        : allItems;
+      if (mfCp) items = items.filter(v => v.module === mfCp);
 
       const listHtml = items.length
-        ? items.map(item => `
-            <div class="cp-item">
-              <div class="cp-item-icon" style="${type==='voiceover'?'background:#EEF6FF;color:#3B82F6':'background:#F0FDF4;color:#16A34A'}">${cpTypeIcon(type)}</div>
-              <div class="cp-item-body">
-                <div class="cp-item-name">${item.title}</div>
-                <div class="cp-item-meta">${item.module} › ${item.cls}${item.duration?' · '+item.duration:item.version?' · '+item.version:''} · ${item.date}</div>
-              </div>
-              <div class="cp-item-actions">
-                <button class="cp-action-btn edit" onclick="_viewUploadItem('${type}','${item.id}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                  View
-                </button>
-                <button class="cp-action-btn del" onclick="deleteCpItem('${type}','${item.id}')">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
-                  Delete
-                </button>
-              </div>
-            </div>`)
-            .join('')
-        : `<div class="cp-empty">${cpTypeIcon(type,32)}<span>No ${label}s yet.<br>Upload a file above to get started.</span></div>`;
+        ? _buildGroupedListHtml(items, type)
+        : (qCp||mfCp)
+          ? `<div class="cp-empty"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span>No ${label}s match your filter.</span></div>`
+          : `<div class="cp-empty">${cpTypeIcon(type,32)}<span>No ${label}s yet.<br>Click Upload to get started.</span></div>`;
+      const modOptCp = `<option value="">All Modules</option>${mods.map(m=>`<option value="${m}" ${mfCp===m?'selected':''}>${m}</option>`).join('')}`;
 
       const uploadAccept = type === 'voiceover' ? 'audio/*' : '.docx,.doc,.txt,.pdf';
       const uploadSubtitle = type === 'voiceover'
@@ -3502,21 +3918,31 @@
 
       panel.innerHTML = `
         <div class="cp-toolbar">
-          <span class="cp-title">${label} Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${items.length} file${items.length!==1?'s':''}</span></span>
+          <span class="cp-title">${label} Library <span style="font-size:12px;font-weight:600;color:#aaa;margin-left:6px">${allItems.length} file${allItems.length!==1?'s':''}</span></span>
+          <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+            <select class="lib-filt-sel" onchange="_libModFilterChange('${type}',this.value)">${modOptCp}</select>
+            <div style="position:relative;display:flex;align-items:center">
+              <svg style="position:absolute;left:9px;color:#9CA3AF;pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="_lsInp-${type}" type="text" value="${qCp}" oninput="_libSearchChange('${type}',this.value);_srchTog('_lsX-${type}',this)"
+                placeholder="Search ${label}s…"
+                style="border:1px solid #E5E7EB;border-radius:7px;padding:7px 28px 7px 30px;font-size:12px;font-family:'Nunito',sans-serif;color:#374151;outline:none;width:170px;transition:border-color .15s"
+                onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#E5E7EB'">
+              <button class="srch-x ${qCp?'on':''}" id="_lsX-${type}" onclick="_srchClr('_lsInp-${type}','_lsX-${type}')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <button onclick="_libModAddModule('${type}')"
+              style="background:#fff;color:#374151;border:1px solid #DFE2E6;border-radius:7px;padding:8px 14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;transition:all .15s"
+              onmouseover="this.style.borderColor='#5189F3';this.style.color='#5189F3'" onmouseout="this.style.borderColor='#DFE2E6';this.style.color='#374151'">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add Module
+            </button>
+            <button onclick="document.getElementById('_cpFileInput-${type}').click()"
+              style="background:#5189F3;color:#fff;border:none;border-radius:7px;padding:8px 16px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:background .15s;white-space:nowrap"
+              onmouseover="this.style.background='#3b6edf'" onmouseout="this.style.background='#5189F3'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Upload ${label}
+            </button>
+            <input id="_cpFileInput-${type}" type="file" accept="${uploadAccept}" style="display:none" onchange="uploadNewCpItem(event,'${type}')">
+          </div>
         </div>
-
-        <label id="cpUploadZone-${type}" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;box-sizing:border-box;border:2px dashed #CBD5E1;border-radius:10px;background:#fff;cursor:pointer;padding:46px 20px;margin-bottom:4px;transition:border-color .15s,background .15s;color:#374151"
-          onmouseover="this.style.borderColor='#5189F3';this.style.background='#EEF3FF'"
-          onmouseout="this.style.borderColor='#CBD5E1';this.style.background='#fff'"
-          ondragover="event.preventDefault();this.style.borderColor='#5189F3';this.style.background='#EEF3FF'"
-          ondragleave="this.style.borderColor='#CBD5E1';this.style.background='#fff'"
-          ondrop="event.preventDefault();this.style.borderColor='#CBD5E1';this.style.background='#fff';_cpDropUpload(event,'${type}')">
-          <span style="color:#5189F3">${uploadIcon}</span>
-          <div style="font-weight:700;font-size:15px">Upload a ${label}</div>
-          <div style="font-size:13px;color:#9CA3AF">${uploadSubtitle}</div>
-          <input type="file" accept="${uploadAccept}" style="display:none" onchange="uploadNewCpItem(event,'${type}')">
-        </label>
-
         <div class="cp-list">${listHtml}</div>`;
     }
 
@@ -3550,26 +3976,7 @@
     function uploadNewCpItem(ev, type) {
       const file = ev.target.files[0];
       if (!file) return;
-      const blobUrl = URL.createObjectURL(file);
-      const mod = _moduleList()[0] || '';
-      const cls = mod && MODULE_DATA[mod] ? MODULE_DATA[mod].classes[0] : '';
-      const dateStr = cpDateStr();
-      if (type === 'voiceover') {
-        const item = { id: 'v' + Date.now(), title: file.name.replace(/\.[^.]+$/, ''), module: mod, cls, desc: '', file: file.name, blobUrl, date: dateStr, duration: '0:00', script: [{ start:'00:00', end:'00:08', en:'', hi:'', te:'' }] };
-        CONTENT_LIBRARY.voiceover.unshift(item);
-        // Try to get real duration
-        const tmp = new Audio(blobUrl);
-        tmp.onloadedmetadata = function() {
-          if (isFinite(tmp.duration)) {
-            const m = Math.floor(tmp.duration / 60), s = Math.floor(tmp.duration % 60);
-            item.duration = m + ':' + String(s).padStart(2, '0');
-          }
-        };
-        renderContentPanel('voiceover');
-      } else {
-        CONTENT_LIBRARY.document.unshift({ id: 'd' + Date.now(), title: file.name.replace(/\.[^.]+$/, ''), module: mod, cls, desc: '', file: file.name, blobUrl, date: dateStr, docType: 'Guide', version: 'v1.0', status: 'Draft', sections: [{ heading: 'Introduction', body: '' }] });
-        renderContentPanel('document');
-      }
+      _showUploadModal(file, type);
     }
 
     function deleteCpItem(type, id) {
@@ -3578,8 +3985,10 @@
       const idx = arr.findIndex(x => x.id === id);
       if (idx !== -1) {
         if (arr[idx].blobUrl) URL.revokeObjectURL(arr[idx].blobUrl);
+        _deleteMediaFile(arr[idx].id);
         arr.splice(idx, 1);
       }
+      _saveContentLibrary();
       renderContentPanel(type);
     }
 
@@ -4780,22 +5189,23 @@
 
       panel.innerHTML =
         /* ── Split layout ── */
-        '<div style="display:flex;gap:0;min-height:520px;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;background:#fff">' +
+        '<div style="display:flex;gap:0;height:620px;border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;background:#fff">' +
 
-          /* Left: user list */
-          '<div style="width:270px;flex-shrink:0;border-right:1px solid #F0F0F0;display:flex;flex-direction:column">' +
-            '<div style="padding:14px 14px 10px;border-bottom:1px solid #F0F0F0">' +
+          /* Left: user list — independent scroll */
+          '<div style="width:270px;flex-shrink:0;border-right:1px solid #F0F0F0;display:flex;flex-direction:column;height:100%;overflow:hidden">' +
+            '<div style="padding:14px 14px 10px;border-bottom:1px solid #F0F0F0;flex-shrink:0">' +
               '<div style="font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Select Employee</div>' +
               '<div style="position:relative">' +
                 '<svg style="position:absolute;left:9px;top:50%;transform:translateY(-50%);pointer-events:none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
-                '<input id="ujSearch" type="text" placeholder="Search…" oninput="_ujFilter(this.value)" style="width:100%;height:32px;padding:0 10px 0 30px;border:1.5px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;font-weight:600;color:#333;background:#FAFAFA;outline:none;box-sizing:border-box">' +
+                '<input id="ujSearch" type="text" placeholder="Search…" oninput="_ujFilter(this.value);_srchTog(\'ujSrchX\',this)" style="width:100%;height:32px;padding:0 28px 0 30px;border:1.5px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;font-weight:600;color:#333;background:#FAFAFA;outline:none;box-sizing:border-box">' +
+                '<button class="srch-x" id="ujSrchX" onclick="_srchClr(\'ujSearch\',\'ujSrchX\')"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>' +
               '</div>' +
             '</div>' +
-            '<div id="ujUserList" style="flex:1;overflow-y:auto;padding:6px 8px"></div>' +
+            '<div id="ujUserList" style="flex:1;overflow-y:auto;padding:6px 8px;min-height:0"></div>' +
           '</div>' +
 
-          /* Right: journey detail */
-          '<div style="flex:1;overflow-y:auto;padding:24px 28px" id="ujDetail">' +
+          /* Right: journey detail — independent scroll */
+          '<div style="flex:1;overflow-y:auto;padding:24px 28px;height:100%;box-sizing:border-box;min-height:0" id="ujDetail">' +
             '<div style="color:#C4C9D4;font-size:13px;font-weight:700;text-align:center;padding:60px 0">Select an employee to view their learning journey</div>' +
           '</div>' +
 
@@ -4903,7 +5313,7 @@
                 : '<div style="font-size:10px;color:#C4C9D4;font-weight:600;margin-top:1px">Not yet completed</div>'
               ) +
             '</div>' +
-            (done ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="' + m.color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>' : '') +
+            (done ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="' + m.color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>' : '') +
           '</div>';
         }).join('');
 
@@ -5141,6 +5551,26 @@
     };
 
     let MODULE_META = {};   // { 'ModuleName': { hidden: true } }
+
+    /* ── Extend MODULE_DATA with admin-uploaded modules/classes from localStorage ── */
+    (function() {
+      try {
+        var _all = [];
+        ['lms_video_library','lms_voiceover_library','lms_document_library'].forEach(function(k){
+          (JSON.parse(localStorage.getItem(k)||'[]')).forEach(function(v){ _all.push(v); });
+        });
+        _all.forEach(function(item){
+          var mod=item.module, cls=item.cls;
+          if(!mod||!cls) return;
+          if(!MODULE_DATA[mod]) MODULE_DATA[mod]={ classes:[], topics:{} };
+          if(MODULE_DATA[mod].classes.indexOf(cls)===-1){
+            MODULE_DATA[mod].classes.push(cls);
+            if(!MODULE_DATA[mod].topics) MODULE_DATA[mod].topics={};
+            MODULE_DATA[mod].topics[cls]=[];
+          }
+        });
+      } catch(e){}
+    })();
 
     function _moduleList() {
       return Object.keys(MODULE_DATA).filter(function(m) {
@@ -8726,6 +9156,7 @@
                   '<button class="had-btn" onclick="event.stopPropagation();_renameClass(\'' + ems + '\',\'' + ecs + '\')">Rename</button>' +
                   '<button class="had-btn" onclick="event.stopPropagation();_toggleClassHide(\'' + ems + '\',\'' + ecs + '\')" ' + (isClsHide ? 'style="color:#10B981;border-color:#10B981"' : '') + '>' + (isClsHide ? 'Show' : 'Hide') + '</button>' +
                   '<button class="had-btn had-btn-danger" onclick="event.stopPropagation();_deleteClass(\'' + ems + '\',\'' + ecs + '\')">Delete</button>' +
+                  '<button class="had-btn" style="color:#5189F3;border-color:#5189F3" onclick="event.stopPropagation();_previewClass(\'' + ems + '\',\'' + ecs + '\')">View</button>' +
                 '</div>' +
               '</td>' +
             '</tr>';
@@ -8865,6 +9296,102 @@
       classes.splice(idx, 1);
       classes.splice(newIdx, 0, cls);
       _renderHubAdminView();
+    }
+
+    function _previewClass(mod, cls) {
+      var classes = (MODULE_DATA[mod] || {}).classes || [];
+      var idx = classes.indexOf(cls);
+      var data = {
+        mod: mod, cls: cls, clsIdx: idx, totalCls: classes.length,
+        nextCls: idx < classes.length - 1 ? classes[idx + 1] : null,
+        prevCls: idx > 0 ? classes[idx - 1] : null,
+        col: '#5189F3', dur: '10 min',
+        videoTitle: cls + ' Training', voiceTitle: cls + ' Introduction',
+        adminVideos: [], adminVoices: [], adminDocs: [],
+        a1: null, a2: null, cd: null, passMark: 70, questions: [], liveQuizId: null,
+        modules: Object.keys(MODULE_DATA).map(function(m) { return { name: m, color: '#5189F3' }; })
+      };
+      try {
+        var _vl = JSON.parse(localStorage.getItem('lms_video_library') || '[]');
+        data.adminVideos = _vl.filter(function(v) { return v.module === mod && v.cls === cls; });
+        var _vo = JSON.parse(localStorage.getItem('lms_voiceover_library') || '[]');
+        data.adminVoices = _vo.filter(function(v) { return v.module === mod && v.cls === cls; });
+        var _dl = JSON.parse(localStorage.getItem('lms_document_library') || '[]');
+        data.adminDocs = _dl.filter(function(v) { return v.module === mod && v.cls === cls; });
+      } catch(e) {}
+      sessionStorage.setItem('cv_class', JSON.stringify(data));
+      window.open('class-viewer.html', '_blank');
+    }
+
+    /* ── Upload-panel module & item management ── */
+    function _libRerender(type) {
+      if (type === 'video') renderVideoPanel(); else renderContentPanel(type);
+    }
+    function _libModAddModule(type) {
+      var name = prompt('New module name:');
+      if (!name || !name.trim()) return;
+      name = name.trim();
+      if (MODULE_DATA[name]) { alert('Module "' + name + '" already exists.'); return; }
+      MODULE_DATA[name] = { classes: [], topics: {} };
+      MODULE_META[name] = { hidden: false };
+      _libRerender(type); _renderHubAdminView(); _renderHubOverview();
+    }
+    function _libModAddClass(mod, type) {
+      var cls = prompt('New class name in "' + mod + '":');
+      if (!cls || !cls.trim()) return;
+      cls = cls.trim();
+      if (!MODULE_DATA[mod]) MODULE_DATA[mod] = { classes: [], topics: {} };
+      if (MODULE_DATA[mod].classes.indexOf(cls) !== -1) { alert('Class "' + cls + '" already exists.'); return; }
+      MODULE_DATA[mod].classes.push(cls);
+      _libRerender(type); _renderHubAdminView();
+    }
+    function _libModRename(mod, type) {
+      var newName = prompt('Rename module "' + mod + '" to:', mod);
+      if (!newName || !newName.trim() || newName.trim() === mod) return;
+      newName = newName.trim();
+      if (MODULE_DATA[newName]) { alert('A module named "' + newName + '" already exists.'); return; }
+      MODULE_DATA[newName] = MODULE_DATA[mod]; delete MODULE_DATA[mod];
+      MODULE_META[newName] = MODULE_META[mod] || {}; delete MODULE_META[mod];
+      quizzes.forEach(function(q){ if(q.module===mod) q.module=newName; });
+      _videoLibrary.forEach(function(v){ if(v.module===mod) v.module=newName; });
+      ['voiceover','document'].forEach(function(t){ (CONTENT_LIBRARY[t]||[]).forEach(function(v){ if(v.module===mod) v.module=newName; }); });
+      _saveContentLibrary(); _libRerender(type); _renderHubAdminView(); _renderHubOverview();
+    }
+    function _libModHide(mod, type) {
+      if (!MODULE_META[mod]) MODULE_META[mod] = {};
+      MODULE_META[mod].hidden = !MODULE_META[mod].hidden;
+      _libRerender(type); _renderHubAdminView();
+    }
+    function _libModDelete(mod, type) {
+      if (!confirm('Delete module "' + mod + '" and all its classes? This cannot be undone.')) return;
+      delete MODULE_DATA[mod]; delete MODULE_META[mod];
+      _libRerender(type); _renderHubAdminView(); _renderHubOverview();
+    }
+    function _findLibItem(type, id) {
+      if (type === 'video') return _videoLibrary.find(function(v){ return v.id===id; });
+      return ((CONTENT_LIBRARY[type]||[])).find(function(v){ return v.id===id; });
+    }
+    function _libItemRename(type, id) {
+      var item = _findLibItem(type, id);
+      if (!item) return;
+      var t = prompt('Rename to:', item.title);
+      if (!t || !t.trim() || t.trim()===item.title) return;
+      item.title = t.trim();
+      _saveContentLibrary(); _libRerender(type);
+    }
+    function _libItemHide(type, id) {
+      var item = _findLibItem(type, id);
+      if (!item) return;
+      item._hidden = !item._hidden;
+      _saveContentLibrary(); _libRerender(type);
+    }
+
+    function _libItemEdit(type, id) {
+      var item = type === 'video'
+        ? _videoLibrary.find(function(v){ return v.id === id; })
+        : (CONTENT_LIBRARY[type]||[]).find(function(v){ return v.id === id; });
+      if (!item) return;
+      _showUploadModal(null, type, item);
     }
 
     function _renameModule(mod) {
@@ -9713,6 +10240,18 @@
     }
     function _devResetWarp() { _devSetDays(0); }
 
+    /* ── Search clear helpers ── */
+    function _srchTog(btnId, inp) {
+      var b = document.getElementById(btnId);
+      if (b) b.classList.toggle('on', !!inp.value);
+    }
+    function _srchClr(inpId, btnId) {
+      var i = document.getElementById(inpId);
+      var b = document.getElementById(btnId);
+      if (i) { i.value = ''; i.dispatchEvent(new Event('input')); }
+      if (b) b.classList.remove('on');
+    }
+
     /* ══ TESTING / DEV TOOLS ══ */
     function _devClearResults(quizId, mod, cls, ci) {
       localStorage.removeItem('sq_results_' + quizId);
@@ -10543,6 +11082,41 @@
     <button onclick="_devAddDays(180)" style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#D1FAE5;padding:3px 8px;border-radius:6px;border:1px solid #065F46;">+180d</button>
     <div style="width:1px; height:16px; background:#44403C;"></div>
     <button onclick="_devResetWarp()"  style="all:unset;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;color:#93C5FD;padding:3px 8px;border-radius:6px;border:1px solid #1D4ED8;">↺ Reset</button>
+  </div>
+
+  <!-- lib item edit modal -->
+  <div id="libEditOverlay" class="udm-overlay" style="display:none" onclick="if(event.target===this)_libEditClose()">
+    <div class="udm-modal" style="width:420px">
+      <div class="udm-modal-head" style="padding:16px 20px;border-bottom:1px solid #F0F0F0;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:14px;font-weight:800;color:#111;font-family:'Nunito',sans-serif">Edit Item</span>
+        <button onclick="_libEditClose()" style="all:unset;cursor:pointer;font-size:18px;color:#9CA3AF;line-height:1">&#x2715;</button>
+      </div>
+      <div style="padding:18px 20px;display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Title</label>
+          <input id="libEditTitle" type="text" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none" onfocus="this.style.borderColor='#5189F3'" onblur="this.style.borderColor='#D1D5DB'">
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Module</label>
+          <select id="libEditModule" onchange="_libEditModuleChange()" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:#fff"></select>
+        </div>
+        <div>
+          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Class</label>
+          <select id="libEditClass" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:#fff"></select>
+        </div>
+        <div id="libEditStatusWrap">
+          <label style="font-size:10px;font-weight:800;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;font-family:'Nunito',sans-serif;display:block;margin-bottom:5px">Status</label>
+          <select id="libEditStatus" style="width:100%;box-sizing:border-box;padding:7px 10px;border:1px solid #D1D5DB;border-radius:6px;font-size:13px;font-family:'Nunito',sans-serif;outline:none;background:#fff">
+            <option value="live">Live</option>
+            <option value="draft">Draft</option>
+          </select>
+        </div>
+      </div>
+      <div style="padding:12px 20px;border-top:1px solid #F0F0F0;display:flex;justify-content:flex-end;gap:8px">
+        <button onclick="_libEditClose()" style="padding:7px 16px;border-radius:6px;border:1px solid #D1D5DB;background:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;color:#555">Cancel</button>
+        <button onclick="_libEditSave()" style="padding:7px 18px;border-radius:6px;border:none;background:#5189F3;color:#fff;font-size:12px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif">Save Changes</button>
+      </div>
+    </div>
   </div>
 
 </body>
