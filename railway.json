@@ -1,10 +1,7 @@
 {
   "$schema": "https://railway.com/railway.schema.json",
-  "build": {
-    "buildCommand": "cd nodeserver && npm install && npm run build"
-  },
   "deploy": {
-    "startCommand": "cd nodeserver && node dist/main",
+    "startCommand": "node nodeserver/dist/main",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
