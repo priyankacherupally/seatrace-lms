@@ -2,7 +2,7 @@
   "name": "seatrace-lms",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd nodeserver && npm install && npm run build",
+    "build": "cd Client && npm install && npm run build && cd ../nodeserver && npm install && npm run build",
     "start": "node nodeserver/dist/main"
   }
 }

@@ -26,9 +26,10 @@ async function bootstrap() {
     }),
   );
 
-  // Serve the Client/ folder as static files from repo root
-  const clientPath = path.join(process.cwd(), 'Client');
-  app.useStaticAssets(clientPath);
+  // Serve built React app at /
+  app.useStaticAssets(path.join(process.cwd(), 'Client', 'dist'));
+  // Serve LMS HTML pages at /lms/
+  app.useStaticAssets(path.join(process.cwd(), 'Client', 'lms'), { prefix: '/lms' });
 
   await app.listen(port);
   Logger.log(
