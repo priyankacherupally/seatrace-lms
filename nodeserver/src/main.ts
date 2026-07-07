@@ -30,6 +30,8 @@ async function bootstrap() {
   app.useStaticAssets(path.join(process.cwd(), 'Client', 'dist'));
   // Serve LMS HTML pages at /lms/
   app.useStaticAssets(path.join(process.cwd(), 'Client', 'lms'), { prefix: '/lms' });
+  // Serve admin-uploaded files at /uploads/
+  app.useStaticAssets(path.join(process.cwd(), 'uploads'), { prefix: '/uploads' });
 
   await app.listen(port);
   Logger.log(
